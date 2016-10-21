@@ -23,6 +23,7 @@ uint16_t FirstRunCnt = 0;
 #define FIRST_RUN_TIME 600
 
 //#define mabs(x,y) ((x)>(y)?(x-y):(y-x))
+#define abs(x) ((x)>0?(x):(-x))
 __STATIC_INLINE uint16_t Distance(Point_t A, Point_t B)
 {
 	float dx = (float)A.x - (float)B.x, dy = (float)A.y - (float)B.y;
@@ -53,11 +54,7 @@ void EL_POINTS_StopDirectTarget(void)
 
 #define P_GO 1
 #define P_BACK 1
-#define TurnMinDegree_GO 30
-#define TurnMinDegree_BACK 30
-#define TurnSpeed_GO 50
-#define TurnSpeed_BACK 50
-#define P_SPEED_BACK(x) ((x)*4/5)
+#define P_SPEED_BACK(x) ((x)*7/8)
 void EL_POINTS_Run(void)
 {
 	if (EL_POINTS_Type == POINTS_STOP)
@@ -87,21 +84,27 @@ void EL_POINTS_Run(void)
 					EL_POINTS_SingleTarget.y - EL_POINTS_MyPos.y)/M_PI*180,ANGLE_ABS);
 				TurnDegree = CL_ANGLE_GetDegree();
 				speed = dis + 20;
-				if (fabs(TurnDegree) < 90) //go
+				if (abs(TurnDegree) < 90) //go
 				{
-					SPEED[1]=SPEED[0]=fabs(TurnDegree) > TurnMinDegree_GO ? (speed>TurnSpeed_GO?TurnSpeed_GO:speed):(speed>100?100:speed);
-					SPEED[0] -= TurnDegree*P_GO;
-					SPEED[1] += TurnDegree*P_GO;
+					float ABS_TD;
+					TurnDegree*=P_GO;
+					ABS_TD = abs(TurnDegree);
+					SPEED[1]=SPEED[0]=(speed>(100-ABS_TD))?(100-ABS_TD):(speed);
+					SPEED[0] -= TurnDegree;
+					SPEED[1] += TurnDegree;
 				}
 				else //back
 				{
+					float ABS_TD;
 					if (TurnDegree < 0)
 						TurnDegree += 180;
 					else
 						TurnDegree -= 180;
-					SPEED[1]=SPEED[0]=fabs(TurnDegree) > TurnMinDegree_BACK ? (speed>TurnSpeed_BACK?-TurnSpeed_BACK:-speed):(speed>100?-100:-speed);
-					SPEED[0] -= TurnDegree*P_BACK;
-					SPEED[1] += TurnDegree*P_BACK;
+					TurnDegree*=P_BACK;
+					ABS_TD = abs(TurnDegree);
+					SPEED[1]=SPEED[0]=(speed>(100-ABS_TD))?(ABS_TD-100):(-speed);
+					SPEED[0] -= TurnDegree;
+					SPEED[1] += TurnDegree;
 					SPEED[0] = P_SPEED_BACK(SPEED[0]);
 					SPEED[1] = P_SPEED_BACK(SPEED[1]);
 				}
