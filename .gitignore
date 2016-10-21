@@ -1,0 +1,14 @@
+*.o
+*.lib
+*.a
+*.elf
+*.d
+*.crf
+*.bin
+*.hex
+*.bak
+*~
+
+/Project/OutPuts/*
+*Administrator*
+*haldak*
