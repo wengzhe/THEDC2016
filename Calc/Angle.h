@@ -20,7 +20,9 @@ typedef struct
 extern float M_PI;
 
 void CL_ANGLE_SetDegree(float degree, CL_ANGLE_Type_t type);
-float CL_ANGLE_GetDegree(void);
+float CL_ANGLE_GetDegreeDiff(void);
+float CL_ANGLE_GetDegreeAbs(void);
+uint8_t CL_ANGLE_DegreeAbsOK(void);
 void CL_ANGLE_Init(void);
 void CL_ANGLE_Reset(void);
 void CL_ANGLE_Tick(void);

@@ -9,6 +9,8 @@
 *.bak
 *~
 
+/Project/JLinkLog.txt
+
 /Project/OutPuts/*
 *Administrator*
 *haldak*

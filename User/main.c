@@ -9,7 +9,6 @@
 
 
 extern CL_COM_Data_t CL_COM_Data;
-extern uint8_t SingleTargetArrCnt;
 /*void TestFunc(DL_UART_Data_t data)
 {
 	uint8_t test[9],i;
@@ -24,7 +23,7 @@ int main()
 	GPIO_InitTypeDef GPIO_InitStructure;//GPIO初始化所用结构
 	uint32_t T1=0;
 	unsigned int k=0;
-	Point_t tar = {128,128};
+	Point_t tar = {0,0};
 	//uint8_t TargetCnt = 0;
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);//使能GPIOD
@@ -46,7 +45,7 @@ int main()
 	//EL_POINTS_SetDirectMinDistance(20);//dis=20
 	//EL_POINTS_SetDirectMinTime(100);//100ms
 #if 1
-	EL_POINTS_SetDirectMinDistance(19);
+	EL_POINTS_SetMinDistance(19);
 	while(1)
 	{
 		if(T1+500<=TimeTicket)
@@ -58,20 +57,30 @@ int main()
 		}
 		if (CL_COM_Data.GameStatus == GAME_START)
 		{
+			if(CL_COM_Data.ItemType == ITEM_PLANE)
+			{
+				EL_POINTS_DirectTarget(CL_COM_Data.ItemPos);
+				tar.x = 255-CL_COM_Data.ItemPos.x;
+				tar.y = 255-CL_COM_Data.ItemPos.y;
+			}
+			else if(CL_COM_Data.Flags.BITS.TargetExist)
+			{
+				EL_POINTS_DirectTarget(CL_COM_Data.TarPos);
+				tar.x = 255-CL_COM_Data.TarPos.x;
+				tar.y = 255-CL_COM_Data.TarPos.y;
+			}
+			else if (CL_COM_Data.ItemType)
+			{
+				EL_POINTS_DirectTarget(CL_COM_Data.ItemPos);
+				tar.x = 255-CL_COM_Data.ItemPos.x;
+				tar.y = 255-CL_COM_Data.ItemPos.y;
+			}
+			else
+				EL_POINTS_StopTarget();
 			if(CL_COM_Data.Flags.BITS.ControlPlane) //need some pause
 			{
-				tar.x = 0;
-				tar.y = 0;
 				CL_COM_SendPos(tar);
 			}
-			if(CL_COM_Data.ItemType == ITEM_PLANE)
-				EL_POINTS_DirectTarget(CL_COM_Data.ItemPos);
-			else if(CL_COM_Data.Flags.BITS.TargetExist)
-				EL_POINTS_DirectTarget(CL_COM_Data.TarPos);
-			else if (CL_COM_Data.ItemType)
-				EL_POINTS_DirectTarget(CL_COM_Data.ItemPos);
-			else
-				EL_POINTS_StopDirectTarget();
 			EL_MUSIC_SetPause(1);
 		}
 		else if (CL_COM_Data.GameStatus == GAME_PAUSE)

@@ -78,12 +78,22 @@ void CL_ANGLE_SetDegree(float degree, CL_ANGLE_Type_t type)
 	DegreeSetType = type;
 }
 
-float CL_ANGLE_GetDegree(void)
+float CL_ANGLE_GetDegreeDiff(void)
 {
 	float cur_deg = DegreeSetType == ANGLE_REL ? Degree[DegreePointer] : Degree[DegreePointer] + DegreeDiff;
 	return MinusDegree180(DegreeSet, cur_deg);
 }
 
+float CL_ANGLE_GetDegreeAbs(void)
+{
+	float cur_deg = Degree[DegreePointer] + DegreeDiff;
+	return GetDegree180(cur_deg);
+}
+
+uint8_t CL_ANGLE_DegreeAbsOK(void)
+{
+	return DegreeDiffCnt != 0;
+}
 void CL_ANGLE_GetPos(const DL_UART_Data_t* uartdata)
 {
 	int8_t pn;

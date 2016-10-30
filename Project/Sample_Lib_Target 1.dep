@@ -1,6 +1,6 @@
 Dependencies for Project 'Sample_Lib', Target 'Target 1': (DO NOT MODIFY !)
-F (.\startup_stm32f10x_hd.s)(0x4F5835BC)(--cpu Cortex-M3 -g --apcs=interwork -I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x--list .\startup_stm32f10x_hd.lst --xref -o .\outputs\startup_stm32f10x_hd.o --depend .\outputs\startup_stm32f10x_hd.d)
-F (..\User\main.c)(0x58097F81)(-c --cpu Cortex-M3 -g -O0 -Otime --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\main.o --omf_browse .\outputs\main.crf --depend .\outputs\main.d)
+F (.\startup_stm32f10x_hd.s)(0x4F5835BC)(--cpu Cortex-M3 -g --apcs=interwork -I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x--list .\outputs\startup_stm32f10x_hd.lst --xref -o .\outputs\startup_stm32f10x_hd.o --depend .\outputs\startup_stm32f10x_hd.d)
+F (..\User\main.c)(0x5812F43F)(-c --cpu Cortex-M3 -g -O0 -Otime --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\main.o --omf_browse .\outputs\main.crf --depend .\outputs\main.d)
 I (..\System\stm32f10x_conf.h)(0x57FC2D37)
 I (..\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h)(0x4D783BB4)
 I (D:\Keil\ARM\Inc\ST\STM32F10x\stm32f10x.h)(0x532BF35C)
@@ -19,7 +19,7 @@ I (..\System\sysconfig.h)(0x57FC5BBC)
 I (..\Exec\Exec.h)(0x57E74133)
 I (..\Exec\MUSIC.h)(0x58087AD2)
 I (D:\Keil\ARM\ARMCC\include\math.h)(0x51C7C554)
-I (..\Exec\POINTS.h)(0x58060E66)
+I (..\Exec\POINTS.h)(0x5814951A)
 I (..\User\MyTypes.h)(0x57FE2B52)
 I (..\Calc\COM.h)(0x5804BBCC)
 I (..\Calc\SPEED.h)(0x58059720)
@@ -302,7 +302,7 @@ I (..\Calc\Calc.h)(0x58034280)
 I (..\Calc\Speed.h)(0x58059720)
 I (..\Calc\COM.h)(0x5804BBCC)
 I (..\User\MyTypes.h)(0x57FE2B52)
-I (..\Calc\Angle.h)(0x5805ED02)
+I (..\Calc\Angle.h)(0x58149439)
 F (..\Calc\Speed.c)(0x580871B4)(-c --cpu Cortex-M3 -g -O0 -Otime --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\speed.o --omf_browse .\outputs\speed.crf --depend .\outputs\speed.d)
 I (..\Calc\Speed.h)(0x58059720)
 I (D:\Keil\ARM\Inc\ST\STM32F10x\stm32f10x.h)(0x532BF35C)
@@ -342,8 +342,8 @@ I (..\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x4D783BB4)
 I (..\User\MyTypes.h)(0x57FE2B52)
 I (..\Driver\UART.h)(0x57FE1F09)
-F (..\Calc\Angle.c)(0x580881DE)(-c --cpu Cortex-M3 -g -O0 -Otime --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\angle.o --omf_browse .\outputs\angle.crf --depend .\outputs\angle.d)
-I (..\Calc\Angle.h)(0x5805ED02)
+F (..\Calc\Angle.c)(0x58149426)(-c --cpu Cortex-M3 -g -O0 -Otime --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\angle.o --omf_browse .\outputs\angle.crf --depend .\outputs\angle.d)
+I (..\Calc\Angle.h)(0x58149439)
 I (D:\Keil\ARM\Inc\ST\STM32F10x\stm32f10x.h)(0x532BF35C)
 I (D:\Keil\ARM\CMSIS\Include\core_cm3.h)(0x532BF7C2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7C554)
@@ -406,7 +406,7 @@ I (..\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x4D783BB4)
 I (..\Calc\Calc.h)(0x58034280)
 I (..\Exec\MUSIC.h)(0x58087AD2)
 I (D:\Keil\ARM\ARMCC\include\math.h)(0x51C7C554)
-I (..\Exec\POINTS.h)(0x58060E66)
+I (..\Exec\POINTS.h)(0x5814951A)
 I (..\User\MyTypes.h)(0x57FE2B52)
 F (..\Exec\Musics.c)(0x57E742E3)(-c --cpu Cortex-M3 -g -O0 -Otime --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\musics.o --omf_browse .\outputs\musics.crf --depend .\outputs\musics.d)
 I (..\Calc\TONE.h)(0x57E6A96F)
@@ -428,8 +428,8 @@ I (..\Exec\Musics.h)(0x57E74355)
 I (..\Exec\Music.h)(0x58087AD2)
 I (..\Exec\Exec.h)(0x57E74133)
 I (D:\Keil\ARM\ARMCC\include\math.h)(0x51C7C554)
-F (..\Exec\POINTS.C)(0x5809CF10)(-c --cpu Cortex-M3 -g -O0 -Otime --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\points.o --omf_browse .\outputs\points.crf --depend .\outputs\points.d)
-I (..\Exec\POINTS.h)(0x58060E66)
+F (..\Exec\POINTS.C)(0x58149586)(-c --cpu Cortex-M3 -g -O0 -Otime --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\points.o --omf_browse .\outputs\points.crf --depend .\outputs\points.d)
+I (..\Exec\POINTS.h)(0x5814951A)
 I (D:\Keil\ARM\Inc\ST\STM32F10x\stm32f10x.h)(0x532BF35C)
 I (D:\Keil\ARM\CMSIS\Include\core_cm3.h)(0x532BF7C2)
 I (D:\Keil\ARM\ARMCC\include\stdint.h)(0x51C7C554)
@@ -446,6 +446,6 @@ I (..\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x4D783BB4)
 I (..\User\MyTypes.h)(0x57FE2B52)
 I (..\Calc\COM.h)(0x5804BBCC)
-I (..\Calc\Angle.h)(0x5805ED02)
+I (..\Calc\Angle.h)(0x58149439)
 I (..\Calc\Speed.h)(0x58059720)
 I (D:\Keil\ARM\ARMCC\include\math.h)(0x51C7C554)
