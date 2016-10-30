@@ -19,7 +19,7 @@ CL_ANGLE_Type_t DegreeSetType = ANGLE_REL;
 
 #define POINTS_QUEUE_NUM 10
 CL_ANGLE_Point_t Points[POINTS_QUEUE_NUM] = {0};
-uint8_t Points_front = 0, Points_rear = 0, Points_Num = 0;
+uint8_t Points_front = 0, Points_Num = 0;
 float DegreeDiff = 0;//diff = abs - rel;
 uint16_t DegreeDiffCnt = 0;
 
@@ -46,10 +46,10 @@ __STATIC_INLINE float MinusDegree180(float A, float B)
 
 __STATIC_INLINE void InsertQueue(Point_t Point,uint16_t DegreeP)
 {
-	Points[Points_rear].Point = Point;
-	Points[Points_rear].DegreeP = DegreeP;
-	Points[Points_rear++].Speed = DL_PWM_Speed();
-	Points_rear %= POINTS_QUEUE_NUM;
+	uint8_t p = (Points_front+Points_Num)%POINTS_QUEUE_NUM;
+	Points[p].Point = Point;
+	Points[p].DegreeP = DegreeP;
+	Points[p].Speed = DL_PWM_Speed();
 	Points_Num++;
 	if (Points_Num > POINTS_QUEUE_NUM)
 	{

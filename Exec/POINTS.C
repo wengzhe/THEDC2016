@@ -2,8 +2,10 @@
 #include "COM.h"
 #include "Angle.h"
 #include "Speed.h"
+#include "MAP.h"
 #include <math.h>
 
+//#define GAME_STATUS_START
 
 //GameStatus
 #ifdef GAME_STATUS_START
@@ -20,10 +22,20 @@ uint16_t FirstRunCnt = 0;
 
 //#define mabs(x,y) ((x)>(y)?(x-y):(y-x))
 #define abs(x) ((x)>0?(x):(-x))
-__STATIC_INLINE uint16_t Distance(Point_t A, Point_t B)
+__STATIC_INLINE float Distance(Point_t A, Point_t B)
 {
 	float dx = (float)A.x - (float)B.x, dy = (float)A.y - (float)B.y;
 	return sqrtf(dx*dx+dy*dy);
+}
+
+__STATIC_INLINE float MinusDegree180(float A, float B)
+{
+	float input = A - B;
+	if (input > 180)
+		input -= 360;
+	if (input < -180)
+		input += 360;
+	return input;
 }
 
 //RunControl
@@ -32,39 +44,97 @@ Point_t EL_POINTS_DisTarget, EL_POINTS_AngleTarget, EL_POINTS_MyPos;
 EL_POINTS_Way_t EL_POINTS_Way = POINTS_Stop;
 uint8_t TargetMinDis = 5;
 uint16_t TargetArrivedTime = 0;//The time arrived in MinDis
+//Queue
+#define POINTS_QUEUE_NUM 10
+EL_POINTS_Queue_t EL_POINTS_Queue[POINTS_QUEUE_NUM];
+uint8_t PointsNum = 0, PointsPointer = 0;
 //AngleAndSpeed
-uint16_t EL_POINTS_Dis = 0, EL_POINTS_Speed = 0;
+float EL_POINTS_Dis = 0;
+uint16_t EL_POINTS_Speed = 0;
 uint8_t CalcTargetWatchDog=0;
+float EL_POINTS_AngleSet = 0;
 //Color
 EL_POINTS_Color_t TargetColor=POINTS_None;//0:white,1:black
+
+//Queue
+uint8_t EL_POINTS_InsertQueue(EL_POINTS_Queue_t input)
+{
+	if (PointsNum < POINTS_QUEUE_NUM)
+	{
+		uint8_t p = (PointsPointer+PointsNum)%POINTS_QUEUE_NUM;
+		EL_POINTS_Queue[p] = input;
+		PointsNum++;
+		return 0;
+	}
+	else
+		return 1;
+}
+
+void EL_POINTS_ClearQueue(void)
+{
+	if (PointsNum)
+	{
+		PointsNum=0;
+		EL_POINTS_StopTarget();
+	}
+}
+
+__STATIC_INLINE void POPQueue(void)
+{
+	PointsPointer++;
+	PointsPointer%=POINTS_QUEUE_NUM;
+	PointsNum--;
+}
 
 //We Need To Calculate Next Target(AngleTarget) and check the final point(DisTarget)
 //return fullspeed?
 //if fullspeed is set, we'll not stop and must go to next point at full speed
 //if not set, when we're near the final point, we'll stop or be very slow
-uint8_t EL_POINTS_CalcNextTarget(void)
+uint8_t EL_POINTS_CalcTarget(void)
 {
-	if (EL_POINTS_Way == POINTS_Queue)
+	uint8_t i;
+	EL_POINTS_AngleTarget = EL_POINTS_Queue[PointsPointer].Target;
+	for (i = 0; i < PointsNum - 1 && EL_POINTS_Queue[(PointsPointer+i)%POINTS_QUEUE_NUM].StopTime == 0; i++);
+	EL_POINTS_DisTarget = EL_POINTS_Queue[(PointsPointer+i)%POINTS_QUEUE_NUM].Target;
+	TargetMinDis = EL_POINTS_Queue[(PointsPointer+i)%POINTS_QUEUE_NUM].MinDis;
+	return i;
+}
+
+uint8_t EL_POINTS_CheckQueue(void)
+{
+	if (PointsNum)
 	{
-		if (TargetArrivedTime > 0) //Change target
+		if (EL_POINTS_Way == POINTS_Queue)
 		{
+			if (Distance(EL_POINTS_Queue[PointsPointer].Target, EL_POINTS_MyPos) <= EL_POINTS_Queue[PointsPointer].MinDis)
+			{
+				if (!EL_POINTS_Queue[PointsPointer].StopTime //Change target
+						|| TargetArrivedTime/10 > EL_POINTS_Queue[PointsPointer].StopTime)
+				{
+					POPQueue();
+					if (!PointsNum)
+						EL_POINTS_Way = POINTS_Stop;
+				}
+			}
 		}
+		else
+			EL_POINTS_Way = POINTS_Queue;
+		return EL_POINTS_CalcTarget();
 	}
-	if (TargetColor)
-	{
-	}
-	return 0;
+	else
+		return 0;
 }
 
 void EL_POINTS_CalcSpeed_SetAngle(void)
 {
 	if (EL_POINTS_Way)
 	{
-		uint8_t fullspeed=EL_POINTS_CalcNextTarget();
+		uint8_t fullspeed=EL_POINTS_CheckQueue();
 		EL_POINTS_Dis = fullspeed ? 80 : Distance(EL_POINTS_DisTarget, EL_POINTS_MyPos);
 		EL_POINTS_Speed = EL_POINTS_Dis + 20;
-		CL_ANGLE_SetDegree(atan2f(EL_POINTS_AngleTarget.x - EL_POINTS_MyPos.x,
-			EL_POINTS_AngleTarget.y - EL_POINTS_MyPos.y)/M_PI*180,ANGLE_ABS);
+		EL_POINTS_AngleSet = atan2f(EL_POINTS_AngleTarget.x - EL_POINTS_MyPos.x,
+													EL_POINTS_AngleTarget.y - EL_POINTS_MyPos.y)/M_PI*180;
+		CL_ANGLE_SetDegree(EL_POINTS_AngleSet, ANGLE_ABS);
 	}
 	else
 	{
@@ -108,6 +178,9 @@ void EL_POINTS_StopTarget(void)
 #define P_GO 1
 #define P_BACK 1
 #define P_SPEED_BACK(x) ((x)*7/8)
+#define ANGLE_DIFF 40 //different between 2 angles
+#define MAX_ANGLE_IN_COLOR 50 //max turn angle
+#define MIN_ANGLE_TURN 20 //if angle < 20, we see it as the same with the front
 //Distance change slow, but angle change fast
 void EL_POINTS_Run(void)
 {
@@ -125,10 +198,32 @@ void EL_POINTS_Run(void)
 	if (EL_POINTS_Type == POINTS_RUNNING)
 	{
 		int16_t SPEED[2] = {0,0};
-		if (EL_POINTS_Dis >= TargetMinDis)
+		if (TargetColor)
+		{
+			const CL_MAP_IR_t *pIR = CL_MAP_GetIR();
+			uint8_t i;
+			float minAngle = 300;
+			CL_ANGLE_SetDegree(EL_POINTS_AngleSet, ANGLE_ABS);
+			for (i = 0; i < IR_NUM; i++)
+			{
+				if (pIR->Color[i] == (uint8_t)TargetColor - 1)
+				{
+					float anglediff = fabs(MinusDegree180(EL_POINTS_AngleSet,pIR->Angle[i]));
+					if (anglediff < MAX_ANGLE_IN_COLOR + ANGLE_DIFF && anglediff < minAngle)
+					{
+						minAngle = anglediff;
+						if (anglediff > MIN_ANGLE_TURN)
+							CL_ANGLE_SetDegree(pIR->Angle[i], ANGLE_ABS); //maybe not the nearest, but the second, so choose.
+					}
+				}
+			}
+			if (minAngle <= MIN_ANGLE_TURN) //The nearest is right, go ahead
+				CL_ANGLE_SetDegree(EL_POINTS_AngleSet, ANGLE_ABS);
+		}
+		if (EL_POINTS_Dis > TargetMinDis)
 		{
 			float TurnDegree = CL_ANGLE_GetDegreeDiff();
-			if (abs(TurnDegree) < 90) //go
+			if (TargetColor || abs(TurnDegree) < 90) //go
 			{
 				float ABS_TD;
 				TurnDegree*=P_GO;

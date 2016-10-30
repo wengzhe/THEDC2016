@@ -3,6 +3,7 @@
 #include "Speed.h"
 #include "COM.h"
 #include "Angle.h"
+#include "MAP.h"
 
 void CL_Init(void)
 {
@@ -10,6 +11,7 @@ void CL_Init(void)
 	CL_COM_Init();
 	CL_ANGLE_Init();
 	CL_SPEED_Init();
+	CL_MAP_Init();
 }
 
 void CL_Tick_Pre(uint32_t time)
@@ -17,6 +19,7 @@ void CL_Tick_Pre(uint32_t time)
 	DL_Tick_Pre(time);
 	CL_SPEED_Tick_Pre();
 	CL_ANGLE_Tick();
+	CL_MAP_Tick();
 }
 
 void CL_Tick_After(void)

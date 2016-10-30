@@ -24,6 +24,7 @@ int main()
 	uint32_t T1=0;
 	unsigned int k=0;
 	Point_t tar = {0,0};
+	EL_POINTS_Queue_t QueueNode={{0,0},19,0};
 	//uint8_t TargetCnt = 0;
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);//使能GPIOD
@@ -45,7 +46,7 @@ int main()
 	//EL_POINTS_SetDirectMinDistance(20);//dis=20
 	//EL_POINTS_SetDirectMinTime(100);//100ms
 #if 1
-	EL_POINTS_SetMinDistance(19);
+	EL_POINTS_SetColor(POINTS_White);
 	while(1)
 	{
 		if(T1+500<=TimeTicket)
@@ -57,35 +58,35 @@ int main()
 		}
 		if (CL_COM_Data.GameStatus == GAME_START)
 		{
+			EL_POINTS_ClearQueue();
 			if(CL_COM_Data.ItemType == ITEM_PLANE)
 			{
-				EL_POINTS_DirectTarget(CL_COM_Data.ItemPos);
-				tar.x = 255-CL_COM_Data.ItemPos.x;
-				tar.y = 255-CL_COM_Data.ItemPos.y;
+				QueueNode.Target = CL_COM_Data.ItemPos;
+				QueueNode.StopTime = 0;
+				EL_POINTS_InsertQueue(QueueNode);
 			}
-			else if(CL_COM_Data.Flags.BITS.TargetExist)
+			if(CL_COM_Data.Flags.BITS.TargetExist)
 			{
-				EL_POINTS_DirectTarget(CL_COM_Data.TarPos);
-				tar.x = 255-CL_COM_Data.TarPos.x;
-				tar.y = 255-CL_COM_Data.TarPos.y;
+				QueueNode.Target = CL_COM_Data.TarPos;
+				QueueNode.StopTime = 1;
+				EL_POINTS_InsertQueue(QueueNode);
 			}
-			else if (CL_COM_Data.ItemType)
+			if (CL_COM_Data.ItemType)
 			{
-				EL_POINTS_DirectTarget(CL_COM_Data.ItemPos);
-				tar.x = 255-CL_COM_Data.ItemPos.x;
-				tar.y = 255-CL_COM_Data.ItemPos.y;
+				QueueNode.Target = CL_COM_Data.ItemPos;
+				QueueNode.StopTime = 0;
+				EL_POINTS_InsertQueue(QueueNode);
 			}
-			else
-				EL_POINTS_StopTarget();
 			if(CL_COM_Data.Flags.BITS.ControlPlane) //need some pause
 			{
+				tar.x = 255-QueueNode.Target.x;
+				tar.y = 255-QueueNode.Target.y;
 				CL_COM_SendPos(tar);
 			}
 			EL_MUSIC_SetPause(1);
 		}
 		else if (CL_COM_Data.GameStatus == GAME_PAUSE)
 			EL_MUSIC_SetPause(0);
-		//利用坐标及标志位一起判断
 		Delay(1);
 	}
 #else

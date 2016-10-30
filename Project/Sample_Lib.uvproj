@@ -510,6 +510,11 @@
               <FileType>1</FileType>
               <FilePath>..\Driver\IMU.c</FilePath>
             </File>
+            <File>
+              <FileName>IR.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\IR.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -539,6 +544,11 @@
               <FileName>Angle.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Calc\Angle.c</FilePath>
+            </File>
+            <File>
+              <FileName>MAP.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Calc\MAP.C</FilePath>
             </File>
           </Files>
         </Group>

@@ -6,30 +6,39 @@
 
 typedef enum
 {
-	POINTS_FIRST_RUN, //run for 1s to get angle
-	POINTS_RUNNING,
+	POINTS_FIRST_RUN = 1, //run for 1s to get angle
+	POINTS_RUNNING = 2,
 	POINTS_STOP = 0
 }EL_POINTS_Type_t;
 
 typedef enum
 {
-	POINTS_Single,
-	POINTS_Queue,
+	POINTS_Single = 1,
+	POINTS_Queue = 2,
 	POINTS_Stop = 0
 }EL_POINTS_Way_t;
 
 typedef enum
 {
-	POINTS_White,
-	POINTS_Black,
+	POINTS_White = 1,
+	POINTS_Black = 2,
 	POINTS_None = 0
 }EL_POINTS_Color_t;
 
+typedef struct
+{
+	Point_t Target;
+	uint8_t MinDis;
+	uint8_t StopTime; //if t=0, will not stop, 10ms
+}EL_POINTS_Queue_t;
+
 void EL_POINTS_Init(void);
-void EL_POINTS_ColorTarget(Point_t tar, uint8_t isBlack);
+uint8_t EL_POINTS_InsertQueue(EL_POINTS_Queue_t input);
+void EL_POINTS_ClearQueue(void);
+void EL_POINTS_SetColor(EL_POINTS_Color_t color);
 void EL_POINTS_DirectTarget(Point_t tar);
-void EL_POINTS_SetMinDistance(uint8_t dis);
 void EL_POINTS_StopTarget(void);
+void EL_POINTS_SetMinDistance(uint8_t dis);
 void EL_POINTS_Tick(void);
 
 #endif

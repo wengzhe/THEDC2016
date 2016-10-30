@@ -3,6 +3,7 @@
 #include "ADC.h"
 #include "UART.h"
 #include "IMU.h"
+#include "IR.h"
 
 void DL_Init(void)
 {
@@ -10,6 +11,7 @@ void DL_Init(void)
 	DL_ADC_Init();
 	DL_UART_Init();
 	DL_IMU_Init();
+	DL_IR_Init();
 }
 
 void DL_Tick_Pre(uint32_t time)//things to be done before higher levels
