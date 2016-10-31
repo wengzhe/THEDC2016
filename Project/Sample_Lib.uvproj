@@ -575,6 +575,11 @@
               <FileType>1</FileType>
               <FilePath>..\Exec\POINTS.C</FilePath>
             </File>
+            <File>
+              <FileName>INF.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Exec\INF.C</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

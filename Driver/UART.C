@@ -90,19 +90,22 @@ uint8_t GetRxData(void)
   return ret;
 }
 
+uint8_t UART_SoftLock = 0;
 void DL_UART_SetTxData(uint8_t *data, uint8_t length)
 {
+	UART_SoftLock = 1;
 	for (;length ; length--)
 	{
-		if (!TxSending)
-		{
-			USART_SendData(USART1, *(data++));
-			TxSending=1;
-			USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
-		}
-		else
-			TxBuf[TxBufRear++]=*(data++);
+		TxBuf[TxBufRear++]=*(data++);
 		TxBufRear%=TXBUFSIZE;
+	}
+	UART_SoftLock = 0;
+	if (!TxSending)
+	{
+		USART_SendData(USART1, TxBuf[TxBufFront++]);
+		TxBufFront%=TXBUFSIZE;
+		TxSending=1;
+		USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
 	}
 }
 
@@ -137,7 +140,7 @@ void USART1_IRQHandler(void)
 	}
 	if(USART_GetITStatus(USART1, USART_IT_TXE))
 	{
-		if (TxBufFront != TxBufRear)
+		if (TxBufFront != TxBufRear && !UART_SoftLock)
 		{
 			USART_SendData(USART1, TxBuf[TxBufFront++]);
 			TxBufFront%=TXBUFSIZE;

@@ -33,13 +33,21 @@ typedef struct
 }EL_POINTS_Queue_t;
 
 void EL_POINTS_Init(void);
+
 uint8_t EL_POINTS_InsertQueue(EL_POINTS_Queue_t input);
 void EL_POINTS_ClearQueue(void);
+
+void EL_POINTS_ClearShadowQueue(void);
+uint8_t EL_POINTS_InsertShadowQueue(EL_POINTS_Queue_t input);
+void EL_POINTS_FinishShadowQueue(void);
+
 void EL_POINTS_SetBorderSafetyDis(uint8_t dis);
 void EL_POINTS_SetColor(EL_POINTS_Color_t color);
+void EL_POINTS_SetMinDistance(uint8_t dis);
+
 void EL_POINTS_DirectTarget(Point_t tar);
 void EL_POINTS_StopTarget(void);
-void EL_POINTS_SetMinDistance(uint8_t dis);
-void EL_POINTS_Tick(void);
 
+void EL_POINTS_Tick(void);
+void EL_POINTS_SetFlightPos(const Point_t tar);
 #endif

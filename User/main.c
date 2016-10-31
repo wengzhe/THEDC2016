@@ -3,18 +3,19 @@
 #include "Exec.h"
 #include "MUSIC.h"
 #include "POINTS.h"
-#include "COM.h"
+#include "INF.h"
 
-#include "SPEED.h"
-
-
-extern CL_COM_Data_t CL_COM_Data;
+__STATIC_INLINE float Distance(Point_t A, Point_t B)
+{
+	float dx = (float)A.x - (float)B.x, dy = (float)A.y - (float)B.y;
+	return sqrtf(dx*dx+dy*dy);
+}
 
 int main()
 {
 	GPIO_InitTypeDef GPIO_InitStructure;//GPIO初始化所用结构
 	uint32_t T1=0;
-	unsigned int k=0;
+	uint8_t k=0;
 	Point_t tar = {0,0};
 	EL_POINTS_Queue_t QueueNode={{0,0},19,0};
 	//uint8_t TargetCnt = 0;
@@ -33,12 +34,8 @@ int main()
 	EL_MUSIC_ChangeStatus(Music,3);
 	EL_MUSIC_ChangeMode(Once);
 	EL_MUSIC_SetPause(1);
-	//CL_SPEED_SetSpeed(30,30);
-	//DL_UART_SetRxFunc(TestFunc);
-	//EL_POINTS_SetDirectMinDistance(20);//dis=20
-	//EL_POINTS_SetDirectMinTime(100);//100ms
+
 #if 1
-	//EL_POINTS_SetColor(POINTS_White);
 	EL_POINTS_SetBorderSafetyDis(10);
 	while(1)
 	{
@@ -49,41 +46,43 @@ int main()
 			k = !k;
 			GPIO_WriteBit(GPIOD, GPIO_Pin_2, (BitAction)k);
 		}
-		if (CL_COM_Data.GameStatus == GAME_START)
+		if (EL_INF_GetGameInf()->Status == GAME_START)
 		{
-			//EL_POINTS_SetColor(POINTS_None);
-			EL_POINTS_SetColor(POINTS_Black);
-			EL_POINTS_ClearQueue();
-			/*if(CL_COM_Data.ItemType == ITEM_PLANE)
+			EL_POINTS_SetColor(POINTS_None);
+			EL_POINTS_ClearShadowQueue();
+			if (EL_INF_GetItemInf()->Type)
 			{
-				QueueNode.Target = CL_COM_Data.ItemPos;
+				QueueNode.Target = EL_INF_GetItemInf()->Pos;
 				QueueNode.StopTime = 0;
-				EL_POINTS_InsertQueue(QueueNode);
-			}*/
-			if (CL_COM_Data.ItemType)
-			{
-				QueueNode.Target = CL_COM_Data.ItemPos;
-				QueueNode.StopTime = 0;
-				EL_POINTS_InsertQueue(QueueNode);
+				EL_POINTS_InsertShadowQueue(QueueNode);
 			}
-			if(CL_COM_Data.Flags.BITS.TargetExist)
+			if(EL_INF_GetTargetInf()->Exist)
 			{
-				QueueNode.Target = CL_COM_Data.TarPos;
+				if (Distance(EL_INF_GetTargetInf()->Pos,EL_INF_GetMyInf()->Pos) > 80)
+				{
+					tar.x = ((uint16_t)(EL_INF_GetTargetInf()->Pos.x) + (uint16_t)(EL_INF_GetMyInf()->Pos.x))/2;
+					tar.y = ((uint16_t)(EL_INF_GetTargetInf()->Pos.y) + (uint16_t)(EL_INF_GetMyInf()->Pos.y))/2;
+					//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
+					QueueNode.Target = CheckNearestColor(tar,EL_INF_GetTargetInf()->Black,0.7*Distance(tar,EL_INF_GetMyInf()->Pos));
+					QueueNode.StopTime = 0;
+					EL_POINTS_InsertShadowQueue(QueueNode);
+				}
+				QueueNode.Target = EL_INF_GetTargetInf()->Pos;
 				QueueNode.StopTime = 1;
-				EL_POINTS_InsertQueue(QueueNode);
-				//EL_POINTS_SetColor(CL_COM_Data.Flags.BITS.TargetColor?POINTS_Black:POINTS_White);
+				EL_POINTS_InsertShadowQueue(QueueNode);
+				EL_POINTS_SetColor(EL_INF_GetTargetInf()->Black?POINTS_Black:POINTS_White);
 			}
-			if(CL_COM_Data.Flags.BITS.ControlPlane) //need some pause
+			if(EL_INF_GetAirPlaneInf()->Control)
 			{
 				tar.x = 255-QueueNode.Target.x;
 				tar.y = 255-QueueNode.Target.y;
-				CL_COM_SendPos(tar);
+				EL_POINTS_SetFlightPos(tar);
 			}
+			EL_POINTS_FinishShadowQueue();
 			EL_MUSIC_SetPause(1);
-		}
-		else if (CL_COM_Data.GameStatus == GAME_PAUSE)
+		}//GameStart
+		else if (EL_INF_GetGameInf()->Status == GAME_PAUSE)
 			EL_MUSIC_SetPause(0);
-		Delay(1);
 	}
 #else
 	while(1)

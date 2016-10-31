@@ -39,6 +39,7 @@ __STATIC_INLINE float MinusDegree180(float A, float B)
 }
 
 //RunControl
+
 //Target
 Point_t EL_POINTS_DisTarget, EL_POINTS_AngleTarget, EL_POINTS_MyPos;
 EL_POINTS_Way_t EL_POINTS_Way = POINTS_Stop;
@@ -47,17 +48,25 @@ uint16_t TargetArrivedTime = 0;//The time arrived in MinDis
 uint8_t BorderDis[2] = {0,255};
 #define MAKE_BORDER(x) ((x)=(x)<BorderDis[0]?BorderDis[0]:(x)>BorderDis[1]?BorderDis[1]:(x))
 #define CHECK_BORDER(x) ((x)>=BorderDis[0]&&(x)<BorderDis[1])
+
 //Queue
 #define POINTS_QUEUE_NUM 10
 EL_POINTS_Queue_t EL_POINTS_Queue[POINTS_QUEUE_NUM];
 uint8_t PointsNum = 0, PointsPointer = 0;
+EL_POINTS_Queue_t EL_POINTS_ShadowQueue[POINTS_QUEUE_NUM];
+uint8_t ShadowPointer = 0;
+
 //AngleAndSpeed
 float EL_POINTS_Dis = 0;
 uint16_t EL_POINTS_Speed = 0;
 uint8_t CalcTargetWatchDog=0;
 float EL_POINTS_AngleSet = 0;
+
 //Color
 EL_POINTS_Color_t TargetColor=POINTS_None;//0:white,1:black
+
+//Flight
+Point_t FlightPos={0,0};
 
 //Queue
 uint8_t EL_POINTS_InsertQueue(EL_POINTS_Queue_t input)
@@ -82,6 +91,30 @@ void EL_POINTS_ClearQueue(void)
 		PointsNum=0;
 		EL_POINTS_StopTarget();
 	}
+}
+
+void EL_POINTS_ClearShadowQueue(void)
+{
+	ShadowPointer = 0;
+}
+
+uint8_t EL_POINTS_InsertShadowQueue(EL_POINTS_Queue_t input)
+{
+	if (ShadowPointer < POINTS_QUEUE_NUM)
+	{
+		EL_POINTS_ShadowQueue[ShadowPointer++] = input;
+		return 0;
+	}
+	else
+		return 1;
+}
+
+void EL_POINTS_FinishShadowQueue(void)
+{
+	uint8_t i;
+	EL_POINTS_ClearQueue();
+	for (i = 0; i < ShadowPointer; i++)
+		EL_POINTS_InsertQueue(EL_POINTS_ShadowQueue[i]);
 }
 
 __STATIC_INLINE void POPQueue(void)
@@ -303,7 +336,7 @@ void EL_POINTS_SetMinDistance(uint8_t dis)
 	TargetMinDis = dis;
 }
 
-void EL_POINTS_Tick()
+void EL_POINTS_Tick(void)
 {
 	if (EL_POINTS_GameStatus == GAME_WAIT || EL_POINTS_GameStatus == GAME_STOP)
 	{
@@ -313,6 +346,7 @@ void EL_POINTS_Tick()
 	{
 		//Distance change slow, but angle change fast
 		EL_POINTS_Run();
+		CL_COM_SendPos(FlightPos);
 	}
 	else
 	{
@@ -322,4 +356,9 @@ void EL_POINTS_Tick()
 	{
 		CL_SPEED_SetSpeed(0,0);
 	}
+}
+
+void EL_POINTS_SetFlightPos(const Point_t tar)
+{
+	FlightPos = tar;
 }

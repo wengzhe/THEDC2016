@@ -76,7 +76,7 @@ EL_INF_AirPlaneInf_t *EL_INF_GetAirPlaneInf(void)
 	return &EL_INF_AirPlaneInf;
 }
 
-EL_INF_TargetInf_t *EL_INF_GetTarget(void)
+EL_INF_TargetInf_t *EL_INF_GetTargetInf(void)
 {
 	return &EL_INF_TargetInf;
 }

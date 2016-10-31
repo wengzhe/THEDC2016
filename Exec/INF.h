@@ -55,9 +55,10 @@ EL_INF_PlayerInf_t *EL_INF_GetEmyInf(void);
 EL_INF_ItemInf_t *EL_INF_GetItemInf(void);
 EL_INF_GameInf_t *EL_INF_GetGameInf(void);
 EL_INF_AirPlaneInf_t *EL_INF_GetAirPlaneInf(void);
-EL_INF_TargetInf_t *EL_INF_GetTarget(void);
+EL_INF_TargetInf_t *EL_INF_GetTargetInf(void);
 EL_INF_AdditionInf_t *EL_INF_GetAdditionInf(void);
 
+//13ms(@(127,127),r=179)
 Point_t CheckNearestColor(Point_t curPos, uint8_t black, uint8_t radius);
 
 #endif
