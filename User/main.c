@@ -9,14 +9,6 @@
 
 
 extern CL_COM_Data_t CL_COM_Data;
-/*void TestFunc(DL_UART_Data_t data)
-{
-	uint8_t test[9],i;
-	for (i=0;i<8;i++)
-		test[i] = ((uint8_t*)&data)[2*i] + ((uint8_t*)&data)[2*i+1];
-	test[8]=EL_Rand();
-	DL_UART_SetTxData(test,9);
-}*/
 
 int main()
 {
@@ -46,7 +38,7 @@ int main()
 	//EL_POINTS_SetDirectMinDistance(20);//dis=20
 	//EL_POINTS_SetDirectMinTime(100);//100ms
 #if 1
-	EL_POINTS_SetColor(POINTS_White);
+	//EL_POINTS_SetColor(POINTS_White);
 	EL_POINTS_SetBorderSafetyDis(10);
 	while(1)
 	{
@@ -59,8 +51,16 @@ int main()
 		}
 		if (CL_COM_Data.GameStatus == GAME_START)
 		{
+			//EL_POINTS_SetColor(POINTS_None);
+			EL_POINTS_SetColor(POINTS_Black);
 			EL_POINTS_ClearQueue();
-			if(CL_COM_Data.ItemType == ITEM_PLANE)
+			/*if(CL_COM_Data.ItemType == ITEM_PLANE)
+			{
+				QueueNode.Target = CL_COM_Data.ItemPos;
+				QueueNode.StopTime = 0;
+				EL_POINTS_InsertQueue(QueueNode);
+			}*/
+			if (CL_COM_Data.ItemType)
 			{
 				QueueNode.Target = CL_COM_Data.ItemPos;
 				QueueNode.StopTime = 0;
@@ -71,12 +71,7 @@ int main()
 				QueueNode.Target = CL_COM_Data.TarPos;
 				QueueNode.StopTime = 1;
 				EL_POINTS_InsertQueue(QueueNode);
-			}
-			if (CL_COM_Data.ItemType)
-			{
-				QueueNode.Target = CL_COM_Data.ItemPos;
-				QueueNode.StopTime = 0;
-				EL_POINTS_InsertQueue(QueueNode);
+				//EL_POINTS_SetColor(CL_COM_Data.Flags.BITS.TargetColor?POINTS_Black:POINTS_White);
 			}
 			if(CL_COM_Data.Flags.BITS.ControlPlane) //need some pause
 			{

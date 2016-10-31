@@ -24,6 +24,7 @@ typedef struct
 	GameStatus_t GameStatus;
 	ItemType_t ItemType;
 	CL_COM_Flags_t Flags;
+	uint8_t ID;
 	
 	uint8_t MyHP;
 	uint8_t EmyHP;

@@ -2,12 +2,14 @@
 #include "Calc.h"
 #include "MUSIC.h"
 #include "POINTS.h"
+#include "INF.h"
 
 void EL_Init(void)
 {
 	CL_Init();
 	EL_MUSIC_Init();
 	EL_POINTS_Init();
+	EL_INF_Init();
 }
 
 void EL_Tick(uint32_t time)

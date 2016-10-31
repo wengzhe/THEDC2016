@@ -45,6 +45,8 @@ EL_POINTS_Way_t EL_POINTS_Way = POINTS_Stop;
 uint8_t TargetMinDis = 5;
 uint16_t TargetArrivedTime = 0;//The time arrived in MinDis
 uint8_t BorderDis[2] = {0,255};
+#define MAKE_BORDER(x) ((x)=(x)<BorderDis[0]?BorderDis[0]:(x)>BorderDis[1]?BorderDis[1]:(x))
+#define CHECK_BORDER(x) ((x)>=BorderDis[0]&&(x)<BorderDis[1])
 //Queue
 #define POINTS_QUEUE_NUM 10
 EL_POINTS_Queue_t EL_POINTS_Queue[POINTS_QUEUE_NUM];
@@ -64,6 +66,8 @@ uint8_t EL_POINTS_InsertQueue(EL_POINTS_Queue_t input)
 	{
 		uint8_t p = (PointsPointer+PointsNum)%POINTS_QUEUE_NUM;
 		EL_POINTS_Queue[p] = input;
+		MAKE_BORDER(EL_POINTS_Queue[p].Target.x);
+		MAKE_BORDER(EL_POINTS_Queue[p].Target.y);
 		PointsNum++;
 		return 0;
 	}
@@ -94,9 +98,7 @@ void EL_POINTS_SetBorderSafetyDis(uint8_t dis)
 	BorderDis[1] = 255-dis;
 }
 
-#define MAKE_BORDER(x) ((x)=(x)<BorderDis[0]?BorderDis[0]:(x)>BorderDis[1]?BorderDis[1]:(x))
-
-void EL_POINTS_CheckBorder(void)
+void EL_POINTS_MakeBorder(void)
 {
 	MAKE_BORDER(EL_POINTS_DisTarget.x);
 	MAKE_BORDER(EL_POINTS_DisTarget.y);
@@ -145,11 +147,11 @@ uint8_t EL_POINTS_CheckQueue(void)
 
 void EL_POINTS_CalcSpeed_SetAngle(void)
 {
+	uint8_t fullspeed=EL_POINTS_CheckQueue();
 	if (EL_POINTS_Way)
 	{
-		uint8_t fullspeed=EL_POINTS_CheckQueue();
 		//Check Target
-		EL_POINTS_CheckBorder();
+		EL_POINTS_MakeBorder();
 		//Calculate Dis&Angle
 		EL_POINTS_Dis = fullspeed ? 80 : Distance(EL_POINTS_DisTarget, EL_POINTS_MyPos);
 		EL_POINTS_Speed = EL_POINTS_Dis + 20;
@@ -228,7 +230,12 @@ void EL_POINTS_Run(void)
 			CL_ANGLE_SetDegree(EL_POINTS_AngleSet, ANGLE_ABS);
 			for (i = 0; i < IR_NUM; i++)
 			{
-				if (pIR->Color[i] == (uint8_t)TargetColor - 1)
+				float Angle = (pIR->Angle[i])/180*M_PI;
+				int16_t x = EL_POINTS_MyPos.x + IR_DIS*sinf(Angle);
+				int16_t y = EL_POINTS_MyPos.y + IR_DIS*cosf(Angle);
+			
+				if (pIR->Color[i] == (uint8_t)TargetColor - 1
+						&& (CHECK_BORDER(x) && CHECK_BORDER(y)))
 				{
 					float anglediff = fabs(MinusDegree180(EL_POINTS_AngleSet,pIR->Angle[i]));
 					if (anglediff < MAX_ANGLE_IN_COLOR + ANGLE_DIFF && anglediff < minAngle)
@@ -237,6 +244,10 @@ void EL_POINTS_Run(void)
 						if (anglediff > MIN_ANGLE_TURN)
 							CL_ANGLE_SetDegree(pIR->Angle[i], ANGLE_ABS); //maybe not the nearest, but the second, so choose.
 					}
+				}
+				else
+				{
+					//how about the different color?
 				}
 			}
 			if (minAngle <= MIN_ANGLE_TURN) //The nearest is right, go ahead

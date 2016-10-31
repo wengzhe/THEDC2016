@@ -37,6 +37,7 @@ void CL_COM_CalData(const DL_UART_Data_t* DataIN)
 	CL_COM_Data.GameStatus = (GameStatus_t)DataIN->GameStatus;
 	CL_COM_Data.Flags.data = DataIN->Flags;
 	CL_COM_Data.ItemType = (ItemType_t)DataIN->ItemType;
+	CL_COM_Data.ID = DataIN->ID;
 	CL_COM_Data.MyPos = DataIN->MyPos;
 	CL_COM_Data.EmyPos = DataIN->EmyPos;
 	CL_COM_Data.TarPos = DataIN->TarPos;

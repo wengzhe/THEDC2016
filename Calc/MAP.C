@@ -5,7 +5,6 @@
 
 #include <math.h>
 
-#define IR_DIS 9.
 const float AngleIncrement[IR_NUM] = {80,40,0,-40,-80};
 void CL_MAP_GetPos(const DL_UART_Data_t*);
 
@@ -86,9 +85,10 @@ void CL_MAP_GetPos(const DL_UART_Data_t* DataIN)
 			float Angle = (CL_MAP_IR.Angle[i])/180*M_PI;
 			int16_t x = DataIN->MyPos.x + IR_DIS*sinf(Angle);
 			int16_t y = DataIN->MyPos.y + IR_DIS*cosf(Angle);
-			x = x > 255 ? 255 : x < 0 ? 0 : x;
-			y = y > 255 ? 255 : y < 0 ? 0 : y;
-			CL_MAP_SetColor(x,y,CL_MAP_IR.Color[i]);
+			//x = x > 255 ? 255 : x < 0 ? 0 : x;
+			//y = y > 255 ? 255 : y < 0 ? 0 : y;
+			if (x >= 0 && x <= 255 && y >= 0 && y <= 255)
+				CL_MAP_SetColor(x,y,CL_MAP_IR.Color[i]);
 		}
 	}
 	//FromUART

@@ -4,6 +4,7 @@
 //TIM8 CH1~2
 uint8_t NeedTone=0;
 int16_t SpeedSet[2] = {0};
+//PA11:Horn,TIM1_CH4
 
 void DL_PWM_Init(void)
 {
@@ -63,6 +64,24 @@ void DL_PWM_Init(void)
 	TIM_ARRPreloadConfig(TIM8, ENABLE);
 	
 	TIM_CtrlPWMOutputs(TIM8,ENABLE);
+	
+	
+	//Horn
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1,ENABLE);
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	
+	TIM_TimeBaseInit(TIM1,&TIM_TimeBaseStructure);
+	
+	TIM_OCInitStructure.TIM_Pulse = 100;
+	TIM_OC4Init(TIM1,&TIM_OCInitStructure);
+  TIM_OC4PreloadConfig(TIM1, TIM_OCPreload_Enable);
+	
+	TIM_Cmd(TIM1, ENABLE);
+	TIM_ARRPreloadConfig(TIM1, ENABLE);
+	TIM_CtrlPWMOutputs(TIM1,ENABLE);
 }
 
 void DL_PWM_SetPulse(int16_t LSpeed, int16_t RSpeed)
@@ -102,11 +121,13 @@ void DL_PWM_SetPulse(int16_t LSpeed, int16_t RSpeed)
 void DL_PWM_SetFreq(float freq)
 {
 	TIM8->PSC=(360000/freq)-1;
+	TIM1->PSC=(360000/freq)-1;
 }
 
 void DL_PWM_SetPrescaler(uint16_t div)
 {
 	TIM8->PSC=div-1;
+	TIM1->PSC=div-1;
 }
 
 void DL_PWM_NeedTone(uint8_t nt)
@@ -115,6 +136,7 @@ void DL_PWM_NeedTone(uint8_t nt)
 	{
 		NeedTone=nt;
 		DL_PWM_SetPulse(SpeedSet[0],SpeedSet[1]);
+		TIM1->CCR4 = nt ? 100 : 0;
 	}
 }
 

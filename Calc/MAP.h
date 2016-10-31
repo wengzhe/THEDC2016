@@ -2,8 +2,10 @@
 #define _MAP_H
 
 #include "stm32f10x.h"
+#include "MyTypes.h"
 
 #define IR_NUM 5
+#define IR_DIS 9.
 
 typedef enum
 {
