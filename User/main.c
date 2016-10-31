@@ -47,6 +47,7 @@ int main()
 	//EL_POINTS_SetDirectMinTime(100);//100ms
 #if 1
 	EL_POINTS_SetColor(POINTS_White);
+	EL_POINTS_SetBorderSafetyDis(10);
 	while(1)
 	{
 		if(T1+500<=TimeTicket)

@@ -35,6 +35,7 @@ typedef struct
 void EL_POINTS_Init(void);
 uint8_t EL_POINTS_InsertQueue(EL_POINTS_Queue_t input);
 void EL_POINTS_ClearQueue(void);
+void EL_POINTS_SetBorderSafetyDis(uint8_t dis);
 void EL_POINTS_SetColor(EL_POINTS_Color_t color);
 void EL_POINTS_DirectTarget(Point_t tar);
 void EL_POINTS_StopTarget(void);

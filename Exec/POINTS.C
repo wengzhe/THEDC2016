@@ -44,6 +44,7 @@ Point_t EL_POINTS_DisTarget, EL_POINTS_AngleTarget, EL_POINTS_MyPos;
 EL_POINTS_Way_t EL_POINTS_Way = POINTS_Stop;
 uint8_t TargetMinDis = 5;
 uint16_t TargetArrivedTime = 0;//The time arrived in MinDis
+uint8_t BorderDis[2] = {0,255};
 //Queue
 #define POINTS_QUEUE_NUM 10
 EL_POINTS_Queue_t EL_POINTS_Queue[POINTS_QUEUE_NUM];
@@ -84,6 +85,23 @@ __STATIC_INLINE void POPQueue(void)
 	PointsPointer++;
 	PointsPointer%=POINTS_QUEUE_NUM;
 	PointsNum--;
+}
+
+//Border
+void EL_POINTS_SetBorderSafetyDis(uint8_t dis)
+{
+	BorderDis[0] = dis;
+	BorderDis[1] = 255-dis;
+}
+
+#define MAKE_BORDER(x) ((x)=(x)<BorderDis[0]?BorderDis[0]:(x)>BorderDis[1]?BorderDis[1]:(x))
+
+void EL_POINTS_CheckBorder(void)
+{
+	MAKE_BORDER(EL_POINTS_DisTarget.x);
+	MAKE_BORDER(EL_POINTS_DisTarget.y);
+	MAKE_BORDER(EL_POINTS_AngleTarget.x);
+	MAKE_BORDER(EL_POINTS_AngleTarget.y);
 }
 
 //We Need To Calculate Next Target(AngleTarget) and check the final point(DisTarget)
@@ -130,6 +148,9 @@ void EL_POINTS_CalcSpeed_SetAngle(void)
 	if (EL_POINTS_Way)
 	{
 		uint8_t fullspeed=EL_POINTS_CheckQueue();
+		//Check Target
+		EL_POINTS_CheckBorder();
+		//Calculate Dis&Angle
 		EL_POINTS_Dis = fullspeed ? 80 : Distance(EL_POINTS_DisTarget, EL_POINTS_MyPos);
 		EL_POINTS_Speed = EL_POINTS_Dis + 20;
 		EL_POINTS_AngleSet = atan2f(EL_POINTS_AngleTarget.x - EL_POINTS_MyPos.x,
@@ -164,6 +185,7 @@ void EL_POINTS_SetColor(EL_POINTS_Color_t color)
 
 void EL_POINTS_DirectTarget(Point_t tar)
 {
+	EL_POINTS_ClearQueue();
 	EL_POINTS_DisTarget = tar;
 	EL_POINTS_AngleTarget = tar;
 	EL_POINTS_Way = POINTS_Single;
