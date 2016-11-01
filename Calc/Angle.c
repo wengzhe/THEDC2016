@@ -135,6 +135,8 @@ void CL_ANGLE_Init(void)
 	DegreePointer = 0;
 	Degree[0] = 0;
 	M_PI = acosf(-1.0);
+	DegreeDiffCnt = 0;
+	DegreeDiff = 0;
 }
 
 void CL_ANGLE_Reset(void)
@@ -143,6 +145,8 @@ void CL_ANGLE_Reset(void)
 	DegreePointer = 0;
 	Degree[0] = 0;
 	Points_Num = 0;
+	DegreeDiffCnt = 0;
+	DegreeDiff = 0;
 }
 
 void CL_ANGLE_Tick(void)

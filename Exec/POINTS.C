@@ -18,7 +18,7 @@ EL_POINTS_Type_t EL_POINTS_Type = POINTS_STOP;
 //FirstRun
 uint16_t FirstRunCnt = 0;
 #define FIRST_RUN_SPEED 70
-#define FIRST_RUN_TIME 600
+#define FIRST_RUN_TIME 1000
 
 //#define mabs(x,y) ((x)>(y)?(x-y):(y-x))
 #define abs(x) ((x)>0?(x):(-x))
@@ -268,7 +268,7 @@ void EL_POINTS_Run(void)
 	}
 	else if (EL_POINTS_Type == POINTS_FIRST_RUN)
 	{
-		if (!(--FirstRunCnt))
+		if (!(--FirstRunCnt) || CL_ANGLE_DegreeAbsOK())
 			EL_POINTS_Type = POINTS_RUNNING;
 	}
 	if (EL_POINTS_Type == POINTS_RUNNING)

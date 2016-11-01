@@ -376,7 +376,7 @@ I (..\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x4D783BB4)
 I (..\User\MyTypes.h)(0x57FE2B52)
 I (..\Driver\UART.h)(0x57FE1F09)
-F (..\Calc\Angle.c)(0x5815ED58)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\angle.o --omf_browse .\outputs\angle.crf --depend .\outputs\angle.d)
+F (..\Calc\Angle.c)(0x581868E6)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\angle.o --omf_browse .\outputs\angle.crf --depend .\outputs\angle.d)
 I (..\Calc\Angle.h)(0x58149439)
 I (D:\Keil\ARM\Inc\ST\STM32F10x\stm32f10x.h)(0x532BF35C)
 I (D:\Keil\ARM\CMSIS\Include\core_cm3.h)(0x532BF7C2)
@@ -484,7 +484,7 @@ I (..\Exec\Musics.h)(0x57E74355)
 I (..\Exec\Music.h)(0x58087AD2)
 I (..\Exec\Exec.h)(0x57E74133)
 I (D:\Keil\ARM\ARMCC\include\math.h)(0x51C7C554)
-F (..\Exec\POINTS.C)(0x58185FAC)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\points.o --omf_browse .\outputs\points.crf --depend .\outputs\points.d)
+F (..\Exec\POINTS.C)(0x5818698B)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\STM32F10x_StdPeriph_Driver\inc -I..\System -I..\User -I..\Driver -I..\Calc -I..\Exec-I D:\Keil\ARM\RV31\INC-I D:\Keil\ARM\CMSIS\Include-I D:\Keil\ARM\Inc\ST\STM32F10x-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\outputs\points.o --omf_browse .\outputs\points.crf --depend .\outputs\points.d)
 I (..\Exec\POINTS.h)(0x58174A4B)
 I (D:\Keil\ARM\Inc\ST\STM32F10x\stm32f10x.h)(0x532BF35C)
 I (D:\Keil\ARM\CMSIS\Include\core_cm3.h)(0x532BF7C2)
