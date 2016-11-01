@@ -15,11 +15,13 @@ uint8_t CL_MAP_Data[64][64];//H:Black,L:White, (x&0x02)+((y>>1)&0x01)
 CL_MAP_IR_t CL_MAP_IR={{0},{MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure}};
 
 #define abs(x) ((x)>0?(x):(-x))
+#ifdef NORMAL_RULE
 __STATIC_INLINE float Distance(Point_t A, Point_t B)
 {
 	float dx = (float)A.x - (float)B.x, dy = (float)A.y - (float)B.y;
 	return sqrtf(dx*dx+dy*dy);
 }
+#endif
 
 __STATIC_INLINE float AddDegree180(float A, float B)
 {
@@ -96,6 +98,7 @@ void CL_MAP_GetPos(const DL_UART_Data_t* DataIN)
 		}
 	}
 	//FromUART
+#ifdef NORMAL_RULE
 	if (DataIN->Flags & 0x02) //Target Exists
 	{
 		CL_MAP_Color_t TarColor = (CL_MAP_Color_t)(DataIN->Flags & 0x01);
@@ -113,6 +116,7 @@ void CL_MAP_GetPos(const DL_UART_Data_t* DataIN)
 			}
 		}
 	}
+#endif
 }
 
 const CL_MAP_IR_t *CL_MAP_GetIR(void)

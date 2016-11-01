@@ -47,7 +47,7 @@ uint8_t TargetMinDis = 5;
 uint16_t TargetArrivedTime = 0;//The time arrived in MinDis
 uint8_t BorderDis[2] = {0,255};
 #define MAKE_BORDER(x) ((x)=(x)<BorderDis[0]?BorderDis[0]:(x)>BorderDis[1]?BorderDis[1]:(x))
-#define CHECK_BORDER(x) ((x)>=BorderDis[0]&&(x)<BorderDis[1])
+#define CHECK_BORDER(x) ((x)>=BorderDis[0]&&(x)<=BorderDis[1])
 
 //Queue
 #define POINTS_QUEUE_NUM 10
@@ -200,6 +200,16 @@ void EL_POINTS_CalcSpeed_SetAngle(void)
 		EL_POINTS_AngleSet = atan2f(EL_POINTS_AngleTarget.x - EL_POINTS_MyPos.x,
 													EL_POINTS_AngleTarget.y - EL_POINTS_MyPos.y)/M_PI*180;
 		CL_ANGLE_SetDegree(EL_POINTS_AngleSet, ANGLE_ABS);
+		if (EL_POINTS_Speed > 80)
+		{
+			float Angle = EL_POINTS_AngleSet/180*M_PI;
+			int16_t x = EL_POINTS_MyPos.x + EL_POINTS_Speed*sinf(Angle)*0.2;//will be out in 0.2s
+			int16_t y = EL_POINTS_MyPos.y + EL_POINTS_Speed*cosf(Angle)*0.2;//will be out in 0.2s
+			if (!(CHECK_BORDER(x) && CHECK_BORDER(y)))
+			{
+				EL_POINTS_Speed = Distance(EL_POINTS_AngleTarget, EL_POINTS_MyPos) + 20;
+			}
+		}
 	}
 	else
 	{

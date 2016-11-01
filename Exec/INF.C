@@ -86,7 +86,10 @@ EL_INF_AdditionInf_t *EL_INF_GetAdditionInf(void)
 	return &EL_INF_AdditionInf;
 }
 
-Point_t CheckNearestColor(Point_t curPos, uint8_t black, uint8_t radius)
+#define MAKE_SIGN(Sign,Num) ((Sign) > 0 ? (Num) : (Sign) < 0 ? -(Num) : 0)
+#define MAKE_RANGE(x) ((x) > 255 ? 255 : (x) < 0 ? 0 : (x))
+
+Point_t CheckNearestColor(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder)
 {
 	uint16_t maxP = EL_INF_path_dis[radius], i;
 	int16_t CenterX = curPos.x >> 2, CenterY = curPos.y >> 2;
@@ -100,8 +103,10 @@ Point_t CheckNearestColor(Point_t curPos, uint8_t black, uint8_t radius)
 			uint8_t data = (EL_INF_GameInf.Map[x][y] >> Shift) & 0x0F;
 			if (data)
 			{
-				curPos.x = x * 4;
-				curPos.y = y * 4;
+				int16_t tmpx = curPos.x + ((int16_t)EL_INF_path_diff[i][0]*4) + MAKE_SIGN(EL_INF_path_diff[i][0],minDisFromColorBorder);
+				int16_t tmpy = curPos.y + ((int16_t)EL_INF_path_diff[i][1]*4) + MAKE_SIGN(EL_INF_path_diff[i][1],minDisFromColorBorder);
+				curPos.x = MAKE_RANGE(tmpx);
+				curPos.y = MAKE_RANGE(tmpy);
 				return curPos;
 			}
 		}
