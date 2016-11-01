@@ -1,16 +1,18 @@
-*.o
-*.lib
 *.a
-*.elf
-*.d
-*.crf
-*.bin
-*.hex
 *.bak
+*.bin
+*.crf
+*.d
+*.dep
+*.elf
+*.hex
+*.iex
+*.lib
+*.o
+*.plg
 *~
 
-/Project/JLinkLog.txt
+JLinkLog.txt
 
 /Project/OutPuts/*
-*Administrator*
-*haldak*
+*.uvgui*
