@@ -53,7 +53,7 @@ uint8_t BorderDis[2] = {0,255};
 #define POINTS_QUEUE_NUM 10
 EL_POINTS_Queue_t EL_POINTS_Queue[POINTS_QUEUE_NUM];
 uint8_t PointsNum = 0, PointsPointer = 0;
-EL_POINTS_Queue_t EL_POINTS_ShadowQueue[POINTS_QUEUE_NUM];
+EL_POINTS_Queue_t EL_POINTS_ShadowStack[POINTS_QUEUE_NUM];
 uint8_t ShadowPointer = 0;
 
 //AngleAndSpeed
@@ -93,28 +93,37 @@ void EL_POINTS_ClearQueue(void)
 	}
 }
 
-void EL_POINTS_ClearShadowQueue(void)
+//ShadowPointer will be 0 when finished, so sometimes no use
+void EL_POINTS_ClearShadowStack(void)
 {
 	ShadowPointer = 0;
 }
 
-uint8_t EL_POINTS_InsertShadowQueue(EL_POINTS_Queue_t input)
+uint8_t EL_POINTS_InsertShadowStack(EL_POINTS_Queue_t input)
 {
 	if (ShadowPointer < POINTS_QUEUE_NUM)
 	{
-		EL_POINTS_ShadowQueue[ShadowPointer++] = input;
+		EL_POINTS_ShadowStack[ShadowPointer++] = input;
 		return 0;
 	}
 	else
 		return 1;
 }
 
-void EL_POINTS_FinishShadowQueue(void)
+//The top one will always be the last one, so maybe we do not need this
+EL_POINTS_Queue_t *EL_POINTS_ShadowStackTop(void)
 {
-	uint8_t i;
+	if (ShadowPointer)
+		return &EL_POINTS_ShadowStack[ShadowPointer-1];
+	else
+		return 0;
+}
+
+void EL_POINTS_FinishShadowStack(void)
+{
 	EL_POINTS_ClearQueue();
-	for (i = 0; i < ShadowPointer; i++)
-		EL_POINTS_InsertQueue(EL_POINTS_ShadowQueue[i]);
+	for (; ShadowPointer; ShadowPointer--)
+		EL_POINTS_InsertQueue(EL_POINTS_ShadowStack[ShadowPointer-1]);
 }
 
 __STATIC_INLINE void POPQueue(void)

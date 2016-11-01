@@ -16,8 +16,9 @@ int main()
 	GPIO_InitTypeDef GPIO_InitStructure;//GPIO初始化所用结构
 	uint32_t T1=0;
 	uint8_t k=0;
-	Point_t tar = {0,0};
+	Point_t tar = {0,0}, MyPos;
 	EL_POINTS_Queue_t QueueNode={{0,0},19,0};
+	EL_POINTS_Color_t Color_Set = POINTS_None;
 	//uint8_t TargetCnt = 0;
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);//使能GPIOD
@@ -48,37 +49,41 @@ int main()
 		}
 		if (EL_INF_GetGameInf()->Status == GAME_START)
 		{
-			EL_POINTS_SetColor(POINTS_None);
-			EL_POINTS_ClearShadowQueue();
+			//Move
+			Color_Set = POINTS_None;
+			if(EL_INF_GetTargetInf()->Exist)
+			{
+				QueueNode.Target = EL_INF_GetTargetInf()->Pos;
+				QueueNode.StopTime = 1;
+				EL_POINTS_InsertShadowStack(QueueNode);
+				Color_Set = EL_INF_GetTargetInf()->Black?POINTS_Black:POINTS_White;
+			}
 			if (EL_INF_GetItemInf()->Type)
 			{
 				QueueNode.Target = EL_INF_GetItemInf()->Pos;
 				QueueNode.StopTime = 0;
-				EL_POINTS_InsertShadowQueue(QueueNode);
+				EL_POINTS_InsertShadowStack(QueueNode);
 			}
-			if(EL_INF_GetTargetInf()->Exist)
+			MyPos = EL_INF_GetMyInf()->Pos;
+			while (Color_Set && Distance(QueueNode.Target,MyPos) > 80) //There must be a node if color is set
 			{
-				if (Distance(EL_INF_GetTargetInf()->Pos,EL_INF_GetMyInf()->Pos) > 80)
-				{
-					tar.x = ((uint16_t)(EL_INF_GetTargetInf()->Pos.x) + (uint16_t)(EL_INF_GetMyInf()->Pos.x))/2;
-					tar.y = ((uint16_t)(EL_INF_GetTargetInf()->Pos.y) + (uint16_t)(EL_INF_GetMyInf()->Pos.y))/2;
-					//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
-					QueueNode.Target = CheckNearestColor(tar,EL_INF_GetTargetInf()->Black,0.7*Distance(tar,EL_INF_GetMyInf()->Pos));
-					QueueNode.StopTime = 0;
-					EL_POINTS_InsertShadowQueue(QueueNode);
-				}
-				QueueNode.Target = EL_INF_GetTargetInf()->Pos;
-				QueueNode.StopTime = 1;
-				EL_POINTS_InsertShadowQueue(QueueNode);
-				EL_POINTS_SetColor(EL_INF_GetTargetInf()->Black?POINTS_Black:POINTS_White);
+				tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
+				tar.y = ((uint16_t)(QueueNode.Target.y) + (uint16_t)(MyPos.y))/2;
+				//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
+				QueueNode.Target = CheckNearestColor(tar,Color_Set-1,0.7*Distance(tar,MyPos));
+				QueueNode.StopTime = 0;
+				EL_POINTS_InsertShadowStack(QueueNode);
 			}
+			EL_POINTS_SetColor(Color_Set);
+			EL_POINTS_FinishShadowStack();
+			//Flight
 			if(EL_INF_GetAirPlaneInf()->Control)
 			{
 				tar.x = 255-QueueNode.Target.x;
 				tar.y = 255-QueueNode.Target.y;
 				EL_POINTS_SetFlightPos(tar);
 			}
-			EL_POINTS_FinishShadowQueue();
+			//Music
 			EL_MUSIC_SetPause(1);
 		}//GameStart
 		else if (EL_INF_GetGameInf()->Status == GAME_PAUSE)

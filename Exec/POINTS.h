@@ -37,9 +37,10 @@ void EL_POINTS_Init(void);
 uint8_t EL_POINTS_InsertQueue(EL_POINTS_Queue_t input);
 void EL_POINTS_ClearQueue(void);
 
-void EL_POINTS_ClearShadowQueue(void);
-uint8_t EL_POINTS_InsertShadowQueue(EL_POINTS_Queue_t input);
-void EL_POINTS_FinishShadowQueue(void);
+//void EL_POINTS_ClearShadowStack(void);
+uint8_t EL_POINTS_InsertShadowStack(EL_POINTS_Queue_t input);
+//EL_POINTS_Queue_t *EL_POINTS_ShadowStackTop(void);
+void EL_POINTS_FinishShadowStack(void);
 
 void EL_POINTS_SetBorderSafetyDis(uint8_t dis);
 void EL_POINTS_SetColor(EL_POINTS_Color_t color);
