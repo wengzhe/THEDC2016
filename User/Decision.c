@@ -87,7 +87,7 @@ void Decision_MoveControl_Second(void)
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
 		MyPos = MyInf->Pos;
-		while (Color_Set && Distance(QueueNode.Target,MyPos) > 80) //There must be a node if color is set
+		while (Distance(QueueNode.Target,MyPos) > 80)
 		{
 			tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
 			tar.y = ((uint16_t)(QueueNode.Target.y) + (uint16_t)(MyPos.y))/2;
