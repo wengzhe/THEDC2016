@@ -73,7 +73,8 @@ uint8_t GetRxData(void)
   uint8_t ret = 0;
   while ((RxBufRear + RXBUFSIZE - RxBufFront) % RXBUFSIZE >= RXDATASIZE)
   {
-    if (DataBuf[(RxBufFront) % RXBUFSIZE] == 0x0a && DataBuf[(RxBufFront + RXDATASIZE - 1) % RXBUFSIZE] == 0x0d)
+    if (DataBuf[(RxBufFront) % RXBUFSIZE] == 0x0a && DataBuf[(RxBufFront + RXDATASIZE - 1) % RXBUFSIZE] == 0x0d
+			&& (DataBuf[(RxBufFront+1) % RXBUFSIZE] & 0xF0) == 0xF0)
     {
       uint8_t i;
       uint8_t *Data = (uint8_t*)&DL_UART_Data;

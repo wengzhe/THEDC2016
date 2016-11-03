@@ -66,11 +66,11 @@ __STATIC_INLINE void POPQueue(uint8_t num)
 	Points_front%=POINTS_QUEUE_NUM;
 }
 
-__STATIC_INLINE void ClearQueue(void)
+/*__STATIC_INLINE void ClearQueue(void)
 {
 	Points_Num=0;
 	Points_front=0;
-}
+}*/
 
 #define mabs(x,y) ((x)>(y)?(x-y):(y-x))
 __STATIC_INLINE uint16_t Distance(Point_t A, Point_t B)
@@ -114,28 +114,26 @@ void CL_ANGLE_GetPos(const DL_UART_Data_t* uartdata)
 												+ Points[p].DegreeP) % DEGREE_QUEUE_NUM;
 			float diff = MinusDegree180(
 											atan2f(uartdata->MyPos.x - Points[p].Point.x, uartdata->MyPos.y - Points[p].Point.y)/M_PI*180
-											,Degree[DP]);
+											,Degree[DP]+DegreeDiff);
 			if (!DegreeDiffCnt)
 				DegreeDiff = diff;
 			else
 			{
 				if (Points[p].Speed < -MIN_ANGLE_SPEED
 						&& Points[(Points_front+Points_Num-1)%POINTS_QUEUE_NUM].Speed < -MIN_ANGLE_SPEED
-						&& fabs(MinusDegree180(DegreeDiff,diff)) > 90)
+						&& fabs(diff) > 90)
 				{
-					float diff2 = GetDegree180(MinusDegree180(diff,180)-DegreeDiff)*0.05;
-					DegreeDiff += diff2;
+					DegreeDiff += MinusDegree180(diff,180)*0.1;
 				}
 				if (Points[p].Speed > MIN_ANGLE_SPEED
 						&& Points[(Points_front+Points_Num-1)%POINTS_QUEUE_NUM].Speed > MIN_ANGLE_SPEED)
 				{
-					float diff2 = GetDegree180(diff-DegreeDiff)*0.05;
-					DegreeDiff += diff2;
+					DegreeDiff += diff * 0.1;
 				}
 			}
 			DegreeDiff = GetDegree180(DegreeDiff);
 			DegreeDiffCnt++;
-			ClearQueue();
+			POPQueue(Points_Num-1);
 			break;
 		}
 	}
