@@ -78,15 +78,17 @@ void Decision_MoveControl_Final(void)
 
 void Decision_MoveControl_Second(void)
 {
+	static Point_t WhitePos;
 	Point_t tar, MyPos;
 	EL_POINTS_Color_t Color_Set = POINTS_White;
 	QueueNode.MinDis = 19;
+	MyPos = MyInf->Pos;
 	if (ItemInf->Type)
 	{
 		QueueNode.Target = ItemInf->Pos;
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
-		MyPos = MyInf->Pos;
+		WhitePos = ItemInf->Pos;
 		while (Distance(QueueNode.Target,MyPos) > 80)
 		{
 			tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
@@ -99,9 +101,21 @@ void Decision_MoveControl_Second(void)
 			//QueueNode.MinDis = QueueNode.MinDis < 20 ? 20 : QueueNode.MinDis;
 			EL_POINTS_InsertShadowStack(QueueNode);
 		}
-		EL_POINTS_SetColor(Color_Set);
-		EL_POINTS_FinishShadowStack();
 	}
+	else if (AdditionInf->HugeHurt)//make sure we're in the white
+	{
+		QueueNode.Target = CheckNearestColor(MyPos,Color_Set-1,50,15);
+		QueueNode.MinDis = 10;
+		if (POS_EQUAL(MyPos,QueueNode.Target))
+		{
+			QueueNode.Target = WhitePos;
+			QueueNode.MinDis = 5;
+		}
+		QueueNode.StopTime = 1;
+		EL_POINTS_InsertShadowStack(QueueNode);
+	}
+	EL_POINTS_SetColor(Color_Set);
+	EL_POINTS_FinishShadowStack();
 }
 
 void Decision_MoveControl(void)
