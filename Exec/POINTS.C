@@ -90,6 +90,7 @@ void EL_POINTS_ClearQueue(void)
 	{
 		PointsNum=0;
 		EL_POINTS_StopTarget();
+		PointsPointer = 0;
 	}
 }
 
@@ -360,6 +361,7 @@ void EL_POINTS_Tick(void)
 	if (EL_POINTS_GameStatus == GAME_WAIT || EL_POINTS_GameStatus == GAME_STOP)
 	{
 		CL_ANGLE_Reset();
+		EL_POINTS_Type = POINTS_STOP;
 	}
 	if (EL_POINTS_GameStatus == GAME_START)
 	{

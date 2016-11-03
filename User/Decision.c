@@ -86,19 +86,19 @@ void Decision_MoveControl_Second(void)
 		QueueNode.Target = ItemInf->Pos;
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
-		MyPos = MyInf->Pos;
-		while (Distance(QueueNode.Target,MyPos) > 80)
+		/*MyPos = MyInf->Pos;
+		if (Distance(QueueNode.Target,MyPos) > 80)
 		{
 			tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
 			tar.y = ((uint16_t)(QueueNode.Target.y) + (uint16_t)(MyPos.y))/2;
 			//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
-			QueueNode.Target = CheckNearestColor(tar,Color_Set-1,0.7*Distance(tar,MyPos),15);
+			QueueNode.Target = CheckNearestColor(tar,Color_Set-1,0.7*Distance(tar,MyPos),10);
 			QueueNode.StopTime = 0;
 			//0.34@20'
 			//QueueNode.MinDis = 0.34 * Distance(tar,MyPos);
 			//QueueNode.MinDis = QueueNode.MinDis < 20 ? 20 : QueueNode.MinDis;
 			EL_POINTS_InsertShadowStack(QueueNode);
-		}
+		}*/
 		EL_POINTS_SetColor(Color_Set);
 		EL_POINTS_FinishShadowStack();
 	}
@@ -145,7 +145,7 @@ void Decision_MakeDecision(void)
 	if (GameInf->Status == GAME_START)
 	{
 		//Move
-		if(CheckInfDiff())
+		//if(CheckInfDiff())
 			Decision_MoveControl();
 		//Flight
 		Decision_FlightControl();
