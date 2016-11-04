@@ -115,3 +115,29 @@ Point_t CheckNearestColor(Point_t curPos, uint8_t black, uint8_t radius, int16_t
 	}
 	return curPos;
 }
+
+Point_t CheckNearestColorExceptHere(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder)
+{
+	uint16_t maxP = EL_INF_path_dis[radius], i;
+	int16_t CenterX = curPos.x/4, CenterY = curPos.y/4;
+	uint8_t Shift = black << 2;
+	for (i = 1; i < maxP; i++)
+	{
+		int16_t x = CenterX + EL_INF_path_diff[i][0];
+		int16_t y = CenterY + EL_INF_path_diff[i][1];
+		if (x >= 0 && x < 64 && y >= 0 && y < 64)
+		{
+			uint8_t data = (EL_INF_GameInf.Map[x][y] >> Shift) & 0x0F;
+			if (data)
+			{
+				float dis = sqrtf(EL_INF_path_diff[i][0]*EL_INF_path_diff[i][0]+EL_INF_path_diff[i][1]*EL_INF_path_diff[i][1]) + 0.1;
+				int16_t tmpx = curPos.x + ((int16_t)EL_INF_path_diff[i][0]*4) + (float)EL_INF_path_diff[i][0]*minDisFromColorBorder/dis;
+				int16_t tmpy = curPos.y + ((int16_t)EL_INF_path_diff[i][1]*4) + (float)EL_INF_path_diff[i][1]*minDisFromColorBorder/dis;
+				curPos.x = MAKE_RANGE(tmpx);
+				curPos.y = MAKE_RANGE(tmpy);
+				return curPos;
+			}
+		}
+	}
+	return curPos;
+}

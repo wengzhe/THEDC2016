@@ -39,7 +39,7 @@ void CL_MAP_Init(void)
 	DL_UART_SetRxFunc(CL_MAP_GetPos);
 	for (i=0;i<64;i++)
 		for (j=0;j<64;j++)
-#ifdef MAP_WORST_TEST
+#ifdef MAP_NULL
 			CL_MAP_Data[i][j]=0;
 #else
 			CL_MAP_Data[i][j]=0xff;

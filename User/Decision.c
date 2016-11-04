@@ -82,7 +82,8 @@ void Decision_MoveControl_Second(void)
 {
 	static Point_t WhitePos;
 	Point_t tar, MyPos;
-	EL_POINTS_Color_t Color_Set = POINTS_White;
+	//EL_POINTS_Color_t Color_Set = POINTS_White;
+	EL_POINTS_Color_t Color_Set = POINTS_Black;
 	QueueNode.MinDis = 19;
 	MyPos = MyInf->Pos;
 	if (ItemInf->Type)
@@ -107,8 +108,8 @@ void Decision_MoveControl_Second(void)
 	}
 	else //if (AdditionInf->HugeHurt)//make sure we're in the white
 	{
-		QueueNode.Target = CheckNearestColor(MyPos,Color_Set-1,50,15);
-		QueueNode.MinDis = 1;
+		QueueNode.Target = CheckNearestColorExceptHere(MyPos,Color_Set-1,20,0);
+		QueueNode.MinDis = 5;
 		if (POS_EQUAL(MyPos,QueueNode.Target))
 		{
 			QueueNode.Target = WhitePos;
