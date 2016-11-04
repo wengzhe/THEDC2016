@@ -28,11 +28,13 @@ typedef enum
 typedef struct
 {
 	Point_t Target;
-	uint8_t MinDis;
+	uint8_t MinDis; //if MinDis=0 && t=0, it's a middle point
 	uint8_t StopTime; //if t=0, will not stop, 10ms
 }EL_POINTS_Queue_t;
 
 void EL_POINTS_Init(void);
+
+EL_POINTS_Way_t EL_POINTS_GetState(void);
 
 uint8_t EL_POINTS_InsertQueue(EL_POINTS_Queue_t input);
 void EL_POINTS_ClearQueue(void);

@@ -7,6 +7,8 @@
 
 //#define GAME_STATUS_START
 
+#define MID_POINT_DIS 15
+
 //GameStatus
 #ifdef GAME_STATUS_START
 GameStatus_t EL_POINTS_GameStatus = GAME_START;
@@ -67,6 +69,12 @@ EL_POINTS_Color_t TargetColor=POINTS_None;//0:white,1:black
 
 //Flight
 Point_t FlightPos={0,0};
+
+//State
+EL_POINTS_Way_t EL_POINTS_GetState(void)
+{
+	return EL_POINTS_Way;
+}
 
 //Queue
 uint8_t EL_POINTS_InsertQueue(EL_POINTS_Queue_t input)
@@ -169,6 +177,17 @@ uint8_t EL_POINTS_CheckQueue(void)
 	{
 		if (EL_POINTS_Way == POINTS_Queue)
 		{
+			if (EL_POINTS_Queue[PointsPointer].MinDis == 0 && EL_POINTS_Queue[PointsPointer].StopTime == 0) //MidPoint
+			{
+				if ((PointsNum > 1
+					&& Distance(EL_POINTS_Queue[PointsPointer].Target, EL_POINTS_Queue[(PointsPointer+1)%POINTS_QUEUE_NUM].Target) + MID_POINT_DIS
+					 > Distance(EL_POINTS_Queue[(PointsPointer+1)%POINTS_QUEUE_NUM].Target, EL_POINTS_MyPos))
+					|| (Distance(EL_POINTS_Queue[PointsPointer].Target, EL_POINTS_MyPos) <= MID_POINT_DIS)
+					)
+				{
+					POPQueue();
+				}
+			}
 			if (Distance(EL_POINTS_Queue[PointsPointer].Target, EL_POINTS_MyPos) <= EL_POINTS_Queue[PointsPointer].MinDis)
 			{
 				if (!EL_POINTS_Queue[PointsPointer].StopTime //Change target

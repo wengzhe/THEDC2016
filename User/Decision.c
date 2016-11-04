@@ -30,6 +30,7 @@ uint8_t CheckInfDiff(void)
 		|| TargetInfBak.Exist != TargetInf->Exist
 		|| TargetInfBak.Black != TargetInf->Black
 		|| !POS_EQUAL(TargetInfBak.Pos,TargetInf->Pos)
+		|| (EL_POINTS_GetState() == POINTS_Stop)//AdditionInf->HugeHurt && 
 		)
 	{
 		ItemInfBak = *ItemInf;
@@ -67,6 +68,7 @@ void Decision_MoveControl_Final(void)
 		//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
 		QueueNode.Target = CheckNearestColor(tar,Color_Set-1,0.7*Distance(tar,MyPos),15);
 		QueueNode.StopTime = 0;
+		QueueNode.MinDis = 0;//always trying
 		//0.34@20'
 		//QueueNode.MinDis = 0.34 * Distance(tar,MyPos);
 		//QueueNode.MinDis = QueueNode.MinDis < 20 ? 20 : QueueNode.MinDis;
@@ -96,20 +98,20 @@ void Decision_MoveControl_Second(void)
 			//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
 			QueueNode.Target = CheckNearestColor(tar,Color_Set-1,0.7*Distance(tar,MyPos),15);
 			QueueNode.StopTime = 0;
+			QueueNode.MinDis = 0;//always trying
 			//0.34@20'
 			//QueueNode.MinDis = 0.34 * Distance(tar,MyPos);
 			//QueueNode.MinDis = QueueNode.MinDis < 20 ? 20 : QueueNode.MinDis;
 			EL_POINTS_InsertShadowStack(QueueNode);
 		}
 	}
-	else if (AdditionInf->HugeHurt)//make sure we're in the white
+	else //if (AdditionInf->HugeHurt)//make sure we're in the white
 	{
 		QueueNode.Target = CheckNearestColor(MyPos,Color_Set-1,50,15);
-		QueueNode.MinDis = 10;
+		QueueNode.MinDis = 1;
 		if (POS_EQUAL(MyPos,QueueNode.Target))
 		{
 			QueueNode.Target = WhitePos;
-			QueueNode.MinDis = 5;
 		}
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
@@ -159,7 +161,7 @@ void Decision_MakeDecision(void)
 	if (GameInf->Status == GAME_START)
 	{
 		//Move
-		//if(CheckInfDiff())
+		if(CheckInfDiff())
 			Decision_MoveControl();
 		//Flight
 		Decision_FlightControl();
