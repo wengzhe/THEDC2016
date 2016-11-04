@@ -360,7 +360,7 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
+              <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER,MAP_NULL</Define>
               <Undefine></Undefine>
               <IncludePath>..\STM32F10x_StdPeriph_Driver\inc;..\System;..\User;..\Driver;..\Calc;..\Exec</IncludePath>
             </VariousControls>
