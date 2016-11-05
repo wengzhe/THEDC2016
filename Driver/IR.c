@@ -3,8 +3,8 @@
 #define IR_GPIO_PIN GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8
 #define IR_GPIO_PORT GPIOA
 #define IR_GPIO_CLOCK RCC_APB2Periph_GPIOA
-#define IR_GPIO_MIN_BIT 4
-#define IR_GPIO_MASK 0x1F
+#define IR_GPIO_MIN_BIT 1
+#define IR_GPIO_MASK 0xFF
 
 //PA4~PA8
 void DL_IR_Init(void)

@@ -12,7 +12,7 @@ struct EL_MUSIC_Ctrl_t
 	uint8_t MusicId;
 	uint8_t ChangeMusic;
 	uint8_t ChangeTone;
-}EL_MUSIC_Ctrl={Stop,Single,0,0};
+}EL_MUSIC_Ctrl={Stop,Single,0,0,0};
 
 __STATIC_INLINE float EL_MUSIC_CalcFreq(uint16_t t, uint16_t i, const int16_t start[][2])
 {

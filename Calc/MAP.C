@@ -5,7 +5,7 @@
 
 #include <math.h>
 
-const float AngleIncrement[IR_NUM] = {80,40,0,-40,-80};
+const float AngleIncrement[IR_NUM] = {80,40,0,-40,-80,-150,180,150};
 void CL_MAP_GetPos(const DL_UART_Data_t*);
 
 #define DataBitNum(x,y) (((x)&0x02)+(((y)>>1)&0x01))

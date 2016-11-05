@@ -3,11 +3,11 @@
 
 //L+ R-
 
-#define IIC_PORT     GPIOB
-#define IIC_SDA_PIN  GPIO_Pin_11
-#define IIC_SCL_PIN  GPIO_Pin_10
-#define VCC1_PIN     GPIO_Pin_8
-#define VCC2_PIN     GPIO_Pin_9
+#define IIC_PORT     GPIOC
+#define IIC_SDA_PIN  GPIO_Pin_3
+#define IIC_SCL_PIN  GPIO_Pin_2
+#define VCC1_PIN     GPIO_Pin_0
+#define VCC2_PIN     GPIO_Pin_1
 #define VCC1_ON      GPIO_SetBits(IIC_PORT, VCC1_PIN)
 #define VCC1_OFF     GPIO_ResetBits(IIC_PORT, VCC1_PIN)
 #define VCC2_ON      GPIO_SetBits(IIC_PORT, VCC2_PIN)
@@ -60,7 +60,7 @@ void DL_IMU_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC,ENABLE);
 	//GPIO Initialize
 	GPIO_InitStructure.GPIO_Pin = IIC_SCL_PIN | IIC_SDA_PIN;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
