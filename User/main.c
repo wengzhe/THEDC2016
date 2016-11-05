@@ -1,3 +1,5 @@
+//#include "AllDefs.h"
+
 #include <stm32f10x_conf.h>
 #include "sysconfig.h"
 #include "Decision.h"

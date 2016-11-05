@@ -1,3 +1,5 @@
+#include "AllDefs.h"
+
 #include "Decision.h"
 #include "POINTS.h"
 #include "INF.h"
@@ -77,8 +79,6 @@ void Decision_MoveControl_Final(void)
 	EL_POINTS_SetColor(Color_Set);
 	EL_POINTS_FinishShadowStack();
 }
-
-#define COMP_BLACK
 
 void Decision_MoveControl_Second(void)
 {

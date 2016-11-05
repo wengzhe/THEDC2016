@@ -1,3 +1,5 @@
+#include "AllDefs.h"
+
 #include "Speed.h"
 #include "ADC.h"
 #include "PWM.h"

@@ -16,8 +16,8 @@ typedef enum
 
 typedef struct
 {
-	float Angle[5];
-	CL_MAP_Color_t Color[5];
+	float Angle[IR_NUM];
+	CL_MAP_Color_t Color[IR_NUM];
 }CL_MAP_IR_t;
 
 void CL_MAP_Init(void);

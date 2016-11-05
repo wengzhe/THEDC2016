@@ -1,3 +1,5 @@
+//#include "AllDefs.h"
+
 #include "IR.h"
 
 #define IR_GPIO_PIN GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8

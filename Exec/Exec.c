@@ -1,4 +1,6 @@
+//#include "AllDefs.h"
 #include "Exec.h"
+
 #include "Calc.h"
 #include "MUSIC.h"
 #include "POINTS.h"

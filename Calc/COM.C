@@ -1,3 +1,5 @@
+//#include "AllDefs.h"
+
 #include "COM.h"
 #include "UART.h"
 

@@ -1,3 +1,5 @@
+//#include "AllDefs.h"
+
 #include "UART.h"
 
 //PA9:TX PA10:RX

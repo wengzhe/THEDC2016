@@ -1,3 +1,5 @@
+//#include "AllDefs.h"
+
 #include "adc.h"
 
 volatile uint16_t ADCValue[3]={0};

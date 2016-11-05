@@ -1,3 +1,5 @@
+#include "AllDefs.h"
+
 #include "MAP.h"
 #include "UART.h"
 #include "IR.h"
@@ -5,14 +7,14 @@
 
 #include <math.h>
 
-const float AngleIncrement[IR_NUM] = {80,40,0,-40,-80,-150,180,150};
+const float AngleIncrement[IR_NUM] = {80,40,0,-40,-80,-150,150,180};
 void CL_MAP_GetPos(const DL_UART_Data_t*);
 
 #define DataBitNum(x,y) (((x)&0x02)+(((y)>>1)&0x01))
 #define DataBitNum3(x,y,Color) (((x)&0x02)+(((y)>>1)&0x01)+((uint8_t)(Color) << 2))
 uint8_t CL_MAP_Data[64][64];//H:Black,L:White, (x&0x02)+((y>>1)&0x01)
 
-CL_MAP_IR_t CL_MAP_IR={{0},{MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure}};
+CL_MAP_IR_t CL_MAP_IR={{0},{MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure}};
 
 #define abs(x) ((x)>0?(x):(-x))
 #ifdef NORMAL_RULE

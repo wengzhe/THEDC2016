@@ -1,3 +1,5 @@
+//#include "AllDefs.h"
+
 #include "TONE.h"
 #include "PWM.h"
 #include <math.h>

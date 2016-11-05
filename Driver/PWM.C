@@ -1,3 +1,5 @@
+//#include "AllDefs.h"
+
 #include "pwm.h"
 
 //PC6:L_PWM PC7:R_PWM PC8:L_DIR PC9:R_DIR

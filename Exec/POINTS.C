@@ -1,11 +1,11 @@
+#include "AllDefs.h"
+
 #include "POINTS.h"
 #include "COM.h"
 #include "Angle.h"
 #include "Speed.h"
 #include "MAP.h"
 #include <math.h>
-
-//#define GAME_STATUS_START
 
 #define MID_POINT_DIS 15
 
@@ -328,7 +328,11 @@ void EL_POINTS_Run(void)
 		if (EL_POINTS_Dis > TargetMinDis)
 		{
 			float TurnDegree = CL_ANGLE_GetDegreeDiff();
+#ifdef BACK_ON_COLOR
+			if (abs(TurnDegree) < 90) //go
+#else
 			if (TargetColor || abs(TurnDegree) < 90) //go
+#endif
 			{
 				float ABS_TD;
 				TurnDegree*=P_GO;

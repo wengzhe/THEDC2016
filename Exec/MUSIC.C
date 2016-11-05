@@ -1,3 +1,5 @@
+#include "AllDefs.h"
+
 #include "TONE.h"
 #include "MUSIC.h"
 #include "Musics.h"
