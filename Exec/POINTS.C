@@ -20,7 +20,7 @@ EL_POINTS_Type_t EL_POINTS_Type = POINTS_STOP;
 //FirstRun
 uint16_t FirstRunCnt = 0;
 #define FIRST_RUN_SPEED 70
-#define FIRST_RUN_TIME 1000
+#define FIRST_RUN_TIME 5000
 
 //#define mabs(x,y) ((x)>(y)?(x-y):(y-x))
 #define abs(x) ((x)>0?(x):(-x))
@@ -350,7 +350,7 @@ void EL_POINTS_Run(void)
 					TurnDegree -= 180;
 				TurnDegree*=P_BACK;
 				ABS_TD = abs(TurnDegree);
-				SPEED[1]=SPEED[0]=(EL_POINTS_Speed>(100-ABS_TD))?(ABS_TD-100):(-EL_POINTS_Speed);
+				SPEED[1]=SPEED[0]=(EL_POINTS_Speed>(100-ABS_TD))?(ABS_TD-100):(-EL_POINTS_Speed-5);
 				SPEED[0] -= TurnDegree;
 				SPEED[1] += TurnDegree;
 				SPEED[0] = P_SPEED_BACK(SPEED[0]);

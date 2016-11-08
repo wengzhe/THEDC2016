@@ -113,17 +113,21 @@ void Decision_MoveControl_Second(void)
 			EL_POINTS_InsertShadowStack(QueueNode);
 		}
 	}
-	else //if (AdditionInf->HugeHurt)//make sure we're in the white
+#ifndef COMP_BLACK
+	else if (AdditionInf->HugeHurt)//make sure we're in the white
+#else
+	else if (AdditionInf->LittleHurt)//make sure we're in the black
+#endif
 	{
 		QueueNode.MinDis = 4;
 #ifndef COMP_BLACK
-		QueueNode.Target = CheckNearestColorExceptHere(MyPos,Color_Set-1,20,0);
+		QueueNode.Target = CheckNearestColorExceptHere(MyPos,Color_Set-1,20,5);
 		if (POS_EQUAL(MyPos,QueueNode.Target))
 		{
 			QueueNode.Target = WhitePos;
 		}
 #else
-		QueueNode.Target = CheckNearestColor(MyPos,Color_Set-1,80,5);
+		QueueNode.Target = CheckNearestColorExceptHere(MyPos,Color_Set-1,80,5);
 #endif
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
