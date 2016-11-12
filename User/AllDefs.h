@@ -3,8 +3,10 @@
 
 #define MAP_NULL //make the map null at init
 
+#define BACK_OK
 #define BACK_ON_COLOR //can run back when run on color
 
+//#define COMP_NO_COLOR
 #define COMP_BLACK //Run on black when competition
 
 //#define NORMAL_RULE

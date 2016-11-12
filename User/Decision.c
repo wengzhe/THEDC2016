@@ -85,7 +85,11 @@ void Decision_MoveControl_Second(void)
 	Point_t tar, MyPos;
 #ifndef COMP_BLACK
 	static Point_t WhitePos;
+#ifdef COMP_NO_COLOR
+	EL_POINTS_Color_t Color_Set = POINTS_None;
+#else
 	EL_POINTS_Color_t Color_Set = POINTS_White;
+#endif
 #else
 	EL_POINTS_Color_t Color_Set = POINTS_Black;
 #endif
@@ -99,7 +103,7 @@ void Decision_MoveControl_Second(void)
 #ifndef COMP_BLACK
 		WhitePos = ItemInf->Pos;
 #endif
-		while (Distance(QueueNode.Target,MyPos) > 80)
+		while (Color_Set && Distance(QueueNode.Target,MyPos) > 80)
 		{
 			tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
 			tar.y = ((uint16_t)(QueueNode.Target.y) + (uint16_t)(MyPos.y))/2;
@@ -114,9 +118,9 @@ void Decision_MoveControl_Second(void)
 		}
 	}
 #ifndef COMP_BLACK
-	else if (AdditionInf->HugeHurt)//make sure we're in the white
+	else if (AdditionInf->HugeHurt || MyInf->OutOfBound)//make sure we're in the white
 #else
-	else if (AdditionInf->LittleHurt)//make sure we're in the black
+	else if (AdditionInf->LittleHurt || MyInf->OutOfBound)//make sure we're in the black
 #endif
 	{
 		QueueNode.MinDis = 4;

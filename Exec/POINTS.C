@@ -9,6 +9,9 @@
 
 #define MID_POINT_DIS 15
 
+//watchdog
+#define POINTS_WATCHDOG_CNT 400
+
 //GameStatus
 #ifdef GAME_STATUS_START
 GameStatus_t EL_POINTS_GameStatus = GAME_START;
@@ -61,7 +64,7 @@ uint8_t ShadowPointer = 0;
 //AngleAndSpeed
 float EL_POINTS_Dis = 0;
 uint16_t EL_POINTS_Speed = 0;
-uint8_t CalcTargetWatchDog=0;
+uint16_t CalcTargetWatchDog=0;
 float EL_POINTS_AngleSet = 0;
 
 //Color
@@ -236,7 +239,7 @@ void EL_POINTS_CalcSpeed_SetAngle(void)
 		EL_POINTS_Dis = EL_POINTS_Speed = 0;
 		CL_ANGLE_SetDegree(0,ANGLE_REL);
 	}
-	CalcTargetWatchDog = 200;
+	CalcTargetWatchDog = POINTS_WATCHDOG_CNT;
 }
 
 void EL_POINTS_GetCom(const CL_COM_Data_t* data)
@@ -328,11 +331,13 @@ void EL_POINTS_Run(void)
 		if (EL_POINTS_Dis > TargetMinDis)
 		{
 			float TurnDegree = CL_ANGLE_GetDegreeDiff();
+#ifdef BACK_OK
 #ifdef BACK_ON_COLOR
 			if (abs(TurnDegree) < 90) //go
 #else
 			if (TargetColor || abs(TurnDegree) < 90) //go
 #endif
+#endif //BACK_OK
 			{
 				float ABS_TD;
 				TurnDegree*=P_GO;
@@ -341,6 +346,7 @@ void EL_POINTS_Run(void)
 				SPEED[0] -= TurnDegree;
 				SPEED[1] += TurnDegree;
 			}
+#ifdef BACK_OK
 			else //back
 			{
 				float ABS_TD;
@@ -356,6 +362,7 @@ void EL_POINTS_Run(void)
 				SPEED[0] = P_SPEED_BACK(SPEED[0]);
 				SPEED[1] = P_SPEED_BACK(SPEED[1]);
 			}
+#endif
 			TargetArrivedTime = 0;
 		}
 		else
