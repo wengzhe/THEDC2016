@@ -332,11 +332,16 @@ void EL_POINTS_Run(void)
 		{
 			float TurnDegree = CL_ANGLE_GetDegreeDiff();
 #ifdef BACK_OK
-#ifdef BACK_ON_COLOR
-			if (abs(TurnDegree) < 90) //go
-#else
-			if (TargetColor || abs(TurnDegree) < 90) //go
+			if ((abs(TurnDegree) < 90 //go
+#ifndef BACK_ON_COLOR
+			|| TargetColor
 #endif
+#ifdef ONLY_BACK_WHEN_NEAR
+			|| EL_POINTS_Dis > NEAR_DIS
+#endif
+			) //ORs above
+
+			) //ANDs above
 #endif //BACK_OK
 			{
 				float ABS_TD;
