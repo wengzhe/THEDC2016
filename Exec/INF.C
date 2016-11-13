@@ -125,7 +125,7 @@ Point_t CheckNearestColorExceptHere(Point_t curPos, uint8_t black, uint8_t radiu
 	uint16_t maxP = EL_INF_path_dis[radius], i, minP = EL_INF_path_dis[abs(minDisFromColorBorder)];
 	int16_t CenterX = curPos.x/4, CenterY = curPos.y/4;
 	uint8_t Shift = black << 2;
-	for (i = minP+1; i < maxP; i++)
+	for (i = minP; i < maxP; i++)
 	{
 		int16_t x = CenterX + EL_INF_path_diff[i][0];
 		int16_t y = CenterY + EL_INF_path_diff[i][1];
