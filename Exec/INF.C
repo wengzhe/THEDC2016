@@ -145,3 +145,80 @@ Point_t CheckNearestColorExceptHere(Point_t curPos, uint8_t black, uint8_t radiu
 	}
 	return curPos;
 }
+
+#define WRONG_COLOR_RATE 7
+Point_t CheckNearestColorSlow(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder)
+{
+	uint16_t maxP = EL_INF_path_dis[radius], i, j, minP = EL_INF_path_dis[abs(minDisFromColorBorder)];
+	uint16_t maxWrongColor = minP / WRONG_COLOR_RATE;
+	int16_t CenterX = curPos.x/4, CenterY = curPos.y/4;
+	uint8_t Shift = black << 2;
+	uint8_t Shift_R = 4-Shift;
+	for (i = 0; i < maxP; i++)
+	{
+		int16_t x = CenterX + EL_INF_path_diff[i][0];
+		int16_t y = CenterY + EL_INF_path_diff[i][1];
+		if (x >= 0 && x < 64 && y >= 0 && y < 64)
+		{
+			uint8_t data = (EL_INF_GameInf.Map[x][y] >> Shift) & 0x0F;
+			if (data)
+			{
+				uint16_t NotTargetColorCnt = 0;
+				for (j = 1; j < minP; j++)
+				{
+					if ((EL_INF_GameInf.Map[x][y] >> Shift_R) & 0x0F)
+						NotTargetColorCnt++;
+					if (NotTargetColorCnt >= maxWrongColor)
+						break;
+				}
+				if (NotTargetColorCnt < maxWrongColor)
+				{
+					int16_t tmpx = curPos.x + ((int16_t)EL_INF_path_diff[i][0]*4);
+					int16_t tmpy = curPos.y + ((int16_t)EL_INF_path_diff[i][1]*4);
+					curPos.x = MAKE_RANGE(tmpx);
+					curPos.y = MAKE_RANGE(tmpy);
+					return curPos;
+				}
+			}
+		}
+	}
+	return curPos;
+}
+
+Point_t CheckNearestColorExceptHereSlow(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder)
+{
+	uint16_t maxP = EL_INF_path_dis[radius], i, j, minP = EL_INF_path_dis[abs(minDisFromColorBorder)];
+	uint16_t maxWrongColor = minP / WRONG_COLOR_RATE;
+	int16_t CenterX = curPos.x/4, CenterY = curPos.y/4;
+	uint8_t Shift = black << 2;
+	uint8_t Shift_R = 4-Shift;
+	for (i = minP; i < maxP; i++)
+	{
+		int16_t x = CenterX + EL_INF_path_diff[i][0];
+		int16_t y = CenterY + EL_INF_path_diff[i][1];
+		if (x >= 0 && x < 64 && y >= 0 && y < 64)
+		{
+			uint8_t data = (EL_INF_GameInf.Map[x][y] >> Shift) & 0x0F;
+			if (data)
+			{
+				uint16_t NotTargetColorCnt = 0;
+				for (j = 1; j < minP; j++)
+				{
+					if ((EL_INF_GameInf.Map[x][y] >> Shift_R) & 0x0F)
+						NotTargetColorCnt++;
+					if (NotTargetColorCnt >= maxWrongColor)
+						break;
+				}
+				if (NotTargetColorCnt < maxWrongColor)
+				{
+					int16_t tmpx = curPos.x + ((int16_t)EL_INF_path_diff[i][0]*4);
+					int16_t tmpy = curPos.y + ((int16_t)EL_INF_path_diff[i][1]*4);
+					curPos.x = MAKE_RANGE(tmpx);
+					curPos.y = MAKE_RANGE(tmpy);
+					return curPos;
+				}
+			}
+		}
+	}
+	return curPos;
+}

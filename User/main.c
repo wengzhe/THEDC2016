@@ -3,6 +3,9 @@
 #include <stm32f10x_conf.h>
 #include "sysconfig.h"
 #include "Decision.h"
+#include "INF.h"
+
+//uint32_t T2,T3;
 
 int main()
 {
@@ -23,6 +26,11 @@ int main()
 
 	while(1)
 	{
+		/*Point_t tar;
+		tar.x = tar.y = 127;
+		T2 = TimeTicket;
+		CheckNearestColorSlow(tar,1,179,15);
+		T3 = TimeTicket - T2;*/
 		if(T1+500<=TimeTicket)
 		{
 			T1+=500;

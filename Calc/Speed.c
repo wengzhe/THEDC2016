@@ -98,8 +98,6 @@ void CL_SPEED_ClearCalibration(void)
 	CL_SPEED_CheckCalibration_Result=0;
 }
 
-#define MAX_SPEED_VOLTAGE_L 8.2 //935
-#define MAX_SPEED_VOLTAGE_R 8.0 //919
 void CL_SPEED_GetSpeedNow(void)
 {
 	CL_SPEED_SpeedNow[0] = ((int32_t)Speed_Voltage[0] - Center_Voltage[0][0])/MAX_SPEED_VOLTAGE_L;

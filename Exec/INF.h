@@ -61,5 +61,7 @@ EL_INF_AdditionInf_t *EL_INF_GetAdditionInf(void);
 //13ms(@(127,127),r=179)
 Point_t CheckNearestColor(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder);
 Point_t CheckNearestColorExceptHere(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder);
+Point_t CheckNearestColorSlow(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder);
+Point_t CheckNearestColorExceptHereSlow(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder);
 
 #endif

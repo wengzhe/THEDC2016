@@ -15,10 +15,15 @@
 //MOTOR
 #define P_ANGLE_GO 1
 #define P_ANGLE_BACK 1
+#define P_SPEED_OF_DIS 1.5
 #define P_SPEED_BACK(x) (abs(x) > 80 ? (x) : (x)*7/8)
 
 //Decision.c
 #define PLAYMUSIC
+
+//Speed.c
+#define MAX_SPEED_VOLTAGE_L 9.23 //935 8.2
+#define MAX_SPEED_VOLTAGE_R 9.00 //919 8.0
 
 //POINTS.C MUSIC.C Speed.c
 //#define GAME_STATUS_START //SetGameStatus to start
