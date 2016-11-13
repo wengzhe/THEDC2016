@@ -8,6 +8,7 @@
 #include <math.h>
 
 EL_POINTS_Queue_t QueueNode={{0,0},19,0};
+Point_t MyNextTarget;
 
 EL_INF_PlayerInf_t *MyInf, *EmyInf;
 EL_INF_ItemInf_t *ItemInf,ItemInfBak;
@@ -93,12 +94,14 @@ void Decision_MoveControl_FinalEasy(void)
 		QueueNode.Target = tar;
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
+		MyNextTarget = tar;
 	}
 	if (ItemInf->Type && ItemInf->Type != ITEM_LIFE)
 	{
 		QueueNode.Target = ItemInf->Pos;
 		QueueNode.StopTime = 0;
 		EL_POINTS_InsertShadowStack(QueueNode);
+		MyNextTarget = ItemInf->Pos;
 	}
 	if(TargetInf->Exist)
 	{
@@ -106,6 +109,7 @@ void Decision_MoveControl_FinalEasy(void)
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
 		Color_Set = TargetInf->Black?POINTS_Black:POINTS_White;
+		MyNextTarget = TargetInf->Pos;
 	}
 	if (ItemInf->Type == ITEM_LIFE)
 	{
@@ -113,6 +117,7 @@ void Decision_MoveControl_FinalEasy(void)
 		QueueNode.StopTime = 0;
 		EL_POINTS_InsertShadowStack(QueueNode);
 		Color_Set = POINTS_None;
+		MyNextTarget = ItemInf->Pos;
 	}
 	while (Color_Set && Distance(QueueNode.Target,MyPos) > 80)//Maybe Slow
 	{
@@ -218,7 +223,7 @@ void Decision_FlightControl(void)
 		if (TargetInf->Black)
 			tar = EmyInf->Pos;
 		else
-			tar = MyInf->Pos;
+			tar = MyNextTarget;
 		EL_POINTS_SetFlightPos(tar);
 	}
 }
