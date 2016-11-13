@@ -99,7 +99,7 @@ void Decision_MoveControl_FinalEasy(void)
 		EL_POINTS_InsertShadowStack(QueueNode);
 		MyNextTarget = tar;
 	}
-	if (ItemInf->Type && ItemInf->Type != ITEM_LIFE)
+	if (ItemInf->Type == ITEM_PLANE)
 	{
 		QueueNode.Target = ItemInf->Pos;
 		QueueNode.StopTime = 0;
@@ -114,6 +114,14 @@ void Decision_MoveControl_FinalEasy(void)
 		if (!AdditionInf->HugeHurt)
 			Color_Set = TargetInf->Black?POINTS_Black:POINTS_White;
 		MyNextTarget = TargetInf->Pos;
+	}
+	if (ItemInf->Type == ITEM_CHANGE
+		&& (!TargetInf->Exist || Distance(ItemInf->Pos,MyPos) < Distance(TargetInf->Pos,MyPos)))
+	{
+		QueueNode.Target = ItemInf->Pos;
+		QueueNode.StopTime = 0;
+		EL_POINTS_InsertShadowStack(QueueNode);
+		MyNextTarget = ItemInf->Pos;
 	}
 	if (ItemInf->Type == ITEM_LIFE)
 	{
