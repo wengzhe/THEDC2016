@@ -13,6 +13,12 @@ typedef enum
 
 typedef enum
 {
+	POINTS_Front = 0,
+	POINTS_Back = 1
+}EL_POINTS_Dir_t;
+
+typedef enum
+{
 	POINTS_Single = 1,
 	POINTS_Queue = 2,
 	POINTS_Stop = 0

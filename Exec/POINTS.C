@@ -275,15 +275,12 @@ void EL_POINTS_StopTarget(void)
 	EL_POINTS_Way = POINTS_Stop;
 }
 
-//MOTOR
-#define P_ANGLE_GO 0.9
-#define P_ANGLE_BACK 0.9
-#define P_SPEED_BACK(x) (abs(x) > 80 ? (x) : (x)*7/8)
 //IR
 #define ANGLE_DIFF 40 //different between 2 angles of IR
-#define MAX_ANGLE_IN_COLOR 50 //max turn angle
+#define MAX_ANGLE_IN_COLOR 45 //max turn angle
 #define MIN_ANGLE_TURN 20 //if angle < 20, we see it as the same with the front
 //Distance change slow, but angle change fast
+EL_POINTS_Dir_t RunDir = POINTS_Front;
 void EL_POINTS_Run(void)
 {
 	if (EL_POINTS_Type == POINTS_STOP)
@@ -313,7 +310,8 @@ void EL_POINTS_Run(void)
 				int16_t y = EL_POINTS_MyPos.y + IR_DIS*cosf(Angle);
 			
 				if (pIR->Color[i] == (uint8_t)TargetColor - 1
-						&& (CHECK_BORDER(x) && CHECK_BORDER(y)))
+						&& (CHECK_BORDER(x) && CHECK_BORDER(y))
+						&& fabs(MinusDegree180(CL_ANGLE_GetDegreeAbs() + (uint8_t)RunDir * 180,pIR->Angle[i])) < 90)
 				{
 					float anglediff = fabs(MinusDegree180(EL_POINTS_AngleSet,pIR->Angle[i]));
 					if (anglediff < MAX_ANGLE_IN_COLOR + ANGLE_DIFF && anglediff < minAngle)
@@ -353,6 +351,7 @@ void EL_POINTS_Run(void)
 				SPEED[1]=SPEED[0]=(EL_POINTS_Speed>(100-ABS_TD))?(100-ABS_TD):(EL_POINTS_Speed);
 				SPEED[0] -= TurnDegree;
 				SPEED[1] += TurnDegree;
+				RunDir = POINTS_Front;
 			}
 #ifdef BACK_OK
 			else //back
@@ -369,6 +368,7 @@ void EL_POINTS_Run(void)
 				SPEED[1] += TurnDegree;
 				SPEED[0] = P_SPEED_BACK(SPEED[0]);
 				SPEED[1] = P_SPEED_BACK(SPEED[1]);
+				RunDir = POINTS_Back;
 			}
 #endif
 			TargetArrivedTime = 0;
