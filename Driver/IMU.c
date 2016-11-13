@@ -274,8 +274,8 @@ void InitMPU6050(uint32_t TimeTicket, uint8_t ID)
 	}
 }
 
-#define abs(x) ((x)>0?(x):(-x))
-#define mabs(x,y) ((x)>(y)?(x-y):(y-x))
+#define abs(x) ((x)>0?(x):-(x))
+#define mabs(x,y) ((x)>(y)?(x)-(y):(y)-(x))
 void DL_IMU_Work(uint8_t IIC_Success[2], int16_t Data[2])
 {
 	uint8_t i;

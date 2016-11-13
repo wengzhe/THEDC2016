@@ -74,7 +74,7 @@ __STATIC_INLINE void POPQueue(uint8_t num)
 	Points_front=0;
 }*/
 
-#define mabs(x,y) ((x)>(y)?(x-y):(y-x))
+#define mabs(x,y) ((x)>(y)?(x)-(y):(y)-(x))
 __STATIC_INLINE uint16_t Distance(Point_t A, Point_t B)
 {
 	return mabs(A.x,B.x) + mabs(A.y,B.y);

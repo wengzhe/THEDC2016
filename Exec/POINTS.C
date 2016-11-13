@@ -7,7 +7,8 @@
 #include "MAP.h"
 #include <math.h>
 
-#define MID_POINT_DIS 15
+#define MID_POINT_DIS 15 //the added mid points has dis longer than to target
+#define DANGER_ANGLE_TAR_SPEED_ADD 40
 
 //watchdog
 #define POINTS_WATCHDOG_CNT 400
@@ -25,8 +26,8 @@ uint16_t FirstRunCnt = 0;
 #define FIRST_RUN_SPEED 70
 #define FIRST_RUN_TIME 5000
 
-//#define mabs(x,y) ((x)>(y)?(x-y):(y-x))
-#define abs(x) ((x)>0?(x):(-x))
+//#define mabs(x,y) ((x)>(y)?(x)-(y):(y)-(x))
+#define abs(x) ((x)>0?(x):-(x))
 __STATIC_INLINE float Distance(Point_t A, Point_t B)
 {
 	float dx = (float)A.x - (float)B.x, dy = (float)A.y - (float)B.y;
@@ -230,7 +231,7 @@ void EL_POINTS_CalcSpeed_SetAngle(void)
 			int16_t y = EL_POINTS_MyPos.y + EL_POINTS_Speed*cosf(Angle)*0.2;//will be out in 0.2s
 			if (!(CHECK_BORDER(x) && CHECK_BORDER(y)))
 			{
-				EL_POINTS_Speed = Distance(EL_POINTS_AngleTarget, EL_POINTS_MyPos) + 20;
+				EL_POINTS_Speed = Distance(EL_POINTS_AngleTarget, EL_POINTS_MyPos) + DANGER_ANGLE_TAR_SPEED_ADD;
 			}
 		}
 	}
@@ -274,10 +275,12 @@ void EL_POINTS_StopTarget(void)
 	EL_POINTS_Way = POINTS_Stop;
 }
 
-#define P_GO 1
-#define P_BACK 1
+//MOTOR
+#define P_ANGLE_GO 0.9
+#define P_ANGLE_BACK 0.9
 #define P_SPEED_BACK(x) ((x)*7/8)
-#define ANGLE_DIFF 40 //different between 2 angles
+//IR
+#define ANGLE_DIFF 40 //different between 2 angles of IR
 #define MAX_ANGLE_IN_COLOR 50 //max turn angle
 #define MIN_ANGLE_TURN 20 //if angle < 20, we see it as the same with the front
 //Distance change slow, but angle change fast
@@ -345,7 +348,7 @@ void EL_POINTS_Run(void)
 #endif //BACK_OK
 			{
 				float ABS_TD;
-				TurnDegree*=P_GO;
+				TurnDegree*=P_ANGLE_GO;
 				ABS_TD = abs(TurnDegree);
 				SPEED[1]=SPEED[0]=(EL_POINTS_Speed>(100-ABS_TD))?(100-ABS_TD):(EL_POINTS_Speed);
 				SPEED[0] -= TurnDegree;
@@ -359,7 +362,7 @@ void EL_POINTS_Run(void)
 					TurnDegree += 180;
 				else
 					TurnDegree -= 180;
-				TurnDegree*=P_BACK;
+				TurnDegree*=P_ANGLE_BACK;
 				ABS_TD = abs(TurnDegree);
 				SPEED[1]=SPEED[0]=(EL_POINTS_Speed>(100-ABS_TD))?(ABS_TD-100):(-EL_POINTS_Speed-5);
 				SPEED[0] -= TurnDegree;

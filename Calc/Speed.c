@@ -65,8 +65,8 @@ void CL_SPEED_Calibration(void)
 	}
 }
 
-#define abs(x) ((x)>0?(x):(-x))
-#define mabs(x,y) ((x)>(y)?(x-y):(y-x))
+#define abs(x) ((x)>0?(x):-(x))
+#define mabs(x,y) ((x)>(y)?(x)-(y):(y)-(x))
 uint8_t CL_SPEED_CheckCalibration(void)
 {
 	uint8_t i;

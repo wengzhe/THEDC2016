@@ -16,7 +16,7 @@ uint8_t CL_MAP_Data[64][64];//H:Black,L:White, (x&0x02)+((y>>1)&0x01)
 
 CL_MAP_IR_t CL_MAP_IR={{0},{MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure,MAP_NotSure}};
 
-#define abs(x) ((x)>0?(x):(-x))
+#define abs(x) ((x)>0?(x):-(x))
 #ifdef NORMAL_RULE
 __STATIC_INLINE float Distance(Point_t A, Point_t B)
 {
