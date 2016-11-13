@@ -11,7 +11,7 @@
 	#define ONLY_BACK_WHEN_NEAR //only can run back when near <--> can run back at every dis : BACK_AT_EVERY_DIS
 		#define NEAR_DIS 20
 //#define COMP_NO_COLOR
-//#define COMP_BLACK //Run on black when competition
+#define COMP_BLACK //Run on black when competition
 //MOTOR
 #define P_ANGLE_GO 1
 #define P_ANGLE_BACK 1
