@@ -278,7 +278,7 @@ void EL_POINTS_StopTarget(void)
 //MOTOR
 #define P_ANGLE_GO 0.9
 #define P_ANGLE_BACK 0.9
-#define P_SPEED_BACK(x) ((x)*7/8)
+#define P_SPEED_BACK(x) (abs(x) > 80 ? (x) : (x)*7/8)
 //IR
 #define ANGLE_DIFF 40 //different between 2 angles of IR
 #define MAX_ANGLE_IN_COLOR 50 //max turn angle
