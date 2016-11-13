@@ -131,10 +131,14 @@ void Decision_MoveControl_Second(void)
 			QueueNode.Target = WhitePos;
 		}
 #else
-		QueueNode.Target = CheckNearestColorExceptHere(MyPos,Color_Set-1,80,5);
+		QueueNode.Target = CheckNearestColorExceptHere(MyPos,Color_Set-1,150,10);
 #endif
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
+	}
+	else //Stop at right color
+	{
+		EL_POINTS_ClearQueue();
 	}
 	EL_POINTS_SetColor(Color_Set);
 	EL_POINTS_FinishShadowStack();
@@ -169,8 +173,8 @@ void Decision_Init(void)
 	TargetInf = EL_INF_GetTargetInf();
 	AdditionInf = EL_INF_GetAdditionInf();
 
-	EL_MUSIC_ChangeStatus(Music,3);
-	EL_MUSIC_ChangeMode(Once);
+	EL_MUSIC_ChangeStatus(Music,1);
+	EL_MUSIC_ChangeMode(Random);
 	EL_MUSIC_SetPause(1);
 
 	EL_POINTS_SetBorderSafetyDis(10);
