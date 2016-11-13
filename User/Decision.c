@@ -82,7 +82,7 @@ void Decision_MoveControl_Final(void)
 		EL_POINTS_InsertShadowStack(QueueNode);
 	}
 	EL_POINTS_SetColor(Color_Set);
-	EL_POINTS_FinishShadowStack();
+	EL_POINTS_FinishShadowStack(1);
 }
 //Final Easy
 void Decision_MoveControl_FinalEasy(void)
@@ -131,18 +131,22 @@ void Decision_MoveControl_FinalEasy(void)
 		Color_Set = POINTS_None;
 		MyNextTarget = ItemInf->Pos;
 	}
-	while (Color_Set && Distance(QueueNode.Target,MyPos) > 80)//Maybe Slow
-	{
-		tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
-		tar.y = ((uint16_t)(QueueNode.Target.y) + (uint16_t)(MyPos.y))/2;
-		//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
-		QueueNode.Target = CheckNearestColorSlow(tar,Color_Set-1,0.7*Distance(tar,MyPos),10,5);
-		QueueNode.StopTime = 0;
-		QueueNode.MinDis = 0;//always trying
-		EL_POINTS_InsertShadowStack(QueueNode);
-	}
 	EL_POINTS_SetColor(Color_Set);
-	EL_POINTS_FinishShadowStack();
+	if (Color_Set)
+	{
+		EL_POINTS_FinishShadowStack(0);
+		while (Distance(QueueNode.Target,MyPos) > 80)//Maybe Slow
+		{
+			tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
+			tar.y = ((uint16_t)(QueueNode.Target.y) + (uint16_t)(MyPos.y))/2;
+			//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
+			QueueNode.Target = CheckNearestColorSlow(tar,Color_Set-1,0.7*Distance(tar,MyPos),10,5);
+			QueueNode.StopTime = 0;
+			QueueNode.MinDis = 0;//always trying
+			EL_POINTS_InsertShadowStack(QueueNode);
+		}
+	}
+	EL_POINTS_FinishShadowStack(1);
 }
 
 //Rule:Life
@@ -166,8 +170,7 @@ void Decision_MoveControl_Second(void)
 		QueueNode.Target = ItemInf->Pos;
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
-		EL_POINTS_FinishShadowStack();//Run First
-		EL_POINTS_InsertShadowStack(QueueNode);
+		EL_POINTS_FinishShadowStack(0);//Run First
 #ifndef COMP_BLACK
 		WhitePos = ItemInf->Pos;
 #endif
@@ -213,7 +216,7 @@ void Decision_MoveControl_Second(void)
 		EL_POINTS_InsertShadowStack(QueueNode);
 	}
 	EL_POINTS_SetColor(Color_Set);
-	EL_POINTS_FinishShadowStack();//Will Stop if no nodes
+	EL_POINTS_FinishShadowStack(1);//Will Stop if no nodes
 }
 
 void Decision_MoveControl(void)

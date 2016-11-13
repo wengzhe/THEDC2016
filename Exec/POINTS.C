@@ -132,11 +132,14 @@ EL_POINTS_Queue_t *EL_POINTS_ShadowStackTop(void)
 		return 0;
 }
 
-void EL_POINTS_FinishShadowStack(void)
+void EL_POINTS_FinishShadowStack(uint8_t cleanStack)
 {
+	uint8_t p = ShadowPointer;
 	EL_POINTS_ClearQueue();
-	for (; ShadowPointer; ShadowPointer--)
-		EL_POINTS_InsertQueue(EL_POINTS_ShadowStack[ShadowPointer-1]);
+	for (; p; p--)
+		EL_POINTS_InsertQueue(EL_POINTS_ShadowStack[p-1]);
+	if (cleanStack)
+		ShadowPointer = 0;
 }
 
 __STATIC_INLINE void POPQueue(void)
