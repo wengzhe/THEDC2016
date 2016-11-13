@@ -215,8 +215,10 @@ void Decision_FlightControl(void)
 	Point_t tar;
 	if(AirPlaneInf->Control)
 	{
-		tar.x = 255-QueueNode.Target.x;
-		tar.y = 255-QueueNode.Target.y;
+		if (TargetInf->Black)
+			tar = EmyInf->Pos;
+		else
+			tar = MyInf->Pos;
 		EL_POINTS_SetFlightPos(tar);
 	}
 }

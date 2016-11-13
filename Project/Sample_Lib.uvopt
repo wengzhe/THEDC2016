@@ -255,10 +255,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>89</ColumnNumber>
+      <ColumnNumber>31</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>125</TopLine>
-      <CurrentLine>113</CurrentLine>
+      <TopLine>22</TopLine>
+      <CurrentLine>202</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\User\Decision.c</PathWithFileName>
       <FilenameWithoutPath>Decision.c</FilenameWithoutPath>
@@ -591,10 +591,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>31</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>94</TopLine>
-      <CurrentLine>100</CurrentLine>
+      <TopLine>129</TopLine>
+      <CurrentLine>138</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Calc\Speed.c</PathWithFileName>
       <FilenameWithoutPath>Speed.c</FilenameWithoutPath>
@@ -653,7 +653,7 @@
 
   <Group>
     <GroupName>Exec</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -663,10 +663,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>29</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>29</TopLine>
-      <CurrentLine>148</CurrentLine>
+      <TopLine>240</TopLine>
+      <CurrentLine>258</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Exec\MUSIC.C</PathWithFileName>
       <FilenameWithoutPath>MUSIC.C</FilenameWithoutPath>
@@ -709,7 +709,7 @@
       <GroupNumber>7</GroupNumber>
       <FileNumber>29</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -729,8 +729,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>6</TopLine>
-      <CurrentLine>13</CurrentLine>
+      <TopLine>119</TopLine>
+      <CurrentLine>124</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Exec\INF.C</PathWithFileName>
       <FilenameWithoutPath>INF.C</FilenameWithoutPath>
