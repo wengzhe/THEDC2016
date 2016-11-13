@@ -34,6 +34,9 @@ uint8_t CheckInfDiff(void)
 		|| TargetInfBak.Black != TargetInf->Black
 		|| !POS_EQUAL(TargetInfBak.Pos,TargetInf->Pos)
 		|| (EL_POINTS_GetState() == POINTS_Stop)//AdditionInf->HugeHurt && 
+#ifndef RULE_LIFE
+		|| AdditionInf->HugeHurt
+#endif
 		)
 	{
 		ItemInfBak = *ItemInf;
@@ -108,7 +111,8 @@ void Decision_MoveControl_FinalEasy(void)
 		QueueNode.Target = TargetInf->Pos;
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
-		Color_Set = TargetInf->Black?POINTS_Black:POINTS_White;
+		if (!AdditionInf->HugeHurt)
+			Color_Set = TargetInf->Black?POINTS_Black:POINTS_White;
 		MyNextTarget = TargetInf->Pos;
 	}
 	if (ItemInf->Type == ITEM_LIFE)
