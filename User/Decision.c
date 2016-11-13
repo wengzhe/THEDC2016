@@ -110,7 +110,7 @@ void Decision_MoveControl_Second(void)
 			tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
 			tar.y = ((uint16_t)(QueueNode.Target.y) + (uint16_t)(MyPos.y))/2;
 			//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
-			QueueNode.Target = CheckNearestColorSlow(tar,Color_Set-1,0.7*Distance(tar,MyPos),15);
+			QueueNode.Target = CheckNearestColorSlow(tar,Color_Set-1,0.7*Distance(tar,MyPos),10);
 			QueueNode.StopTime = 0;
 			QueueNode.MinDis = 0;//always trying
 			//0.34@20'
@@ -119,21 +119,29 @@ void Decision_MoveControl_Second(void)
 			EL_POINTS_InsertShadowStack(QueueNode);
 		}
 	}
+#ifndef BACK_TO_CENTER
 #ifndef COMP_BLACK
 	else if (AdditionInf->HugeHurt || MyInf->OutOfBound)//make sure we're in the white
 #else
 	else if (AdditionInf->LittleHurt || MyInf->OutOfBound)//make sure we're in the black
 #endif
+#else
+	else
+#endif
 	{
 		QueueNode.MinDis = 4;
+		tar = MyPos;
+#ifdef BACK_TO_CENTER
+		tar.x = tar.y = 128; 
+#endif
 #ifndef COMP_BLACK
-		QueueNode.Target = CheckNearestColorExceptHereSlow(MyPos,Color_Set-1,20,5);
-		if (POS_EQUAL(MyPos,QueueNode.Target))
+		QueueNode.Target = CheckNearestColorExceptHereSlow(tar,Color_Set-1,20,5);
+		if (POS_EQUAL(tar,QueueNode.Target))
 		{
 			QueueNode.Target = WhitePos;
 		}
 #else
-		QueueNode.Target = CheckNearestColorExceptHereSlow(MyPos,Color_Set-1,150,10);
+		QueueNode.Target = CheckNearestColorExceptHereSlow(tar,Color_Set-1,180,10);
 #endif
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
@@ -144,8 +152,11 @@ void Decision_MoveControl_Second(void)
 
 void Decision_MoveControl(void)
 {
+#ifdef RULE_LIFE
 	Decision_MoveControl_Second();
-	//Decision_MoveControl_Final();
+#else
+	Decision_MoveControl_Final();
+#endif
 }
 
 void Decision_FlightControl(void)
