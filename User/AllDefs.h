@@ -6,13 +6,17 @@
 //#define NORMAL_RULE //for the color or my point
 
 //POINTS.C
-#define RULE_LIFE //only life item
-#define BACK_OK //can run back
-	#define BACK_ON_COLOR //can run back even on color <--> only run back when no color set : ONLY_BACK_NO_COLOR
-	#define ONLY_BACK_WHEN_NEAR //only can run back when near <--> can run back at every dis : BACK_AT_EVERY_DIS
-		#define NEAR_DIS 20
-//#define COMP_NO_COLOR
-//#define COMP_BLACK //Run on black when competition
+//#define RULE_LIFE //only life item
+	//The Rules for only life item
+	#define BACK_OK //can run back
+		#define BACK_ON_COLOR //can run back even on color <--> only run back when no color set : ONLY_BACK_NO_COLOR
+		#define ONLY_BACK_WHEN_NEAR //only can run back when near <--> can run back at every dis : BACK_AT_EVERY_DIS
+			#define NEAR_DIS 20
+	//#define COMP_NO_COLOR
+	//#define COMP_BLACK //Run on black when competition
+
+#define FINAL_EASY
+
 //MOTOR
 #define P_ANGLE_GO 1
 #define P_ANGLE_BACK 1

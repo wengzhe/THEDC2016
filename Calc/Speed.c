@@ -134,8 +134,8 @@ void CL_SPEED_SetWarningFunction(void (*f)(void))
 
 void CL_SPEED_CheckSpeed(void)
 {
-	if ((abs(Speed_Set[0]) >= 30 && abs(CL_SPEED_SpeedNow[0]) < 25) 
-		|| (abs(Speed_Set[1]) >= 30 && abs(CL_SPEED_SpeedNow[1]) < 25))
+	if ((abs(Speed_Set[0]) >= 40 && abs(CL_SPEED_SpeedNow[0]) < 25) 
+		|| (abs(Speed_Set[1]) >= 40 && abs(CL_SPEED_SpeedNow[1]) < 25))
 	{
 		CheckSpeedCount++;
 	}

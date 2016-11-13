@@ -44,6 +44,7 @@ uint8_t CheckInfDiff(void)
 		return 0;
 }
 
+//Final:We need consider the enemy's move
 void Decision_MoveControl_Final(void)
 {
 	Point_t tar, MyPos;
@@ -79,7 +80,55 @@ void Decision_MoveControl_Final(void)
 	EL_POINTS_SetColor(Color_Set);
 	EL_POINTS_FinishShadowStack();
 }
+//Final Easy
+void Decision_MoveControl_FinalEasy(void)
+{
+	Point_t tar, MyPos;
+	EL_POINTS_Color_t Color_Set = POINTS_None;
+	QueueNode.MinDis = 19;
+	MyPos = MyInf->Pos;
+	tar.x = tar.y = 128;
+	if (Distance(tar,MyPos) > 20)
+	{
+		QueueNode.Target = tar;
+		QueueNode.StopTime = 1;
+		EL_POINTS_InsertShadowStack(QueueNode);
+	}
+	if (ItemInf->Type && ItemInf->Type != ITEM_LIFE)
+	{
+		QueueNode.Target = ItemInf->Pos;
+		QueueNode.StopTime = 0;
+		EL_POINTS_InsertShadowStack(QueueNode);
+	}
+	if(TargetInf->Exist)
+	{
+		QueueNode.Target = TargetInf->Pos;
+		QueueNode.StopTime = 1;
+		EL_POINTS_InsertShadowStack(QueueNode);
+		Color_Set = TargetInf->Black?POINTS_Black:POINTS_White;
+	}
+	if (ItemInf->Type == ITEM_LIFE)
+	{
+		QueueNode.Target = ItemInf->Pos;
+		QueueNode.StopTime = 0;
+		EL_POINTS_InsertShadowStack(QueueNode);
+		Color_Set = POINTS_None;
+	}
+	while (Color_Set && Distance(QueueNode.Target,MyPos) > 80)//Maybe Slow
+	{
+		tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
+		tar.y = ((uint16_t)(QueueNode.Target.y) + (uint16_t)(MyPos.y))/2;
+		//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
+		QueueNode.Target = CheckNearestColorSlow(tar,Color_Set-1,0.7*Distance(tar,MyPos),10,5);
+		QueueNode.StopTime = 0;
+		QueueNode.MinDis = 0;//always trying
+		EL_POINTS_InsertShadowStack(QueueNode);
+	}
+	EL_POINTS_SetColor(Color_Set);
+	EL_POINTS_FinishShadowStack();
+}
 
+//Rule:Life
 void Decision_MoveControl_Second(void)
 {
 	Point_t tar, MyPos;
@@ -110,7 +159,7 @@ void Decision_MoveControl_Second(void)
 			tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
 			tar.y = ((uint16_t)(QueueNode.Target.y) + (uint16_t)(MyPos.y))/2;
 			//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
-			QueueNode.Target = CheckNearestColorSlow(tar,Color_Set-1,0.7*Distance(tar,MyPos),10);
+			QueueNode.Target = CheckNearestColorSlow(tar,Color_Set-1,0.7*Distance(tar,MyPos),10,5);
 			QueueNode.StopTime = 0;
 			QueueNode.MinDis = 0;//always trying
 			//0.34@20'
@@ -135,13 +184,13 @@ void Decision_MoveControl_Second(void)
 		tar.x = tar.y = 128; 
 #endif
 #ifndef COMP_BLACK
-		QueueNode.Target = CheckNearestColorExceptHereSlow(tar,Color_Set-1,20,5);
+		QueueNode.Target = CheckNearestColorExceptHereSlow(tar,Color_Set-1,20,5,5);
 		if (POS_EQUAL(tar,QueueNode.Target))
 		{
 			QueueNode.Target = WhitePos;
 		}
 #else
-		QueueNode.Target = CheckNearestColorExceptHereSlow(tar,Color_Set-1,180,10);
+		QueueNode.Target = CheckNearestColorExceptHereSlow(tar,Color_Set-1,180,10,5);
 #endif
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
@@ -152,8 +201,10 @@ void Decision_MoveControl_Second(void)
 
 void Decision_MoveControl(void)
 {
-#ifdef RULE_LIFE
+#if defined(RULE_LIFE)
 	Decision_MoveControl_Second();
+#elif defined(FINAL_EASY)
+	Decision_MoveControl_FinalEasy();
 #else
 	Decision_MoveControl_Final();
 #endif

@@ -94,7 +94,7 @@ EL_INF_AdditionInf_t *EL_INF_GetAdditionInf(void)
 #define MAKE_SIGN(Sign,Num) ((Sign) > 0 ? (Num) : (Sign) < 0 ? -(Num) : 0)
 #define MAKE_RANGE(x) ((x) > 255 ? 255 : (x) < 0 ? 0 : (x))
 
-Point_t CheckNearestColor(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder)
+Point_t CheckNearestColor(Point_t curPos, uint8_t black, uint8_t radius, uint8_t minDisFromColorBorder)
 {
 	uint16_t maxP = EL_INF_path_dis[radius], i;
 	int16_t CenterX = curPos.x/4, CenterY = curPos.y/4;
@@ -120,7 +120,7 @@ Point_t CheckNearestColor(Point_t curPos, uint8_t black, uint8_t radius, int16_t
 	return curPos;
 }
 
-Point_t CheckNearestColorExceptHere(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder)
+Point_t CheckNearestColorExceptHere(Point_t curPos, uint8_t black, uint8_t radius, uint8_t minDisFromColorBorder)
 {
 	uint16_t maxP = EL_INF_path_dis[radius], i, minP = EL_INF_path_dis[abs(minDisFromColorBorder)];
 	int16_t CenterX = curPos.x/4, CenterY = curPos.y/4;
@@ -147,9 +147,9 @@ Point_t CheckNearestColorExceptHere(Point_t curPos, uint8_t black, uint8_t radiu
 }
 
 #define WRONG_COLOR_RATE 7
-Point_t CheckNearestColorSlow(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder)
+Point_t CheckNearestColorSlow(Point_t curPos, uint8_t black, uint8_t radius, uint8_t colorRadius, uint8_t minDisFromColorBorder)
 {
-	uint16_t maxP = EL_INF_path_dis[radius], i, j, minP = EL_INF_path_dis[abs(minDisFromColorBorder)];
+	uint16_t maxP = EL_INF_path_dis[radius], i, j, minP = EL_INF_path_dis[colorRadius];
 	uint16_t maxWrongColor = minP / WRONG_COLOR_RATE;
 	int16_t CenterX = curPos.x/4, CenterY = curPos.y/4;
 	uint8_t Shift = black << 2;
@@ -173,8 +173,10 @@ Point_t CheckNearestColorSlow(Point_t curPos, uint8_t black, uint8_t radius, int
 				}
 				if (NotTargetColorCnt < maxWrongColor)
 				{
-					int16_t tmpx = curPos.x + ((int16_t)EL_INF_path_diff[i][0]*4);
-					int16_t tmpy = curPos.y + ((int16_t)EL_INF_path_diff[i][1]*4);
+					float dis = sqrtf(EL_INF_path_diff[i][0]*EL_INF_path_diff[i][0]+EL_INF_path_diff[i][1]*EL_INF_path_diff[i][1]) + 0.1;
+					float dis_add = (float)minDisFromColorBorder - (float)colorRadius;
+					int16_t tmpx = curPos.x + ((int16_t)EL_INF_path_diff[i][0]*4) + (float)EL_INF_path_diff[i][0]*dis_add/dis;
+					int16_t tmpy = curPos.y + ((int16_t)EL_INF_path_diff[i][1]*4) + (float)EL_INF_path_diff[i][1]*dis_add/dis;
 					curPos.x = MAKE_RANGE(tmpx);
 					curPos.y = MAKE_RANGE(tmpy);
 					return curPos;
@@ -185,9 +187,9 @@ Point_t CheckNearestColorSlow(Point_t curPos, uint8_t black, uint8_t radius, int
 	return curPos;
 }
 
-Point_t CheckNearestColorExceptHereSlow(Point_t curPos, uint8_t black, uint8_t radius, int16_t minDisFromColorBorder)
+Point_t CheckNearestColorExceptHereSlow(Point_t curPos, uint8_t black, uint8_t radius, uint8_t colorRadius, uint8_t minDisFromColorBorder)
 {
-	uint16_t maxP = EL_INF_path_dis[radius], i, j, minP = EL_INF_path_dis[abs(minDisFromColorBorder)];
+	uint16_t maxP = EL_INF_path_dis[radius], i, j, minP = EL_INF_path_dis[colorRadius];
 	uint16_t maxWrongColor = minP / WRONG_COLOR_RATE;
 	int16_t CenterX = curPos.x/4, CenterY = curPos.y/4;
 	uint8_t Shift = black << 2;
@@ -211,8 +213,10 @@ Point_t CheckNearestColorExceptHereSlow(Point_t curPos, uint8_t black, uint8_t r
 				}
 				if (NotTargetColorCnt < maxWrongColor)
 				{
-					int16_t tmpx = curPos.x + ((int16_t)EL_INF_path_diff[i][0]*4);
-					int16_t tmpy = curPos.y + ((int16_t)EL_INF_path_diff[i][1]*4);
+					float dis = sqrtf(EL_INF_path_diff[i][0]*EL_INF_path_diff[i][0]+EL_INF_path_diff[i][1]*EL_INF_path_diff[i][1]) + 0.1;
+					float dis_add = (float)minDisFromColorBorder - (float)colorRadius;
+					int16_t tmpx = curPos.x + ((int16_t)EL_INF_path_diff[i][0]*4) + (float)EL_INF_path_diff[i][0]*dis_add/dis;
+					int16_t tmpy = curPos.y + ((int16_t)EL_INF_path_diff[i][1]*4) + (float)EL_INF_path_diff[i][1]*dis_add/dis;
 					curPos.x = MAKE_RANGE(tmpx);
 					curPos.y = MAKE_RANGE(tmpy);
 					return curPos;
