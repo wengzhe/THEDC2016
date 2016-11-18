@@ -13,6 +13,15 @@ typedef struct
 
 typedef struct
 {
+	uint8_t Speed;
+	uint8_t MaxSpeed;
+	Point_t Dir;
+	Point_t TarPos;
+	uint8_t TimeEstimate;
+}EL_INF_PlayerEstimate_t;
+
+typedef struct
+{
 	Point_t Pos;
 	ItemType_t Type;
 }EL_INF_ItemInf_t;
@@ -57,6 +66,8 @@ EL_INF_GameInf_t *EL_INF_GetGameInf(void);
 EL_INF_AirPlaneInf_t *EL_INF_GetAirPlaneInf(void);
 EL_INF_TargetInf_t *EL_INF_GetTargetInf(void);
 EL_INF_AdditionInf_t *EL_INF_GetAdditionInf(void);
+
+void EL_INF_Tick(uint32_t time);
 
 //13ms(@(127,127),r=179)
 Point_t CheckNearestColor(Point_t curPos, uint8_t black, uint8_t radius, uint8_t minDisFromColorBorder);

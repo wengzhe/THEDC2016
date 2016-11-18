@@ -19,6 +19,7 @@ void EL_Tick(uint32_t time)
 	CL_Tick_Pre(time);
 	EL_MUSIC_Tick(time);
 	EL_POINTS_Tick();
+	EL_INF_Tick(time);
 	CL_Tick_After();
 }
 
