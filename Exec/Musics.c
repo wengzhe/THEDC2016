@@ -4,8 +4,8 @@
 #include "Musics.h"
 #include "Music.h"
 
-#define TTLS_LENGTH 24
-const uint8_t TTLS[TTLS_LENGTH][2]={{1,1},{5,1},{6,1},{5,1},{4,1},{3,1},{2,1},{1,1},{5,1},{4,1},{3,1},{2,1},{5,1},{4,1},{3,1},{2,1},{1,1},{5,1},{6,1},{5,1},{4,1},{3,1},{2,1},{1,1}};
+#define TTLS_LENGTH 30
+const uint8_t TTLS[TTLS_LENGTH][2]={{1,1},{5,1},{6,1},{5,1},{0,0},{4,1},{3,1},{2,1},{1,1},{0,0},{5,1},{4,1},{3,1},{2,1},{0,0},{5,1},{4,1},{3,1},{2,1},{0,0},{1,1},{5,1},{6,1},{5,1},{0,0},{4,1},{3,1},{2,1},{1,1},{0,0}};
 	
 uint8_t MusicFunction_Twinkle_Twinkle_Little_Star(uint32_t time, uint32_t start_time)
 {

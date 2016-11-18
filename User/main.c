@@ -3,7 +3,8 @@
 #include <stm32f10x_conf.h>
 #include "sysconfig.h"
 #include "Decision.h"
-#include "INF.h"
+#include "pwm.h"
+#include "music.h"
 
 //uint32_t T2,T3;
 
@@ -38,6 +39,10 @@ int main()
 			k = !k;
 			GPIO_WriteBit(GPIOD, GPIO_Pin_2, (BitAction)k);
 		}
-		Decision_MakeDecision();
+		EL_MUSIC_SetPause(0);
+		//DL_PWM_SetFreq(13);
+		//DL_PWM_NeedTone(1);
+		//DL_PWM_SetPulse(-5,5);
+		//Decision_MakeDecision();
 	}
 }

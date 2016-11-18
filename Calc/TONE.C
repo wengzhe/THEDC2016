@@ -33,6 +33,7 @@ void CL_TONE_SetFKeyByKey(const uint8_t key[2])//0~6
 
 const int8_t Tones[7][2]={{0,0},{2,1},{4,3},{5,5},{7,6},{9,8},{11,10}};
 
+#define BEAT_FREQ 10
 void CL_TONE_SetTone(uint8_t Tone, uint8_t High, uint8_t Low)//1~7,1~3
 {
 	if (Tone)
