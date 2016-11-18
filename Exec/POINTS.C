@@ -9,6 +9,7 @@
 
 #define MID_POINT_DIS 15 //the added mid points has dis longer than to target
 #define DANGER_ANGLE_TAR_SPEED_ADD 40
+#define EL_STOPTIME_UNIT 100
 
 //watchdog
 #define POINTS_WATCHDOG_CNT 400
@@ -198,7 +199,7 @@ uint8_t EL_POINTS_CheckQueue(void)
 			if (Distance(EL_POINTS_Queue[PointsPointer].Target, EL_POINTS_MyPos) <= EL_POINTS_Queue[PointsPointer].MinDis)
 			{
 				if (!EL_POINTS_Queue[PointsPointer].StopTime //Change target
-						|| TargetArrivedTime/10 > EL_POINTS_Queue[PointsPointer].StopTime)
+						|| TargetArrivedTime/EL_STOPTIME_UNIT > EL_POINTS_Queue[PointsPointer].StopTime)
 				{
 					POPQueue();
 					if (!PointsNum)

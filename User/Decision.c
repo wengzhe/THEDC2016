@@ -109,7 +109,7 @@ void Decision_MoveControl_FinalEasy(void)
 	if(TargetInf->Exist)
 	{
 		QueueNode.Target = TargetInf->Pos;
-		QueueNode.StopTime = 1;
+		QueueNode.StopTime = 50;//5 seconds(til the end of the target)
 		EL_POINTS_InsertShadowStack(QueueNode);
 		if (!AdditionInf->HugeHurt)
 			Color_Set = TargetInf->Black?POINTS_Black:POINTS_White;
