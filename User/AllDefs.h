@@ -2,6 +2,7 @@
 #define _AllDefs_H
 
 //PWM.C
+//#define PWM_HORN
 #define BIG_VOICE
 	#define PWM_VOLUME 50
 

@@ -84,6 +84,7 @@ void DL_PWM_Init(void)
 	
 	TIM_CtrlPWMOutputs(TIM8,ENABLE);
 	
+#ifdef PWM_HORN
 	//Horn
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1,ENABLE);
@@ -100,6 +101,7 @@ void DL_PWM_Init(void)
 	TIM_Cmd(TIM1, ENABLE);
 	TIM_ARRPreloadConfig(TIM1, ENABLE);
 	TIM_CtrlPWMOutputs(TIM1,ENABLE);
+#endif
 }
 
 void DL_PWM_SetPulse(int16_t LSpeed, int16_t RSpeed)
@@ -161,14 +163,18 @@ void DL_PWM_SetFreq(float freq)
 #else
 	TIM8->PSC=(180000/freq)-1;
 #endif
+#ifdef PWM_HORN
 	TIM1->PSC=(180000/freq)-1;
+#endif
 	FreqSet = freq;
 }
 
 void DL_PWM_SetPrescaler(uint16_t div)
 {
 	TIM8->PSC=div-1;
+#ifdef PWM_HORN
 	TIM1->PSC=div-1;
+#endif
 }
 
 void DL_PWM_NeedTone(uint8_t nt)
@@ -177,7 +183,9 @@ void DL_PWM_NeedTone(uint8_t nt)
 	{
 		NeedTone=nt;
 		DL_PWM_SetPulse(SpeedSet[0],SpeedSet[1]);
+#ifdef PWM_HORN
 		TIM1->CCR4 = nt ? 100 : 0;
+#endif
 #ifdef BIG_VOICE
 		if (nt)
 			TIM_ITConfig(TIM8,TIM_IT_Update,ENABLE);
