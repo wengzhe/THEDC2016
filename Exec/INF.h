@@ -13,11 +13,13 @@ typedef struct
 
 typedef struct
 {
-	uint8_t Speed;
-	uint8_t MaxSpeed;
-	Point_t Dir;
+	uint16_t Speed;
+	uint16_t MaxSpeed;
+	int16_t Dir_x;
+	int16_t Dir_y;
 	Point_t TarPos;
-	uint8_t TimeEstimate;
+	uint8_t TimeEstimate; //10/s
+	int8_t LifeChangeSpeed;
 }EL_INF_PlayerEstimate_t;
 
 typedef struct

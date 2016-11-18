@@ -156,17 +156,55 @@
           <Name>-O14 -S0 -C0 -N00("ARM Cortex-M3") -D00(1BA00477) -L00(4) -FO7 -FD20000000 -FC800 -FN1 -FF0STM32F10x_512 -FS08000000 -FL040000)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>68</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134243052</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>F:\脟氓禄陋\碌莽脡猫\Project_2016\Exec\INF.C</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\Sample_Lib\../Exec/INF.C\68</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>76</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134243166</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>F:\脟氓禄陋\碌莽脡猫\Project_2016\Exec\INF.C</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\Sample_Lib\../Exec/INF.C\76</Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>T2</ItemText>
+          <ItemText>TxBuf</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>T3,0x0A</ItemText>
+          <ItemText>PotentialTarget</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>FlightPos</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -217,7 +255,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>148</TopLine>
+      <TopLine>149</TopLine>
       <CurrentLine>151</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\startup_stm32f10x_hd.s</PathWithFileName>
@@ -255,10 +293,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>22</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>42</TopLine>
-      <CurrentLine>112</CurrentLine>
+      <TopLine>84</TopLine>
+      <CurrentLine>89</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\User\Decision.c</PathWithFileName>
       <FilenameWithoutPath>Decision.c</FilenameWithoutPath>
@@ -503,7 +541,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>9</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -577,8 +615,8 @@
       <Focus>0</Focus>
       <ColumnNumber>9</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>17</TopLine>
-      <CurrentLine>29</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Calc\Calc.c</PathWithFileName>
       <FilenameWithoutPath>Calc.c</FilenameWithoutPath>
@@ -593,8 +631,8 @@
       <Focus>0</Focus>
       <ColumnNumber>1</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>178</TopLine>
-      <CurrentLine>189</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Calc\Speed.c</PathWithFileName>
       <FilenameWithoutPath>Speed.c</FilenameWithoutPath>
@@ -607,7 +645,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>19</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>0</TopLine>
       <CurrentLine>0</CurrentLine>
@@ -665,8 +703,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Exec\MUSIC.C</PathWithFileName>
       <FilenameWithoutPath>MUSIC.C</FilenameWithoutPath>
@@ -681,8 +719,8 @@
       <Focus>0</Focus>
       <ColumnNumber>18</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>8</TopLine>
-      <CurrentLine>22</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Exec\Exec.c</PathWithFileName>
       <FilenameWithoutPath>Exec.c</FilenameWithoutPath>
@@ -711,10 +749,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>28</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>12</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Exec\POINTS.C</PathWithFileName>
       <FilenameWithoutPath>POINTS.C</FilenameWithoutPath>
@@ -729,8 +767,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>25</TopLine>
-      <CurrentLine>111</CurrentLine>
+      <TopLine>60</TopLine>
+      <CurrentLine>201</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Exec\INF.C</PathWithFileName>
       <FilenameWithoutPath>INF.C</FilenameWithoutPath>
