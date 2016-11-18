@@ -587,6 +587,21 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>Headers</GroupName>
+          <Files>
+            <File>
+              <FileName>Decision.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\User\Decision.h</FilePath>
+            </File>
+            <File>
+              <FileName>MyTypes.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\User\MyTypes.h</FilePath>
+            </File>
+          </Files>
+        </Group>
       </Groups>
     </Target>
   </Targets>
