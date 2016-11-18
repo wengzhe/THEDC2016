@@ -1,6 +1,10 @@
 #ifndef _AllDefs_H
 #define _AllDefs_H
 
+//PWM.C
+#define BIG_VOICE
+	#define PWM_VOLUME 50
+
 //MAP.C
 #define MAP_NULL //make the map null at init
 //#define NORMAL_RULE //for the color or my point

@@ -255,7 +255,7 @@ void Decision_Init(void)
 	TargetInf = EL_INF_GetTargetInf();
 	AdditionInf = EL_INF_GetAdditionInf();
 
-	EL_MUSIC_ChangeStatus(Music,1);
+	EL_MUSIC_ChangeStatus(Music,3);
 	EL_MUSIC_ChangeMode(Random);
 	EL_MUSIC_SetPause(1);
 

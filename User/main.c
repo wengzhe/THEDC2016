@@ -40,7 +40,7 @@ int main()
 			GPIO_WriteBit(GPIOD, GPIO_Pin_2, (BitAction)k);
 		}
 		EL_MUSIC_SetPause(0);
-		//DL_PWM_SetFreq(13);
+		//DL_PWM_SetFreq(1000);
 		//DL_PWM_NeedTone(1);
 		//DL_PWM_SetPulse(-5,5);
 		//Decision_MakeDecision();
