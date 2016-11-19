@@ -15,10 +15,11 @@ typedef struct
 {
 	uint16_t Speed;
 	uint16_t MaxSpeed;
-	int16_t Dir_x;
-	int16_t Dir_y;
+	float Dir_x;
+	float Dir_y;
 	Point_t TarPos;
 	uint8_t TimeEstimate; //10/s
+	uint8_t ItemEatenCnt;
 	int8_t LifeChangeSpeed;
 }EL_INF_PlayerEstimate_t;
 

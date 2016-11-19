@@ -33,20 +33,30 @@ uint32_t EL_INF_Time;
 EL_INF_PlayerTrack_t EL_INF_MyTrack[TRACK_SIZE] = {0}, EL_INF_EmyTrack[TRACK_SIZE] = {0};
 uint8_t p_Track = 0;
 
-//TargetEstimate
-Point_t PotentialTarget[10] = {{128,128},0};
-uint8_t Pot_Cnt = 1;
+//ItemTrack
+uint8_t ItemEaten = 0;
 
-__STATIC_INLINE float CalcCOSangle(int16_t Dir_x, int16_t Dir_y, Point_t Pos, Point_t Tar)
+//TargetEstimate
+const Point_t FieldCenter = {128,128};
+Point_t PotentialTarget[10] = {0};
+uint8_t Pot_Cnt = 0;
+
+__STATIC_INLINE float CalcCOSangle(float Dir_x, float Dir_y, Point_t Pos, Point_t Tar)
 {
 	float Dx = (float)Tar.x - (float)Pos.x;
 	float Dy = (float)Tar.y - (float)Pos.y;
-	float dis1 = sqrtf((float)(Dir_x)*(Dir_x) + (float)(Dir_y)*(Dir_y));
+	float dis1 = sqrtf((Dir_x)*(Dir_x) + (Dir_y)*(Dir_y));
 	float dis2 = sqrtf((Dx)*(Dx) + (Dy)*(Dy));
-	return (Dx*Dir_x+Dy*Dir_y)/(dis1*dis2);
+	return dis2 >= 1 ? (Dx*Dir_x+Dy*Dir_y)/(dis1*dis2) : 0;
 }
 
-Point_t CheckTarget(int16_t Dir_x, int16_t Dir_y, Point_t Pos, uint16_t *dis)
+__STATIC_INLINE float Distance(Point_t A, Point_t B)
+{
+	float dx = (float)A.x - (float)B.x, dy = (float)A.y - (float)B.y;
+	return sqrtf(dx*dx+dy*dy);
+}
+
+Point_t CheckTarget(float Dir_x, float Dir_y, Point_t Pos, uint16_t *dis)
 {
 	Point_t tar, tryTar;
 	float maxCOS = 0, COS_result;
@@ -81,17 +91,25 @@ void EL_INF_CalcEstimate(EL_INF_PlayerEstimate_t *result, EL_INF_PlayerTrack_t *
 {
 	float deltaTime = (track[p2].Time - track[p1].Time) / 1000.;
 	uint16_t Dis_Pos_Tar = 0;
-	result->Dir_x = (int16_t)track[p2].PlayerInf.Pos.x - (int16_t)track[p1].PlayerInf.Pos.x;
-	result->Dir_y = (int16_t)track[p2].PlayerInf.Pos.y - (int16_t)track[p1].PlayerInf.Pos.y;
+	
+	//Dir: 4:1
+	result->Dir_x = result->Dir_x * 0.5 + ((float)track[p2].PlayerInf.Pos.x - (float)track[p1].PlayerInf.Pos.x) * 0.5;
+	result->Dir_y = result->Dir_y * 0.5 + ((float)track[p2].PlayerInf.Pos.y - (float)track[p1].PlayerInf.Pos.y) * 0.5;
+	
+	//LifeChange: n*2/s
 	result->LifeChangeSpeed = ((int16_t)track[p2].PlayerInf.HP - (int16_t)track[p1].PlayerInf.HP) / deltaTime;
 	if (result->LifeChangeSpeed & 0x01)
 	{
 		result->LifeChangeSpeed += result->LifeChangeSpeed > 0 ? 1 : -1;
 	}
-	result->Speed = sqrtf((float)((float)(result->Dir_x)*(result->Dir_x) + (float)(result->Dir_y)*(result->Dir_y))) / deltaTime;
+	
+	//Speed: Calc form Dir
+	result->Speed = sqrtf((result->Dir_x)*(result->Dir_x) + (result->Dir_y)*(result->Dir_y)) / deltaTime;
 	result->Speed = result->Speed > INF_TRACK_MAX_SPEED ? INF_TRACK_MAX_SPEED : result->Speed;
 	if (result->Speed > result->MaxSpeed)
 		result->MaxSpeed = result->Speed;
+	
+	//Target & Time
 	result->TarPos = CheckTarget(result->Dir_x, result->Dir_y, track[p2].PlayerInf.Pos, &Dis_Pos_Tar);
 	result->TimeEstimate = Dis_Pos_Tar * 20 / (result->MaxSpeed + result->Speed);
 }
@@ -102,6 +120,13 @@ void EL_INF_SetTrack()
 	EL_INF_MyTrack[p_Track].Time = EL_INF_EmyTrack[p_Track].Time = EL_INF_Time;
 	EL_INF_MyTrack[p_Track].PlayerInf = EL_INF_MyInf;
 	EL_INF_EmyTrack[p_Track].PlayerInf = EL_INF_EmyInf;
+	if (ItemEaten)
+	{
+		if (Distance(EL_INF_MyInf.Pos,EL_INF_ItemInf.Pos) < Distance(EL_INF_EmyInf.Pos,EL_INF_ItemInf.Pos))
+			EL_INF_MyEstimate.ItemEatenCnt++;
+		else
+			EL_INF_EmyEstimate.ItemEatenCnt++;
+	}
 	if (EL_INF_MyTrack[p].Time)
 	{
 		//MyEstimateCalc
@@ -124,32 +149,31 @@ void EL_INF_TrackClear(void)
 	p_Track = 0;
 	EL_INF_MyEstimate.MaxSpeed = 0;
 	EL_INF_EmyEstimate.MaxSpeed = 0;
+	EL_INF_MyEstimate.ItemEatenCnt = 0;
+	EL_INF_EmyEstimate.ItemEatenCnt = 0;
 }
 
 void EL_INF_ProcessData(const CL_COM_Data_t *p)
 {
-	Pot_Cnt = 1;
+	Pot_Cnt = 0;
 	
 	EL_INF_GameInf.Status = p->GameStatus;
 	EL_INF_GameInf.Time = p->GameTime;
 	EL_INF_GameInf.ID = p->ID;
 	
+	if (EL_INF_ItemInf.Type && !p->ItemType)
+	{
+		ItemEaten = 1;
+	}
+	else
+	{
+		ItemEaten = 0;
+		EL_INF_ItemInf.Pos = p->ItemPos;
+	}
 	EL_INF_ItemInf.Type = p->ItemType;
-	EL_INF_ItemInf.Pos = p->ItemPos;
 	
 	if (EL_INF_ItemInf.Type)
 		PotentialTarget[Pot_Cnt++] = EL_INF_ItemInf.Pos;
-	
-	EL_INF_MyInf.HP = p->MyHP;
-	EL_INF_MyInf.Pos = p->MyPos;
-	EL_INF_MyInf.OutOfBound = p->Flags.BITS.OutOfBounds;
-
-	PotentialTarget[Pot_Cnt++] = EL_INF_MyInf.Pos;
-	
-	EL_INF_EmyInf.HP = p->EmyHP;
-	EL_INF_EmyInf.Pos = p->EmyPos;
-
-	PotentialTarget[Pot_Cnt++] = EL_INF_EmyInf.Pos;
 	
 	EL_INF_AirPlaneInf.Pos = p->AirPos;
 	EL_INF_AirPlaneInf.Control = p->Flags.BITS.ControlPlane;
@@ -163,6 +187,22 @@ void EL_INF_ProcessData(const CL_COM_Data_t *p)
 	if (EL_INF_TargetInf.Exist)
 		PotentialTarget[Pot_Cnt++] = EL_INF_TargetInf.Pos;
 
+	if (!Pot_Cnt)
+	{
+		PotentialTarget[Pot_Cnt++] = FieldCenter;
+	}
+
+	EL_INF_MyInf.HP = p->MyHP;
+	EL_INF_MyInf.Pos = p->MyPos;
+	EL_INF_MyInf.OutOfBound = p->Flags.BITS.OutOfBounds;
+
+	PotentialTarget[Pot_Cnt++] = EL_INF_MyInf.Pos;
+	
+	EL_INF_EmyInf.HP = p->EmyHP;
+	EL_INF_EmyInf.Pos = p->EmyPos;
+
+	PotentialTarget[Pot_Cnt++] = EL_INF_EmyInf.Pos;
+	
 	EL_INF_AdditionInf.DamagedByPlane = p->Flags.BITS.DamagedByPlane;
 	EL_INF_AdditionInf.HealedByPlane = p->Flags.BITS.HealedByPlane;
 	EL_INF_AdditionInf.HugeHurt = p->Flags.BITS.HugeHurt;
@@ -172,10 +212,12 @@ void EL_INF_ProcessData(const CL_COM_Data_t *p)
 	{
 		EL_INF_SetTrack();
 	}
+#ifdef INF_STOP_CLEAR_TRACK
 	else if (EL_INF_GameInf.Status != GAME_PAUSE)
 	{
 		EL_INF_TrackClear();
 	}
+#endif
 }
 
 void EL_INF_Init(void)
