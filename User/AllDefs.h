@@ -4,6 +4,7 @@
 //INF.C
 #define INF_TRACK_MAX_SPEED 400 //very fast maybe wrong
 //#define INF_STOP_CLEAR_TRACK
+#define AVG_SPEED_MAX 300
 
 //PWM.C
 //#define PWM_HORN

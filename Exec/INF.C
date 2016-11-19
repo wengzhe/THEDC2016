@@ -108,6 +108,20 @@ void EL_INF_CalcEstimate(EL_INF_PlayerEstimate_t *result, EL_INF_PlayerTrack_t *
 	result->Speed = result->Speed > INF_TRACK_MAX_SPEED ? INF_TRACK_MAX_SPEED : result->Speed;
 	if (result->Speed > result->MaxSpeed)
 		result->MaxSpeed = result->Speed;
+	if (result->Speed > 5) //Add to Avg
+	{
+		if (result->AverageSpeedCnt < AVG_SPEED_MAX)
+		{
+			result->AverageSpeedSum += result->Speed;
+			result->AverageSpeedCnt++;
+		}
+		else
+		{
+			result->AverageSpeedSum -= result->AverageSpeedSum/AVG_SPEED_MAX;
+			result->AverageSpeedSum += result->Speed;
+		}
+		result->AverageSpeed = result->AverageSpeedSum / result->AverageSpeedCnt;
+	}
 	
 	//Target & Time
 	result->TarPos = CheckTarget(result->Dir_x, result->Dir_y, track[p2].PlayerInf.Pos, &Dis_Pos_Tar);
@@ -151,6 +165,10 @@ void EL_INF_TrackClear(void)
 	EL_INF_EmyEstimate.MaxSpeed = 0;
 	EL_INF_MyEstimate.ItemEatenCnt = 0;
 	EL_INF_EmyEstimate.ItemEatenCnt = 0;
+	EL_INF_MyEstimate.AverageSpeedCnt = 0;
+	EL_INF_MyEstimate.AverageSpeedSum = 0;
+	EL_INF_EmyEstimate.AverageSpeedCnt = 0;
+	EL_INF_EmyEstimate.AverageSpeedSum = 0;
 }
 
 void EL_INF_ProcessData(const CL_COM_Data_t *p)
