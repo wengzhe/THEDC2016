@@ -106,8 +106,10 @@ void DL_PWM_Init(void)
 
 void DL_PWM_SetPulse(int16_t LSpeed, int16_t RSpeed)
 {
+	SpeedSet[0]=LSpeed;
+	SpeedSet[1]=RSpeed;
 #ifdef BIG_VOICE
-	if (NeedTone)
+	if (NeedTone && !LSpeed && !RSpeed)
 	{
 		LSpeed = minusTone ? -PWM_VOLUME:PWM_VOLUME;
 		RSpeed = minusTone ? -PWM_VOLUME:PWM_VOLUME;
@@ -149,8 +151,6 @@ void DL_PWM_SetPulse(int16_t LSpeed, int16_t RSpeed)
 			TIM8->CCR2=10;
 #endif
 	}
-	SpeedSet[0]=LSpeed;
-	SpeedSet[1]=RSpeed;
 }
 
 void DL_PWM_SetFreq(float freq)
@@ -209,7 +209,7 @@ void TIM8_UP_IRQHandler(void)
 	if (TIM_GetITStatus(TIM8, TIM_IT_Update) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM8, TIM_IT_Update);
-		if (NeedTone && TIM_GetCounter(TIM8) > 100)
+		if (!SpeedSet[0] && !SpeedSet[1] && NeedTone && TIM_GetCounter(TIM8) > 100)
 		{
 			TIM8->CCR1 = 200 - TIM8->CCR1;
 			TIM8->CCR2 = 200 - TIM8->CCR2;

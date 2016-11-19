@@ -591,9 +591,9 @@
           <GroupName>Headers</GroupName>
           <Files>
             <File>
-              <FileName>Decision.h</FileName>
+              <FileName>AllDefs.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\User\Decision.h</FilePath>
+              <FilePath>..\User\AllDefs.h</FilePath>
             </File>
             <File>
               <FileName>MyTypes.h</FileName>
