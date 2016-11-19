@@ -1,6 +1,9 @@
 #ifndef _AllDefs_H
 #define _AllDefs_H
 
+//INF.C
+#define INF_TRACK_MAX_SPEED 200
+
 //PWM.C
 //#define PWM_HORN
 #define BIG_VOICE

@@ -1,4 +1,4 @@
-//#include "AllDefs.h"
+#include "AllDefs.h"
 
 #include "INF.h"
 #include "COM.h"
@@ -84,7 +84,12 @@ void EL_INF_CalcEstimate(EL_INF_PlayerEstimate_t *result, EL_INF_PlayerTrack_t *
 	result->Dir_x = (int16_t)track[p2].PlayerInf.Pos.x - (int16_t)track[p1].PlayerInf.Pos.x;
 	result->Dir_y = (int16_t)track[p2].PlayerInf.Pos.y - (int16_t)track[p1].PlayerInf.Pos.y;
 	result->LifeChangeSpeed = ((int16_t)track[p2].PlayerInf.HP - (int16_t)track[p1].PlayerInf.HP) / deltaTime;
+	if (result->LifeChangeSpeed & 0x01)
+	{
+		result->LifeChangeSpeed += result->LifeChangeSpeed > 0 ? 1 : -1;
+	}
 	result->Speed = sqrtf((float)((float)(result->Dir_x)*(result->Dir_x) + (float)(result->Dir_y)*(result->Dir_y))) / deltaTime;
+	result->Speed = result->Speed > INF_TRACK_MAX_SPEED ? INF_TRACK_MAX_SPEED : result->Speed;
 	if (result->Speed > result->MaxSpeed)
 		result->MaxSpeed = result->Speed;
 	result->TarPos = CheckTarget(result->Dir_x, result->Dir_y, track[p2].PlayerInf.Pos, &Dis_Pos_Tar);
@@ -106,6 +111,19 @@ void EL_INF_SetTrack()
 	}
 	p_Track++;
 	p_Track %= TRACK_SIZE;
+}
+
+void EL_INF_TrackClear(void)
+{
+	uint8_t i;
+	for (i=0;i<TRACK_SIZE;i++)
+	{
+		EL_INF_MyTrack[i].Time = 0;
+		EL_INF_EmyTrack[i].Time = 0;
+	}
+	p_Track = 0;
+	EL_INF_MyEstimate.MaxSpeed = 0;
+	EL_INF_EmyEstimate.MaxSpeed = 0;
 }
 
 void EL_INF_ProcessData(const CL_COM_Data_t *p)
@@ -153,6 +171,10 @@ void EL_INF_ProcessData(const CL_COM_Data_t *p)
 	if (EL_INF_GameInf.Status == GAME_START) //Track
 	{
 		EL_INF_SetTrack();
+	}
+	else if (EL_INF_GameInf.Status != GAME_PAUSE)
+	{
+		EL_INF_TrackClear();
 	}
 }
 
