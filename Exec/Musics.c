@@ -131,19 +131,19 @@ uint8_t MusicFunction_MHH(uint32_t time, uint32_t start_time)
 
 
 //Interface & Contents Written by Peter Bee
-uint8_t MusicFunction_PeterBee(uint32_t t, uint32_t length, uint8_t *Mtime, Music_Typical_Name_t *array)
+uint32_t MusicFunction_PeterBee(uint32_t t, uint32_t length, uint8_t *Mtime, Music_Typical_Name_t *array, int8_t UpDown)
 {
 	uint32_t i;
 	for (i=0;i<length;i++)
 	{
 		if (t<Mtime[i])
 		{
-			CL_TONE_SetFreq(440*pow(2,(float)array[i]/12.0));
+			CL_TONE_SetFreq(440*pow(2,(float)(array[i]+UpDown)/12.0));
 			return 0;
 		}
 		t-=Mtime[i];
 	}
-	return 1;
+	return t;
 }
 
 #undef MUSIC_ARRAY
@@ -158,7 +158,7 @@ uint8_t MUSIC_TIME[] = {14,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,4,2,
 
 uint8_t MusicFunction_BEE1(uint32_t time, uint32_t start_time)
 {
-	return MusicFunction_PeterBee(((time - start_time)*MUSIC_SPEED)/60000, sizeof(MUSIC_TIME), MUSIC_TIME, MUSIC_ARRAY);
+	return MusicFunction_PeterBee(((time - start_time)*MUSIC_SPEED)/60000, sizeof(MUSIC_TIME), MUSIC_TIME, MUSIC_ARRAY, 0);
 }
 
 #undef MUSIC_ARRAY
@@ -166,17 +166,65 @@ uint8_t MusicFunction_BEE1(uint32_t time, uint32_t start_time)
 #undef MUSIC_SPEED
 #define MUSIC_ARRAY BadApple
 #define MUSIC_TIME BadApple_Time
-#define MUSIC_SPEED (84*4) //84ÅÄ
+#define MUSIC_SPEED (128*4) //128ÅÄ
 
 Music_Typical_Name_t MUSIC_ARRAY[] = {
-A4
+BEAT,//´ò»÷ÀÖ
+REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,G4,E4,G4,A4,G4,
+REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,A4,G4,A4,G4,E4,G4,
+REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,E4,E4,G4,A4,G4,
+REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,A4,G4,A4,G4,E4,G4,//Ç°×à
+D4,E4,F4,G4,A4,D5,C5,A4,D4,A4,G4,F4,E4,D4,E4,F4,G4,A4,G4,F4,E4,D4,E4,F4,E4,D4,CS4,E4,
+D4,E4,F4,G4,A4,D5,C5,A4,D4,A4,G4,F4,E4,D4,E4,F4,G4,A4,G4,F4,E4,F4,G4,A4,
+D4,E4,F4,G4,A4,D5,C5,A4,D4,A4,G4,F4,E4,D4,E4,F4,G4,A4,G4,F4,E4,D4,E4,F4,E4,D4,CS4,E4,
+D4,E4,F4,G4,A4,D5,C5,A4,D4,A4,G4,F4,E4,D4,E4,F4,G4,A4,G4,F4,E4,F4,G4,A4,//Verse A*2
+C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,D5,E5,F5,E5,D5,C5,A4,G4,A4,G4,F4,E4,C4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,D5,E5,F5,E5,D5,C5,A4,G4,A4,G4,F4,E4,C4,D4//Verse B*2
 };
 uint8_t MUSIC_TIME[] = {
-0
+128,//´ò»÷ÀÖ
+2,2,1,2,1,2,2,1,2,1,2,2,1,2,1,2,1,1,2,2,
+2,2,1,2,1,2,2,1,2,1,2,2,1,2,1,2,1,1,2,1,1,
+2,2,1,2,1,2,2,1,2,1,2,2,1,2,1,2,1,1,2,2,
+2,2,1,2,1,2,2,1,2,1,2,2,1,2,1,2,1,1,2,1,1,//Ç°×à
+2,2,2,2,4,2,2,4,4,2,2,2,2,2,2,2,2,4,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,4,2,2,4,4,2,2,2,2,2,2,2,2,4,2,2,4,4,4,4,
+2,2,2,2,4,2,2,4,4,2,2,2,2,2,2,2,2,4,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,4,2,2,4,4,2,2,2,2,2,2,2,2,4,2,2,4,4,4,4,//Verse A*2
+2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4//Verse B*2
+};
+
+#define CONTROL_SIZE 3
+#define MUSIC_CONTROL BadAppleCtl
+int16_t MUSIC_CONTROL[CONTROL_SIZE][3] = {
+{0,sizeof(MUSIC_TIME),0},
+{1,sizeof(MUSIC_TIME)-1-112,0},
+{sizeof(MUSIC_TIME)-112,112,1}
 };
 
 uint8_t MusicFunction_BadApple(uint32_t time, uint32_t start_time)
 {
-	return MusicFunction_PeterBee(((time - start_time)*MUSIC_SPEED)/60000, sizeof(MUSIC_TIME), MUSIC_TIME, MUSIC_ARRAY);
+	uint32_t t = ((time - start_time)*MUSIC_SPEED)/60000;
+	uint8_t i;
+	for (i = 0; i < CONTROL_SIZE; i++)
+	{
+		t = MusicFunction_PeterBee(t, MUSIC_CONTROL[i][1], MUSIC_TIME+MUSIC_CONTROL[i][0], MUSIC_ARRAY+MUSIC_CONTROL[i][0],MUSIC_CONTROL[i][2]);
+		if (t == 0)
+			return 0;
+	}
+	return t != 0;
 }
 

@@ -7,6 +7,7 @@ uint8_t MusicFunction_Twinkle_Twinkle_Little_Star(uint32_t time, uint32_t start_
 uint8_t MusicFunction_Tsinghua(uint32_t time, uint32_t start_time);
 uint8_t MusicFunction_MHH(uint32_t time, uint32_t start_time);
 uint8_t MusicFunction_BEE1(uint32_t time, uint32_t start_time);
+uint8_t MusicFunction_BadApple(uint32_t time, uint32_t start_time);
 
 #define FKey_TTLS {2,0} //C
 #define FKey_THU {1,1} //#B
@@ -63,7 +64,8 @@ typedef enum
 	A5 = 12,
 	AS5 = 13,
 	B5 = 14,
-	REST = 72
+	REST = 72,
+	BEAT = 72
 }Music_Typical_Name_t;
 
 
