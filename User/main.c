@@ -3,7 +3,6 @@
 #include <stm32f10x_conf.h>
 #include "sysconfig.h"
 #include "Decision.h"
-#include "pwm.h"
 #include "music.h"
 
 //uint32_t T2,T3;
@@ -25,13 +24,12 @@ int main()
 	System_Init();
 	Decision_Init();
 
+	EL_MUSIC_ChangeStatus(Music,4);
+	EL_MUSIC_SetPause(0);
+	EL_MUSIC_ChangeMode(Single);
+	EL_MUSIC_ChangeMode(Once);
 	while(1)
 	{
-		/*Point_t tar;
-		tar.x = tar.y = 127;
-		T2 = TimeTicket;
-		CheckNearestColorSlow(tar,1,179,15);
-		T3 = TimeTicket - T2;*/
 		if(T1+500<=TimeTicket)
 		{
 			T1+=500;
@@ -39,10 +37,6 @@ int main()
 			k = !k;
 			GPIO_WriteBit(GPIOD, GPIO_Pin_2, (BitAction)k);
 		}
-		//EL_MUSIC_SetPause(0);
-		//DL_PWM_SetFreq(6.7);
-		//DL_PWM_NeedTone(1);
-		//DL_PWM_SetPulse(-5,5);
-		Decision_MakeDecision();
+		//Decision_MakeDecision();
 	}
 }

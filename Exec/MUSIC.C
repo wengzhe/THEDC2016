@@ -33,16 +33,18 @@ const int16_t freq_start[START_NUM][2]={{600,0},{1200,200},{750,500},{1300,700},
 //const int16_t freq_alarm[ALARM_NUM][2]={{880,0},{880,100},{1967,150},{1967,350},{880,400},{880,500}};
 const int16_t freq_alarm[ALARM_NUM][2]={{1200,0},{1200,100},{2000,150},{2000,350},{1200,400},{1200,500}};
 
-#define MUSIC_NUM 3
+#define MUSIC_NUM 4
 uint8_t (*const MusicFunctions[MUSIC_NUM])(uint32_t,uint32_t)={
 MusicFunction_Twinkle_Twinkle_Little_Star,
 MusicFunction_Tsinghua,
-MusicFunction_MHH
+MusicFunction_MHH,
+MusicFunction_BEE1
 };
 const uint8_t MusicFKeys[MUSIC_NUM][2]={
 FKey_TTLS,
 FKey_THU,
-FKey_MHH
+FKey_MHH,
+FKey_NONE
 };
 
 uint32_t start_time=0;
