@@ -128,22 +128,55 @@ uint8_t MusicFunction_MHH(uint32_t time, uint32_t start_time)
 }
 
 //Next Song, Use Tone Alone to Be Easily Understood
-#define BEE1_LENGTH 184
-Music_Typical_Name_t Bee1[BEE1_LENGTH] = {REST,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,C4,D4,F4,A4,C5,B4,G4,E4,D4,E4,REST,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,E4,D4,F4,A4,C5,D5,E5,B4,G4,A4,REST,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,C4,D4,F4,A4,C5,B4,G4,E4,D4,E4,REST,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,E4,D4,F4,A4,C5,D5,E5,B4,G4,A4,A4,B4,C5,C5,C5,C5,C5,B4,A4,B4,G4,REST,F4,G4,A4,A4,A4,A4,A4,G4,F4,G4,E4,REST,E4,CS4,D4,F4,A4,G4,F4,DS4,E4,G4,B4,D5,C5,B4,C5,E5,D5,E5,A4,REST,E4,C5,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,C4,D4,F4,A4,C5,B4,G4,E4,D4,E4,REST,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,E4,D4,F4,A4,C5,D5,E5,B4,G4,A4,REST};
-uint8_t Bee1_Time[BEE1_LENGTH] = {14,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,2,2,2,2,2,2,2,2,12,2,1,1,2,2,2,2,2,2,2,2,12,2,2,2,2,2,2,2,6,2,2,2,2,2,2,2,2,2,6,2,2,6,14,2,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,4};
-#define BEE1_SPEED (84*4) //84ед
 
-uint8_t MusicFunction_BEE1(uint32_t time, uint32_t start_time)
+
+//Interface & Contents Written by Peter Bee
+uint8_t MusicFunction_PeterBee(uint32_t timediff, float speed, uint32_t length, uint8_t *Mtime, Music_Typical_Name_t *array)
 {
-	uint32_t t = (time - start_time) * BEE1_SPEED / 60000, i;
-	for (i=0;i<BEE1_LENGTH;i++)
+	uint32_t t = timediff * speed / 60000, i;
+	for (i=0;i<length;i++)
 	{
-		if (t<Bee1_Time[i])
+		if (t<Mtime[i])
 		{
-			CL_TONE_SetFreq(440*pow(2,(float)Bee1[i]/12.0));
+			CL_TONE_SetFreq(440*pow(2,(float)array[i]/12.0));
 			return 0;
 		}
-		t-=Bee1_Time[i];
+		t-=Mtime[i];
 	}
 	return 1;
 }
+
+#undef MUSIC_ARRAY
+#undef MUSIC_TIME
+#undef MUSIC_SPEED
+#define MUSIC_ARRAY Bee1
+#define MUSIC_TIME Bee1_Time
+#define MUSIC_SPEED (84*4) //84ед
+
+Music_Typical_Name_t MUSIC_ARRAY[] = {REST,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,C4,D4,F4,A4,C5,B4,G4,E4,D4,E4,REST,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,E4,D4,F4,A4,C5,D5,E5,B4,G4,A4,REST,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,C4,D4,F4,A4,C5,B4,G4,E4,D4,E4,REST,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,E4,D4,F4,A4,C5,D5,E5,B4,G4,A4,A4,B4,C5,C5,C5,C5,C5,B4,A4,B4,G4,REST,F4,G4,A4,A4,A4,A4,A4,G4,F4,G4,E4,REST,E4,CS4,D4,F4,A4,G4,F4,DS4,E4,G4,B4,D5,C5,B4,C5,E5,D5,E5,A4,REST,E4,C5,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,C4,D4,F4,A4,C5,B4,G4,E4,D4,E4,REST,E4,C5,REST,E4,B4,REST,E4,A4,G4,F4,G4,REST,E4,D4,F4,A4,C5,D5,E5,B4,G4,A4,REST};
+uint8_t MUSIC_TIME[] = {14,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,2,2,2,2,2,2,2,2,12,2,1,1,2,2,2,2,2,2,2,2,12,2,2,2,2,2,2,2,6,2,2,2,2,2,2,2,2,2,6,2,2,6,14,2,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,4};
+
+uint8_t MusicFunction_BEE1(uint32_t time, uint32_t start_time)
+{
+	return MusicFunction_PeterBee(time - start_time, MUSIC_SPEED, sizeof(MUSIC_TIME), MUSIC_TIME, MUSIC_ARRAY);
+}
+
+#undef MUSIC_ARRAY
+#undef MUSIC_TIME
+#undef MUSIC_SPEED
+#define MUSIC_ARRAY BadApple
+#define MUSIC_TIME BadApple_Time
+#define MUSIC_SPEED (84*4) //84ед
+
+Music_Typical_Name_t MUSIC_ARRAY[] = {
+A4
+};
+uint8_t MUSIC_TIME[] = {
+0
+};
+
+uint8_t MusicFunction_BadApple(uint32_t time, uint32_t start_time)
+{
+	return MusicFunction_PeterBee(time - start_time, MUSIC_SPEED, sizeof(MUSIC_TIME), MUSIC_TIME, MUSIC_ARRAY);
+}
+
