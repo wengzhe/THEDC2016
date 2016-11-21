@@ -131,9 +131,9 @@ uint8_t MusicFunction_MHH(uint32_t time, uint32_t start_time)
 
 
 //Interface & Contents Written by Peter Bee
-uint8_t MusicFunction_PeterBee(uint32_t timediff, float speed, uint32_t length, uint8_t *Mtime, Music_Typical_Name_t *array)
+uint8_t MusicFunction_PeterBee(uint32_t t, uint32_t length, uint8_t *Mtime, Music_Typical_Name_t *array)
 {
-	uint32_t t = timediff * speed / 60000, i;
+	uint32_t i;
 	for (i=0;i<length;i++)
 	{
 		if (t<Mtime[i])
@@ -158,7 +158,7 @@ uint8_t MUSIC_TIME[] = {14,2,4,2,2,4,2,2,4,2,2,4,2,2,2,2,2,2,2,2,2,2,12,2,2,4,2,
 
 uint8_t MusicFunction_BEE1(uint32_t time, uint32_t start_time)
 {
-	return MusicFunction_PeterBee(time - start_time, MUSIC_SPEED, sizeof(MUSIC_TIME), MUSIC_TIME, MUSIC_ARRAY);
+	return MusicFunction_PeterBee(((time - start_time)*MUSIC_SPEED)/60000, sizeof(MUSIC_TIME), MUSIC_TIME, MUSIC_ARRAY);
 }
 
 #undef MUSIC_ARRAY
@@ -177,6 +177,6 @@ uint8_t MUSIC_TIME[] = {
 
 uint8_t MusicFunction_BadApple(uint32_t time, uint32_t start_time)
 {
-	return MusicFunction_PeterBee(time - start_time, MUSIC_SPEED, sizeof(MUSIC_TIME), MUSIC_TIME, MUSIC_ARRAY);
+	return MusicFunction_PeterBee(((time - start_time)*MUSIC_SPEED)/60000, sizeof(MUSIC_TIME), MUSIC_TIME, MUSIC_ARRAY);
 }
 
