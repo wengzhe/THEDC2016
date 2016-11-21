@@ -109,6 +109,10 @@ void CL_MAP_GetPos(const DL_UART_Data_t* DataIN)
 		if (!(DataIN->Flags & 0xc0)) //Not be damaged
 		{
 			CL_MAP_SetColor(DataIN->MyPos.x, DataIN->MyPos.y, TarColor);
+			if (Distance(DataIN->MyPos, DataIN->TarPos) > Distance(DataIN->EmyPos, DataIN->TarPos))
+			{
+				CL_MAP_SetColor(DataIN->EmyPos.x, DataIN->EmyPos.y, (CL_MAP_Color_t)(1-(uint8_t)TarColor));
+			}
 		}
 		else if (DataIN->Flags & 0x80) //Be damaged by Target
 		{
