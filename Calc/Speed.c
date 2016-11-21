@@ -167,6 +167,7 @@ void CL_SPEED_CalPWM(void)
 uint8_t Tick_Counter = 0;
 void CL_SPEED_Tick_Pre(void) //Get Speed
 {
+//#ifndef NO_RUN
 	Speed_Voltage_Tmp[0] += DL_ADC_Voltage[0];
 	Speed_Voltage_Tmp[1] += DL_ADC_Voltage[1];
 	if (++Tick_Counter >= SPEED_SMOOTH_TIME)
@@ -183,10 +184,12 @@ void CL_SPEED_Tick_Pre(void) //Get Speed
 			CL_SPEED_CheckSpeed();
 		}
 	}
+//#endif
 }
 
 void CL_SPEED_Tick_After(void) //Set Speed
 {
+#ifndef NO_RUN
 	if (!Tick_Counter && !CType && !CL_SPEED_CheckCalibration_Result) //Got Current Speed and Not Testing
 	{
 		if(CL_SPEED_GameStatus == 1) //Game started
@@ -194,4 +197,5 @@ void CL_SPEED_Tick_After(void) //Set Speed
 		else
 			DL_PWM_SetPulse(0,0);
 	}
+#endif
 }

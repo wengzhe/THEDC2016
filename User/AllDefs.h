@@ -20,10 +20,15 @@
 	#define BACK_ON_COLOR //can run back even on color <--> only run back when no color set : ONLY_BACK_NO_COLOR
 	#define ONLY_BACK_WHEN_NEAR //only can run back when near <--> can run back at every dis : BACK_AT_EVERY_DIS
 		#define NEAR_DIS 20
+//IR
+#define ANGLE_DIFF 40 //different between 2 angles of IR
+#define MAX_ANGLE_IN_COLOR 30 //max turn angle
+#define MIN_ANGLE_TURN 20 //if angle < 20, we see it as the same with the front
+
 
 //MOTOR
-#define P_ANGLE_GO 1
-#define P_ANGLE_BACK 1
+#define P_ANGLE_GO 0.8
+#define P_ANGLE_BACK 0.8
 #define P_SPEED_OF_DIS 1.2
 #define P_SPEED_BACK(x) (abs(x) > 80 ? (x) : (x)*7/8)
 
@@ -33,7 +38,8 @@
 	//#define COMP_NO_COLOR
 	//#define COMP_BLACK //Run on black when competition
 	//#define BACK_TO_CENTER
-#define PLAYMUSIC
+//#define PLAYMUSIC
+#define PLAYMUSIC_ATSTART
 #define FINAL_EASY
 
 //Speed.c
@@ -42,5 +48,6 @@
 
 //POINTS.C MUSIC.C Speed.c
 //#define GAME_STATUS_START //SetGameStatus to start
+#define NO_RUN //Will Not Run, For music@start
 
 #endif

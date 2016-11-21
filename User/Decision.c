@@ -266,6 +266,9 @@ void Decision_MakeDecision(void)
 {
 	if (GameInf->Status == GAME_START)
 	{
+#ifdef PLAYMUSIC_ATSTART
+		EL_MUSIC_SetPause(0);
+#else
 		//Move
 		if(CheckInfDiff())
 			Decision_MoveControl();
@@ -273,6 +276,7 @@ void Decision_MakeDecision(void)
 		Decision_FlightControl();
 		//Music
 		EL_MUSIC_SetPause(1);
+#endif
 	}//GameStart
 #ifdef PLAYMUSIC
 	else if (GameInf->Status == GAME_PAUSE)

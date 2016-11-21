@@ -279,10 +279,6 @@ void EL_POINTS_StopTarget(void)
 	EL_POINTS_Way = POINTS_Stop;
 }
 
-//IR
-#define ANGLE_DIFF 40 //different between 2 angles of IR
-#define MAX_ANGLE_IN_COLOR 45 //max turn angle
-#define MIN_ANGLE_TURN 20 //if angle < 20, we see it as the same with the front
 //Distance change slow, but angle change fast
 EL_POINTS_Dir_t RunDir = POINTS_Front;
 void EL_POINTS_Run(void)
@@ -400,6 +396,7 @@ void EL_POINTS_SetMinDistance(uint8_t dis)
 
 void EL_POINTS_Tick(void)
 {
+#ifndef NO_RUN
 	if (EL_POINTS_GameStatus == GAME_WAIT || EL_POINTS_GameStatus == GAME_STOP)
 	{
 		CL_ANGLE_Reset();
@@ -419,6 +416,7 @@ void EL_POINTS_Tick(void)
 	{
 		CL_SPEED_SetSpeed(0,0);
 	}
+#endif
 }
 
 void EL_POINTS_SetFlightPos(const Point_t tar)

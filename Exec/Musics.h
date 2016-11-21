@@ -65,7 +65,7 @@ typedef enum
 	AS5 = 13,
 	B5 = 14,
 	REST = 72,
-	BEAT = 72
+	BEAT = -72
 }Music_Typical_Name_t;
 
 
