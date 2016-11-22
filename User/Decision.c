@@ -8,7 +8,9 @@
 #include <math.h>
 
 EL_POINTS_Queue_t QueueNode={{0,0},19,0};
-Point_t MyNextTarget;
+Point_t MyTarget = {128,128};
+EL_POINTS_Color_t ColorSetNow = POINTS_None;
+uint8_t MyDisSetNow = 19;
 
 EL_INF_PlayerInf_t *MyInf, *EmyInf;
 EL_INF_ItemInf_t *ItemInf,ItemInfBak;
@@ -49,12 +51,12 @@ uint8_t CheckInfDiff(void)
 		return 0;
 }
 
-//Final:We need consider the enemy's move
+//Final:We need consider the enemy's move, see "±ÈÈü²ßÂÔ.docx"
 void Decision_MoveControl_Final(void)
 {
 	Point_t tar, MyPos;
 	EL_POINTS_Color_t Color_Set = POINTS_None;
-	QueueNode.MinDis = 19;
+	uint8_t MinDis = 19;
 	MyPos = MyInf->Pos;
 	
 	//11
@@ -116,23 +118,45 @@ void Decision_MoveControl_Final(void)
 		tar = ItemInf->Pos;
 	}
 	
-	//POS_EQUAL()
-	//After
-	while (Color_Set && Distance(QueueNode.Target,MyPos) > 80) //There must be a node if color is set
+	//Color, 12
+	if (TargetInf->Exist && POS_EQUAL(tar, TargetInf->Pos) && !AdditionInf->HugeHurt)
 	{
-		tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
-		tar.y = ((uint16_t)(QueueNode.Target.y) + (uint16_t)(MyPos.y))/2;
-		//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
-		QueueNode.Target = CheckNearestColor(tar,Color_Set-1,0.7*Distance(tar,MyPos),15);
-		QueueNode.StopTime = 0;
-		QueueNode.MinDis = 0;//always trying
-		//0.34@20'
-		//QueueNode.MinDis = 0.34 * Distance(tar,MyPos);
-		//QueueNode.MinDis = QueueNode.MinDis < 20 ? 20 : QueueNode.MinDis;
-		EL_POINTS_InsertShadowStack(QueueNode);
+		if (EmyEstimate->Speed < 50 || Distance(EmyEstimate->TarPos, TargetInf->Pos) > ESTIMATE_DIS_SAME)
+			Color_Set = TargetInf->Black?POINTS_Black:POINTS_White;
 	}
-	EL_POINTS_SetColor(Color_Set);
-	EL_POINTS_FinishShadowStack(1);
+
+	//13
+	if (TargetInf->Exist && POS_EQUAL(tar, TargetInf->Pos))
+	{
+		if (Distance(TargetInf->Pos,EmyInf->Pos) < 40)
+			MinDis = 0;
+	}
+
+	//1
+	if (!POS_EQUAL(tar, MyTarget) || ColorSetNow != Color_Set || MyDisSetNow != MinDis)
+	{
+		MyDisSetNow = QueueNode.MinDis = MinDis;
+		QueueNode.StopTime = 1;
+		MyTarget = QueueNode.Target = tar;
+		ColorSetNow = Color_Set;
+		EL_POINTS_InsertShadowStack(QueueNode);
+		EL_POINTS_SetColor(Color_Set);
+		if (Color_Set)
+		{
+			EL_POINTS_FinishShadowStack(0);
+			while (Distance(QueueNode.Target,MyPos) > 80)//Maybe Slow
+			{
+				tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
+				tar.y = ((uint16_t)(QueueNode.Target.y) + (uint16_t)(MyPos.y))/2;
+				//1@90'@10ms,0.7@45'@6ms,0.5@30'@3ms
+				QueueNode.Target = CheckNearestColorSlow(tar,Color_Set-1,0.7*Distance(tar,MyPos),10,5);
+				QueueNode.StopTime = 0;
+				QueueNode.MinDis = 0;//always trying
+				EL_POINTS_InsertShadowStack(QueueNode);
+			}
+		}
+		EL_POINTS_FinishShadowStack(1);
+	}
 }
 //Final Easy
 void Decision_MoveControl_FinalEasy(void)
@@ -147,14 +171,14 @@ void Decision_MoveControl_FinalEasy(void)
 		QueueNode.Target = tar;
 		QueueNode.StopTime = 1;
 		EL_POINTS_InsertShadowStack(QueueNode);
-		MyNextTarget = tar;
+		MyTarget = tar;
 	}
 	if (ItemInf->Type == ITEM_PLANE)
 	{
 		QueueNode.Target = ItemInf->Pos;
 		QueueNode.StopTime = 0;
 		EL_POINTS_InsertShadowStack(QueueNode);
-		MyNextTarget = ItemInf->Pos;
+		MyTarget = ItemInf->Pos;
 	}
 	if(TargetInf->Exist)
 	{
@@ -163,7 +187,7 @@ void Decision_MoveControl_FinalEasy(void)
 		EL_POINTS_InsertShadowStack(QueueNode);
 		if (!AdditionInf->HugeHurt)
 			Color_Set = TargetInf->Black?POINTS_Black:POINTS_White;
-		MyNextTarget = TargetInf->Pos;
+		MyTarget = TargetInf->Pos;
 	}
 	if (ItemInf->Type == ITEM_CHANGE
 		&& (!TargetInf->Exist || Distance(ItemInf->Pos,MyPos) < Distance(TargetInf->Pos,MyPos)))
@@ -171,7 +195,7 @@ void Decision_MoveControl_FinalEasy(void)
 		QueueNode.Target = ItemInf->Pos;
 		QueueNode.StopTime = 0;
 		EL_POINTS_InsertShadowStack(QueueNode);
-		MyNextTarget = ItemInf->Pos;
+		MyTarget = ItemInf->Pos;
 	}
 	if (ItemInf->Type == ITEM_LIFE)
 	{
@@ -179,7 +203,7 @@ void Decision_MoveControl_FinalEasy(void)
 		QueueNode.StopTime = 0;
 		EL_POINTS_InsertShadowStack(QueueNode);
 		Color_Set = POINTS_None;
-		MyNextTarget = ItemInf->Pos;
+		MyTarget = ItemInf->Pos;
 	}
 	EL_POINTS_SetColor(Color_Set);
 	if (Color_Set)
@@ -272,9 +296,11 @@ void Decision_MoveControl_Second(void)
 void Decision_MoveControl(void)
 {
 #if defined(RULE_LIFE)
-	Decision_MoveControl_Second();
+	if(CheckInfDiff())
+		Decision_MoveControl_Second();
 #elif defined(FINAL_EASY)
-	Decision_MoveControl_FinalEasy();
+	if(CheckInfDiff())
+		Decision_MoveControl_FinalEasy();
 #else
 	Decision_MoveControl_Final();
 #endif
@@ -282,13 +308,57 @@ void Decision_MoveControl(void)
 
 void Decision_FlightControl(void)
 {
-	Point_t tar;
+	Point_t tar, MyNearestTarget = {128,128};
 	if(AirPlaneInf->Control)
 	{
-		if (TargetInf->Black)
-			tar = EmyInf->Pos;
-		else
-			tar = MyNextTarget;
+		if (ItemInf->Type && ItemInf->Type != ITEM_CHANGE)
+		{
+			if (Distance(ItemInf->Pos, AirPlaneInf->Pos) < Distance(MyNearestTarget, AirPlaneInf->Pos))
+				MyNearestTarget = ItemInf->Pos;
+		}
+		if (TargetInf->Exist)
+		{
+			if (Distance(TargetInf->Pos, AirPlaneInf->Pos) < Distance(MyNearestTarget, AirPlaneInf->Pos))
+				MyNearestTarget = TargetInf->Pos;
+		}
+		if (TargetInf->Black) //attack
+		{
+			tar = EmyEstimate->TarPos;
+			if (Distance(tar, ItemInf->Pos) <= ESTIMATE_DIS_SAME && ItemInf->Type == ITEM_CHANGE)
+			{
+				tar = MyNearestTarget;
+			}
+			else if (Distance(tar, MyTarget) <= ESTIMATE_DIS_SAME)
+			{
+				//int16_t dx = (int16_t)EmyInf->Pos.x - (int16_t)MyTarget.x;
+				//int16_t dy = (int16_t)EmyInf->Pos.y - (int16_t)MyTarget.y;
+				int16_t dx = (int16_t)EmyInf->Pos.x - (int16_t)MyInf->Pos.x;
+				int16_t dy = (int16_t)EmyInf->Pos.y - (int16_t)MyInf->Pos.y;
+				float scale = (float)(AIRPLANE_ATTACK_RANGE + 10) / sqrtf(dx*dx+dy*dy);
+				//dx = MyTarget.x + dx*scale;
+				//dy = MyTarget.y + dy*scale;
+				dx = MyInf->Pos.x + dx*scale;
+				dy = MyInf->Pos.y + dy*scale;
+				tar.x = dx > 255 ? 255 : dx < 0 ? 0 : dx;
+				tar.y = dy > 255 ? 255 : dy < 0 ? 0 : dy;
+			}
+		}
+		else //heal
+		{
+			tar = MyNearestTarget;
+			if (Distance(tar, EmyEstimate->TarPos) <= ESTIMATE_DIS_SAME)
+			{
+				int16_t dx = (int16_t)MyInf->Pos.x - (int16_t)EmyInf->Pos.x;
+				int16_t dy = (int16_t)MyInf->Pos.y - (int16_t)EmyInf->Pos.y;
+				float scale = (float)(AIRPLANE_HEAL_RANGE - 10) / sqrtf(dx*dx+dy*dy);
+				//dx = MyTarget.x + dx*scale;
+				//dy = MyTarget.y + dy*scale;
+				dx = MyInf->Pos.x + dx*scale;
+				dy = MyInf->Pos.y + dy*scale;
+				tar.x = dx > 255 ? 255 : dx < 0 ? 0 : dx;
+				tar.y = dy > 255 ? 255 : dy < 0 ? 0 : dy;
+			}
+		}
 		EL_POINTS_SetFlightPos(tar);
 	}
 }
@@ -322,8 +392,7 @@ void Decision_MakeDecision(void)
 		EL_MUSIC_SetPause(0);
 #else
 		//Move
-		if(CheckInfDiff())
-			Decision_MoveControl();
+		Decision_MoveControl();
 		//Flight
 		Decision_FlightControl();
 		//Music

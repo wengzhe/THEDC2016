@@ -55,6 +55,9 @@
 #define PLAYMUSIC //play at pause
 //#define PLAYMUSIC_ATSTART //play when start (will not set any target, no run needed)
 #define FINAL_EASY //use easy logic instead of default final logic
+#define ESTIMATE_DIS_SAME 20 //if the estimate target is in this dis, see it as the same
+#define AIRPLANE_ATTACK_RANGE 37.5f //where can the airplane attack
+#define AIRPLANE_HEAL_RANGE 60 //where can the airplane heal
 
 //POINTS.C MUSIC.C Speed.c
 //#define GAME_STATUS_START //SetGameStatus to start
