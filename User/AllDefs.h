@@ -3,13 +3,13 @@
 
 //INF.C
 #define INF_TRACK_MAX_SPEED 200 //very fast maybe wrong
-//#define INF_STOP_CLEAR_TRACK
+#define INF_STOP_CLEAR_TRACK //Clear track data when game finished
 #define AVG_SPEED_MAX 300 //How much points to count average speed
 
 //PWM.C
 //#define PWM_HORN
 #define BIG_VOICE
-	#define PWM_VOLUME 50
+	#define PWM_VOLUME 50 //25%
 
 //MAP.C
 #define MAP_NULL //make the map null at init
@@ -56,6 +56,6 @@
 //#define GAME_STATUS_START //SetGameStatus to start
 
 //IMU.c POINTS.C Speed.c Calc.c
-//#define NO_RUN //Will Not Run, For music@start
+#define NO_RUN //Will Not Run, For music@start
 
 #endif

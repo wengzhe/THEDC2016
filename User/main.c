@@ -24,10 +24,10 @@ int main()
 	System_Init();
 	Decision_Init();
 
-	/*EL_MUSIC_ChangeStatus(Music,6);
+	EL_MUSIC_ChangeStatus(Music,6);
 	EL_MUSIC_SetPause(0);
 	EL_MUSIC_ChangeMode(Single);
-	EL_MUSIC_ChangeMode(Once);*/
+	EL_MUSIC_ChangeMode(Once);
 	EL_MUSIC_ChangeMode(Order);
 	while(1)
 	{
@@ -38,6 +38,6 @@ int main()
 			k = !k;
 			GPIO_WriteBit(GPIOD, GPIO_Pin_2, (BitAction)k);
 		}
-		Decision_MakeDecision();
+		//Decision_MakeDecision();
 	}
 }

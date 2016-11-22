@@ -19,8 +19,8 @@ void CL_Init(void)
 void CL_Tick_Pre(uint32_t time)
 {
 	DL_Tick_Pre(time);
-#ifndef NO_RUN
 	CL_SPEED_Tick_Pre();
+#ifndef NO_RUN
 	CL_ANGLE_Tick();
 	CL_MAP_Tick();
 #endif
