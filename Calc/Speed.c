@@ -34,6 +34,7 @@ void CL_SPEED_Init(void)
 
 uint8_t CL_SPEED_SetCalibration_Type(CL_SPEED_Calibration_t C)
 {
+#ifndef SPEED_BYPASS
 	if (CType)
 		return 1;
 	CType = C;
@@ -45,6 +46,7 @@ uint8_t CL_SPEED_SetCalibration_Type(CL_SPEED_Calibration_t C)
 		DL_PWM_SetPulse(-10,-10);
 	else
 		DL_PWM_SetPulse(0,0);
+#endif
 	return 0;
 }
 
@@ -69,6 +71,7 @@ void CL_SPEED_Calibration(void)
 #define mabs(x,y) ((x)>(y)?(x)-(y):(y)-(x))
 uint8_t CL_SPEED_CheckCalibration(void)
 {
+#ifndef SPEED_BYPASS
 	uint8_t i;
 	CL_SPEED_CheckCalibration_Result = 1;
 	if (mabs(Center_Voltage[0][0],Center_Voltage[0][1]) > 10)
@@ -81,6 +84,7 @@ uint8_t CL_SPEED_CheckCalibration(void)
 		if (mabs(Center_Voltage[0][1],Center_Voltage[i][1]) > 35)
 			return i+1;
 	}
+#endif
 	CL_SPEED_CheckCalibration_Result = 0;
 	return 0;
 }
@@ -134,6 +138,7 @@ void CL_SPEED_SetWarningFunction(void (*f)(void))
 
 void CL_SPEED_CheckSpeed(void)
 {
+#ifndef SPEED_BYPASS
 	if ((abs(Speed_Set[0]) >= 40 && abs(CL_SPEED_SpeedNow[0]) <= 20) 
 		|| (abs(Speed_Set[1]) >= 40 && abs(CL_SPEED_SpeedNow[1]) <= 20))
 	{
@@ -146,11 +151,13 @@ void CL_SPEED_CheckSpeed(void)
 		if (WarningFunction)
 			WarningFunction();
 	}
+#endif
 }
 
 void CL_SPEED_CalPWM(void)
 {
 	int32_t PWM[2];
+#ifndef SPEED_BYPASS
 	int16_t SpeedDiff[2];
 	SpeedDiff[0] = Speed_Set[0] - CL_SPEED_SpeedNow[0];
 	SpeedDiff[1] = Speed_Set[1] - CL_SPEED_SpeedNow[1];
@@ -160,6 +167,10 @@ void CL_SPEED_CalPWM(void)
 		PWM[0] = PWM[0] > 0 ? 200 : -200;
 	if (abs(PWM[1]) > 200)
 		PWM[1] = PWM[1] > 0 ? 200 : -200;
+#else
+	PWM[0] = (int32_t)Speed_Set[0] * 2;
+	PWM[1] = (int32_t)Speed_Set[1] * 2;
+#endif
 	DL_PWM_SetPulse(PWM[0],PWM[1]);
 }
 
@@ -168,6 +179,7 @@ uint8_t Tick_Counter = 0;
 void CL_SPEED_Tick_Pre(void) //Get Speed
 {
 //#ifndef NO_RUN
+#ifndef SPEED_BYPASS
 	Speed_Voltage_Tmp[0] += DL_ADC_Voltage[0];
 	Speed_Voltage_Tmp[1] += DL_ADC_Voltage[1];
 	if (++Tick_Counter >= SPEED_SMOOTH_TIME)
@@ -184,6 +196,7 @@ void CL_SPEED_Tick_Pre(void) //Get Speed
 			CL_SPEED_CheckSpeed();
 		}
 	}
+#endif
 //#endif
 }
 

@@ -45,6 +45,7 @@
 //Speed.c
 #define MAX_SPEED_VOLTAGE_L 8.7 //935 8.2
 #define MAX_SPEED_VOLTAGE_R 8.5 //919 8.0
+#define SPEED_BYPASS //jump the speed and just set pwm
 
 //POINTS.C MUSIC.C Speed.c
 //#define GAME_STATUS_START //SetGameStatus to start

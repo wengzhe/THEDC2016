@@ -149,6 +149,23 @@ uint32_t MusicFunction_PeterBee(uint32_t t, uint32_t length, uint8_t *Mtime, Mus
 	return t;
 }
 
+void MusicFunction_PeterBee_float(float t, uint32_t length, float *Mtime, Music_Typical_Name_t *array, int8_t UpDown)
+{
+	uint32_t i;
+	for (i=0;i<length;i++)
+	{
+		t-=Mtime[i];
+		if (t<0)
+		{
+			if (array[i] == BEAT && t > Mtime[i] * -0.75f)
+				CL_TONE_SetFreq(440*pow(2,(float)(REST)/12.0f));
+			else
+				CL_TONE_SetFreq(440*pow(2,(float)(array[i]+UpDown)/12.0f));
+			return;
+		}
+	}
+}
+
 #undef MUSIC_ARRAY
 #undef MUSIC_TIME
 #undef MUSIC_SPEED
@@ -246,3 +263,110 @@ uint8_t MusicFunction_BadApple(uint32_t time, uint32_t start_time)
 	return t != 0;
 }
 
+
+#undef MUSIC_ARRAY
+#undef MUSIC_TIME
+#undef MUSIC_SPEED
+#define MUSIC_ARRAY CastleInTheSky
+#define MUSIC_TIME CastleInTheSky_Time
+//#define MUSIC_SPEED (500) //120ms
+#define MUSIC_SPEED (120*8)
+
+Music_Typical_Name_t MUSIC_ARRAY[] = {
+BEAT,BEAT,BEAT,BEAT,BEAT,BEAT,BEAT,
+BEAT,BEAT,BEAT,BEAT,BEAT,
+BEAT,BEAT,BEAT,BEAT,BEAT,BEAT,BEAT,
+BEAT,BEAT,BEAT,BEAT,BEAT,
+BEAT,BEAT,BEAT,BEAT,BEAT,BEAT,BEAT,
+BEAT,BEAT,BEAT,BEAT,BEAT,
+BEAT,BEAT,BEAT,BEAT,BEAT,BEAT,BEAT,
+BEAT,BEAT,BEAT,BEAT,//打击乐
+REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,G4,E4,G4,A4,G4,
+REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,A4,G4,A4,G4,E4,G4,
+REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,E4,E4,G4,A4,G4,
+REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,REST,E4,REST,E4,D4,A4,G4,A4,G4,E4,G4,//前奏
+D4,E4,F4,G4,A4,D5,C5,A4,D4,A4,G4,F4,E4,D4,E4,F4,G4,A4,G4,F4,E4,D4,E4,F4,E4,D4,CS4,E4,
+D4,E4,F4,G4,A4,D5,C5,A4,D4,A4,G4,F4,E4,D4,E4,F4,G4,A4,G4,F4,E4,F4,G4,A4,
+D4,E4,F4,G4,A4,D5,C5,A4,D4,A4,G4,F4,E4,D4,E4,F4,G4,A4,G4,F4,E4,D4,E4,F4,E4,D4,CS4,E4,
+D4,E4,F4,G4,A4,D5,C5,A4,D4,A4,G4,F4,E4,D4,E4,F4,G4,A4,G4,F4,E4,F4,G4,A4,//Verse A*2
+C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,D5,E5,F5,E5,D5,C5,A4,G4,A4,G4,F4,E4,C4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,G4,A4,G4,F4,E4,C4,D4,C4,D4,E4,F4,G4,A4,D4,
+A4,C5,C5,D5,A4,G4,A4,G4,A4,C5,D5,A4,G4,A4,D5,E5,F5,E5,D5,C5,A4,G4,A4,G4,F4,E4,C4,D4//Verse B*2
+};
+float MUSIC_TIME[] = {
+4,4,4,1,1,1,1,
+4,4,4,2,2,
+4,4,4,1,1,1,1,
+4,4,4,2,2,
+4,4,4,1,1,1,1,
+4,4,4,2,2,
+4,4,4,1,1,1,1,
+4,4,4,4,//打击乐
+2,2,1,2,1,2,2,1,2,1,2,2,1,2,1,2,1,1,2,2,
+2,2,1,2,1,2,2,1,2,1,2,2,1,2,1,2,1,1,2,1,1,
+2,2,1,2,1,2,2,1,2,1,2,2,1,2,1,2,1,1,2,2,
+2,2,1,2,1,2,2,1,2,1,2,2,1,2,1,2,1,1,2,1,1,//前奏
+2,2,2,2,4,2,2,4,4,2,2,2,2,2,2,2,2,4,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,4,2,2,4,4,2,2,2,2,2,2,2,2,4,2,2,4,4,4,4,
+2,2,2,2,4,2,2,4,4,2,2,2,2,2,2,2,2,4,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,4,2,2,4,4,2,2,2,2,2,2,2,2,4,2,2,4,4,4,4,//Verse A*2
+2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,
+2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4,2,2,2,2,2,2,4//Verse B*2
+};
+
+#define CONTROL_SIZE 3
+#undef MUSIC_CONTROL
+#undef MUSIC_PERIED_LEN
+#define MUSIC_CONTROL CastleInTheSkyCtl
+#define MUSIC_PERIED_LEN CastleInTheSkyLen
+int16_t MUSIC_CONTROL[CONTROL_SIZE][3] = {
+{0,sizeof(MUSIC_ARRAY),0},
+{47,sizeof(MUSIC_ARRAY)-47-112,0},
+{sizeof(MUSIC_ARRAY)-112,112,1}
+};
+float MUSIC_PERIED_LEN[CONTROL_SIZE]={0,0,0};
+
+uint8_t MusicFunction_CastleInTheSky(uint32_t time, uint32_t start_time)
+{
+	if (time & 0x01)
+	{
+		float t = ((time - start_time)*MUSIC_SPEED)/60000.f;
+		uint8_t i;
+		for (i = 0; i < CONTROL_SIZE && t >= 0; i++)
+		{
+			if (t < MUSIC_PERIED_LEN[i])
+				MusicFunction_PeterBee_float(t, MUSIC_CONTROL[i][1], MUSIC_TIME+MUSIC_CONTROL[i][0], MUSIC_ARRAY+MUSIC_CONTROL[i][0], MUSIC_CONTROL[i][2]);
+			t -= MUSIC_PERIED_LEN[i];
+		}
+		return t > 0;
+	}
+	else
+		return 0;
+}
+
+void MusicInit_CastleInTheSky(void)
+{
+	uint8_t i;
+	uint16_t j;
+	for (i = 0; i < CONTROL_SIZE; i++)
+	{
+		for (j = MUSIC_CONTROL[i][0]; j < MUSIC_CONTROL[i][0]+MUSIC_CONTROL[i][1]; j++)
+			MUSIC_PERIED_LEN[i]+=MUSIC_TIME[j];
+	}
+}
+
+void MusicInit(void)
+{
+	MusicInit_CastleInTheSky();
+}
