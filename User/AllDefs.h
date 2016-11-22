@@ -2,9 +2,9 @@
 #define _AllDefs_H
 
 //INF.C
-#define INF_TRACK_MAX_SPEED 400 //very fast maybe wrong
+#define INF_TRACK_MAX_SPEED 200 //very fast maybe wrong
 //#define INF_STOP_CLEAR_TRACK
-#define AVG_SPEED_MAX 300
+#define AVG_SPEED_MAX 300 //How much points to count average speed
 
 //PWM.C
 //#define PWM_HORN
@@ -25,11 +25,21 @@
 #define MAX_ANGLE_IN_COLOR 30 //max turn angle
 #define MIN_ANGLE_TURN 20 //if angle < 20, we see it as the same with the front
 
+//Speed.c
+#define MAX_SPEED_VOLTAGE_L 8.7 //935 8.2
+#define MAX_SPEED_VOLTAGE_R 8.5 //919 8.0
+//#define SPEED_BYPASS //jump the speed and just set pwm, need to minus the speed to stop exactly
 
 //MOTOR
 #define P_ANGLE_GO 0.8
 #define P_ANGLE_BACK 0.8
-#define P_SPEED_OF_DIS 1.2
+#ifdef SPEED_BYPASS
+	#define P_SPEED_OF_DIS 1.5 //speed bypass
+	#define SPEED_ADDER 10
+#else
+	#define P_SPEED_OF_DIS 1.2 //With the usage of speed module
+	#define SPEED_ADDER 20
+#endif
 #define P_SPEED_BACK(x) (abs(x) > 80 ? (x) : (x)*7/8)
 
 //Decision.c
@@ -41,11 +51,6 @@
 #define PLAYMUSIC //play at pause
 //#define PLAYMUSIC_ATSTART //play when start (will not set any target, no run needed)
 #define FINAL_EASY //use easy logic instead of default final logic
-
-//Speed.c
-#define MAX_SPEED_VOLTAGE_L 8.7 //935 8.2
-#define MAX_SPEED_VOLTAGE_R 8.5 //919 8.0
-#define SPEED_BYPASS //jump the speed and just set pwm
 
 //POINTS.C MUSIC.C Speed.c
 //#define GAME_STATUS_START //SetGameStatus to start

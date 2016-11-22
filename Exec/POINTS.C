@@ -224,7 +224,7 @@ void EL_POINTS_CalcSpeed_SetAngle(void)
 		EL_POINTS_MakeBorder();
 		//Calculate Dis&Angle
 		EL_POINTS_Dis = fullspeed ? 80 : Distance(EL_POINTS_DisTarget, EL_POINTS_MyPos);
-		EL_POINTS_Speed = P_SPEED_OF_DIS*EL_POINTS_Dis + 20;
+		EL_POINTS_Speed = P_SPEED_OF_DIS*EL_POINTS_Dis + SPEED_ADDER;
 		EL_POINTS_AngleSet = atan2f(EL_POINTS_AngleTarget.x - EL_POINTS_MyPos.x,
 													EL_POINTS_AngleTarget.y - EL_POINTS_MyPos.y)/M_PI*180;
 		CL_ANGLE_SetDegree(EL_POINTS_AngleSet, ANGLE_ABS);
