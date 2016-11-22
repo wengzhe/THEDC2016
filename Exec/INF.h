@@ -79,7 +79,8 @@ EL_INF_GameInf_t *EL_INF_GetGameInf(void);
 EL_INF_AirPlaneInf_t *EL_INF_GetAirPlaneInf(void);
 EL_INF_TargetInf_t *EL_INF_GetTargetInf(void);
 EL_INF_AdditionInf_t *EL_INF_GetAdditionInf(void);
-
+EL_INF_PlayerEstimate_t *EL_INF_GetMyEstimate(void);
+EL_INF_PlayerEstimate_t *EL_INF_GetEmyEstimate(void);
 void EL_INF_Tick(uint32_t time);
 
 //13ms(@(127,127),r=179)

@@ -269,6 +269,16 @@ EL_INF_PlayerInf_t *EL_INF_GetEmyInf(void)
 	return &EL_INF_EmyInf;
 }
 
+EL_INF_PlayerEstimate_t *EL_INF_GetMyEstimate(void)
+{
+	return &EL_INF_MyEstimate;
+}
+
+EL_INF_PlayerEstimate_t *EL_INF_GetEmyEstimate(void)
+{
+	return &EL_INF_EmyEstimate;
+}
+
 EL_INF_ItemInf_t *EL_INF_GetItemInf(void)
 {
 	return &EL_INF_ItemInf;

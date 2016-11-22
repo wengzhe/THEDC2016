@@ -16,6 +16,7 @@ EL_INF_GameInf_t *GameInf,GameInfBak;
 EL_INF_AirPlaneInf_t *AirPlaneInf;
 EL_INF_TargetInf_t *TargetInf,TargetInfBak;
 EL_INF_AdditionInf_t *AdditionInf;
+EL_INF_PlayerEstimate_t *MyEstimate, *EmyEstimate;
 
 __STATIC_INLINE float Distance(Point_t A, Point_t B)
 {
@@ -54,20 +55,69 @@ void Decision_MoveControl_Final(void)
 	Point_t tar, MyPos;
 	EL_POINTS_Color_t Color_Set = POINTS_None;
 	QueueNode.MinDis = 19;
+	MyPos = MyInf->Pos;
+	
+	//11
+	tar.x = 128;
+	tar.y = 128;
+	
+	//10
 	if(TargetInf->Exist)
 	{
-		QueueNode.Target = TargetInf->Pos;
-		QueueNode.StopTime = 1;
-		EL_POINTS_InsertShadowStack(QueueNode);
-		Color_Set = TargetInf->Black?POINTS_Black:POINTS_White;
+		tar = TargetInf->Pos;
 	}
+	
+	//9
 	if (ItemInf->Type)
 	{
-		QueueNode.Target = ItemInf->Pos;
-		QueueNode.StopTime = 0;
-		EL_POINTS_InsertShadowStack(QueueNode);
+		tar = ItemInf->Pos;
 	}
-	MyPos = MyInf->Pos;
+	
+	//4-8
+	if (TargetInf->Black == 0)//white
+	{
+		tar = TargetInf->Pos;
+	}
+	else//black
+	{
+		if (ItemInf->Type == ITEM_PLANE)//5
+		{
+			tar = ItemInf->Pos;
+		}
+		else if (AirPlaneInf->Control || EmyEstimate->ControlUAV)//7,8
+		{
+			if (AirPlaneInf->Control) //8
+			{
+				if (!ItemInf->Type)
+					tar = TargetInf->Pos;
+			}
+			else //7
+			{
+				tar = TargetInf->Pos;
+			}
+		}
+		else if (Distance(TargetInf->Pos,AirPlaneInf->Pos) < 80)//6
+		{
+			if (ItemInf->Type)
+				tar = ItemInf->Pos;
+		}
+	}
+
+	//3
+	if (ItemInf->Type == ITEM_LIFE)
+	{
+		tar = ItemInf->Pos;
+	}
+
+	//2
+	if (ItemInf->Type == ITEM_CHANGE && AdditionInf->HugeHurt && TargetInf->Exist
+		&& Distance(ItemInf->Pos,MyPos) < Distance(TargetInf->Pos,MyPos))
+	{
+		tar = ItemInf->Pos;
+	}
+	
+	//POS_EQUAL()
+	//After
 	while (Color_Set && Distance(QueueNode.Target,MyPos) > 80) //There must be a node if color is set
 	{
 		tar.x = ((uint16_t)(QueueNode.Target.x) + (uint16_t)(MyPos.x))/2;
@@ -254,6 +304,8 @@ void Decision_Init(void)
 	AirPlaneInf = EL_INF_GetAirPlaneInf();
 	TargetInf = EL_INF_GetTargetInf();
 	AdditionInf = EL_INF_GetAdditionInf();
+	MyEstimate = EL_INF_GetMyEstimate();
+	EmyEstimate = EL_INF_GetEmyEstimate();
 
 	EL_MUSIC_ChangeStatus(Music,6);
 	EL_MUSIC_ChangeMode(Random);
