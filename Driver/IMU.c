@@ -1,4 +1,4 @@
-//#include "AllDefs.h"
+#include "AllDefs.h"
 
 #include "IMU.h"
 #include "MPU6050.h"
@@ -331,6 +331,7 @@ float DL_IMU_GetGyro(void)
 
 void DL_IMU_Tick(uint32_t TimeTicket)
 {
+#ifndef NO_RUN
 	int16_t Data[2];
 	uint8_t IIC_Success[2]={0,0};
 	PowerMPU();
@@ -359,4 +360,5 @@ void DL_IMU_Tick(uint32_t TimeTicket)
 			ResetMPU(1);
 	}
 	DL_IMU_Work(IIC_Success, Data);
+#endif
 }

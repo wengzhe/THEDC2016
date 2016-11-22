@@ -38,9 +38,9 @@
 	//#define COMP_NO_COLOR
 	//#define COMP_BLACK //Run on black when competition
 	//#define BACK_TO_CENTER
-//#define PLAYMUSIC
-#define PLAYMUSIC_ATSTART
-#define FINAL_EASY
+#define PLAYMUSIC //play at pause
+//#define PLAYMUSIC_ATSTART //play when start (will not set any target, no run needed)
+#define FINAL_EASY //use easy logic instead of default final logic
 
 //Speed.c
 #define MAX_SPEED_VOLTAGE_L 8.7 //935 8.2
@@ -49,6 +49,8 @@
 
 //POINTS.C MUSIC.C Speed.c
 //#define GAME_STATUS_START //SetGameStatus to start
-#define NO_RUN //Will Not Run, For music@start
+
+//IMU.c POINTS.C Speed.c
+//#define NO_RUN //Will Not Run, For music@start
 
 #endif

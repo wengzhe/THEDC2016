@@ -158,9 +158,9 @@ void MusicFunction_PeterBee_float(float t, uint32_t length, float *Mtime, Music_
 		if (t<0)
 		{
 			if (array[i] == BEAT && t > Mtime[i] * -0.75f)
-				CL_TONE_SetFreq(440*pow(2,(float)(REST)/12.0f));
+				CL_TONE_SetFreq(440*powf(2,(float)(REST)/12.0f));
 			else
-				CL_TONE_SetFreq(440*pow(2,(float)(array[i]+UpDown)/12.0f));
+				CL_TONE_SetFreq(440*powf(2,(float)(array[i]+UpDown)/12.0f));
 			return;
 		}
 	}
