@@ -8,11 +8,7 @@
 #include <math.h>
 
 #define MID_POINT_DIS 15 //the added mid points has dis longer than to target
-#define DANGER_ANGLE_TAR_SPEED_ADD 40
 #define EL_STOPTIME_UNIT 100
-
-//watchdog
-#define POINTS_WATCHDOG_CNT 400
 
 //GameStatus
 #ifdef GAME_STATUS_START

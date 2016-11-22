@@ -27,8 +27,11 @@ typedef struct
 	Point_t TarPos;
 	
 	uint8_t ItemEatenCnt;
+	uint8_t ControlUAV;
 	int8_t LifeChangeSpeed;
 }EL_INF_PlayerEstimate_t;
+
+#define UAV_CONTROL_TIME 100
 
 typedef struct
 {

@@ -20,6 +20,8 @@
 	#define BACK_ON_COLOR //can run back even on color <--> only run back when no color set : ONLY_BACK_NO_COLOR
 	#define ONLY_BACK_WHEN_NEAR //only can run back when near <--> can run back at every dis : BACK_AT_EVERY_DIS
 		#define NEAR_DIS 20
+//watchdog
+#define POINTS_WATCHDOG_CNT 400
 //IR
 #define ANGLE_DIFF 40 //different between 2 angles of IR
 #define MAX_ANGLE_IN_COLOR 30 //max turn angle
@@ -36,9 +38,11 @@
 #ifdef SPEED_BYPASS
 	#define P_SPEED_OF_DIS 1.5 //speed bypass
 	#define SPEED_ADDER 10
+	#define DANGER_ANGLE_TAR_SPEED_ADD 40 //middle point adder, when danger
 #else
-	#define P_SPEED_OF_DIS 1.2 //With the usage of speed module
-	#define SPEED_ADDER 20
+	#define P_SPEED_OF_DIS 1.8 //With the usage of speed module
+	#define SPEED_ADDER 0 //actually, when near target, we'll get at least 30
+	#define DANGER_ANGLE_TAR_SPEED_ADD 10
 #endif
 #define P_SPEED_BACK(x) (abs(x) > 80 ? (x) : (x)*7/8)
 
@@ -56,6 +60,6 @@
 //#define GAME_STATUS_START //SetGameStatus to start
 
 //IMU.c POINTS.C Speed.c Calc.c
-#define NO_RUN //Will Not Run, For music@start
+//#define NO_RUN //Will Not Run, For music@start
 
 #endif

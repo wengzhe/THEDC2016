@@ -137,10 +137,22 @@ void EL_INF_SetTrack()
 	if (ItemEaten)
 	{
 		if (Distance(EL_INF_MyInf.Pos,EL_INF_ItemInf.Pos) < Distance(EL_INF_EmyInf.Pos,EL_INF_ItemInf.Pos))
+		{
 			EL_INF_MyEstimate.ItemEatenCnt++;
+			if (ItemEaten == 2)
+				EL_INF_MyEstimate.ControlUAV = UAV_CONTROL_TIME;
+		}
 		else
+		{
 			EL_INF_EmyEstimate.ItemEatenCnt++;
+			if (ItemEaten == 2)
+				EL_INF_EmyEstimate.ControlUAV = UAV_CONTROL_TIME;
+		}
 	}
+	if (EL_INF_MyEstimate.ControlUAV)
+		EL_INF_MyEstimate.ControlUAV--;
+	if (EL_INF_EmyEstimate.ControlUAV)
+		EL_INF_EmyEstimate.ControlUAV--;
 	if (EL_INF_MyTrack[p].Time)
 	{
 		//MyEstimateCalc
@@ -181,7 +193,10 @@ void EL_INF_ProcessData(const CL_COM_Data_t *p)
 	
 	if (EL_INF_ItemInf.Type && !p->ItemType)
 	{
-		ItemEaten = 1;
+		if (EL_INF_ItemInf.Type == ITEM_PLANE)
+			ItemEaten = 2;
+		else
+			ItemEaten = 1;
 	}
 	else
 	{
