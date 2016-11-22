@@ -8,7 +8,9 @@ uint8_t MusicFunction_Tsinghua(uint32_t time, uint32_t start_time);
 uint8_t MusicFunction_MHH(uint32_t time, uint32_t start_time);
 uint8_t MusicFunction_BEE1(uint32_t time, uint32_t start_time);
 uint8_t MusicFunction_BadApple(uint32_t time, uint32_t start_time);
-uint8_t MusicFunction_CastleInTheSky(uint32_t time, uint32_t start_time);
+uint8_t MusicFunction_CastleInTheSkyMain(uint32_t time, uint32_t start_time);
+uint8_t MusicFunction_CastleInTheSkyLeft(uint32_t time, uint32_t start_time);
+
 void MusicInit(void);
 
 #define FKey_TTLS {2,0} //C

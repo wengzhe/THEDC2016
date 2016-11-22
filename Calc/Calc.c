@@ -1,4 +1,4 @@
-//#include "AllDefs.h"
+#include "AllDefs.h"
 
 #include "Driver.h"
 #include "Calc.h"
@@ -19,9 +19,11 @@ void CL_Init(void)
 void CL_Tick_Pre(uint32_t time)
 {
 	DL_Tick_Pre(time);
+#ifndef NO_RUN
 	CL_SPEED_Tick_Pre();
 	CL_ANGLE_Tick();
 	CL_MAP_Tick();
+#endif
 }
 
 void CL_Tick_After(void)

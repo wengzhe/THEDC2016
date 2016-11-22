@@ -28,6 +28,7 @@ int main()
 	EL_MUSIC_SetPause(0);
 	EL_MUSIC_ChangeMode(Single);
 	EL_MUSIC_ChangeMode(Once);
+	EL_MUSIC_ChangeMode(Order);
 	while(1)
 	{
 		if(T1+500<=TimeTicket)
