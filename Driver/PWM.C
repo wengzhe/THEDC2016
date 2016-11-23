@@ -12,6 +12,7 @@ uint8_t minusTone = 0;
 int16_t SpeedSet[2] = {0};
 float FreqSet = 20000;
 //PA11:Horn,TIM1_CH4
+//PB15:TIM1_CH3N
 
 void DL_PWM_Init(void)
 {
@@ -87,16 +88,27 @@ void DL_PWM_Init(void)
 #ifdef PWM_HORN
 	//Horn
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1,ENABLE);
 	
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
 	TIM_TimeBaseInit(TIM1,&TIM_TimeBaseStructure);
 	
 	TIM_OCInitStructure.TIM_Pulse = 100;
 	TIM_OC4Init(TIM1,&TIM_OCInitStructure);
   TIM_OC4PreloadConfig(TIM1, TIM_OCPreload_Enable);
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Disable;
+	TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;
+	TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_Low;
+	TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCNIdleState_Set;
+	TIM_OC3Init(TIM1,&TIM_OCInitStructure);
+  TIM_OC3PreloadConfig(TIM1, TIM_OCPreload_Enable);
 	
 	TIM_Cmd(TIM1, ENABLE);
 	TIM_ARRPreloadConfig(TIM1, ENABLE);
@@ -163,11 +175,18 @@ void DL_PWM_SetFreq(float freq)
 #else
 	TIM8->PSC=(180000/freq)-1;
 #endif
-#ifdef PWM_HORN
+#if defined(PWM_HORN) && !defined(PWM_HORN_SINGLE)
 	TIM1->PSC=(180000/freq)-1;
 #endif
 	FreqSet = freq;
 }
+
+#ifdef PWM_HORN_SINGLE
+void DL_PWM_SetFreq2(float freq)
+{
+	TIM1->PSC=(180000/freq)-1;
+}
+#endif
 
 void DL_PWM_SetPrescaler(uint16_t div)
 {

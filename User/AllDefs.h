@@ -7,7 +7,8 @@
 #define AVG_SPEED_MAX 300 //How much points to count average speed
 
 //PWM.C
-//#define PWM_HORN
+#define PWM_HORN
+	#define PWM_HORN_SINGLE //another freq
 #define BIG_VOICE
 	#define PWM_VOLUME 50 //25%
 
