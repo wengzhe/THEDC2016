@@ -22,11 +22,15 @@
 	#define ONLY_BACK_WHEN_NEAR //only can run back when near <--> can run back at every dis : BACK_AT_EVERY_DIS
 		#define NEAR_DIS 20
 //watchdog
-#define POINTS_WATCHDOG_CNT 400
+#define POINTS_WATCHDOG_CNT 300
 //IR
 #define ANGLE_DIFF 40 //different between 2 angles of IR
 #define MAX_ANGLE_IN_COLOR 30 //max turn angle
 #define MIN_ANGLE_TURN 20 //if angle < 20, we see it as the same with the front
+
+//Map.c
+//#define IR_NUM 8
+#define IR_NUM 5
 
 //Speed.c
 #define MAX_SPEED_VOLTAGE_L 8.7 //935 8.2
@@ -58,7 +62,7 @@
 	//#define BACK_TO_CENTER
 #define PLAYMUSIC //play at pause
 //#define PLAYMUSIC_ATSTART //play when start (will not set any target, no run needed)
-#define FINAL_EASY //use easy logic instead of default final logic
+//#define FINAL_EASY //use easy logic instead of default final logic
 
 //POINTS.C MUSIC.C Speed.c
 //#define GAME_STATUS_START //SetGameStatus to start

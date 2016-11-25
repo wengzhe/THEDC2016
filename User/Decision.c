@@ -360,6 +360,7 @@ void Decision_FlightControl(void)
 			}
 		}
 		EL_POINTS_SetFlightPos(tar);
+		//EL_POINTS_SetFlightPos(MyInf->Pos);
 	}
 }
 
