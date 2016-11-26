@@ -11,6 +11,7 @@
 	#define PWM_HORN_SINGLE //another freq
 #define BIG_VOICE
 	#define PWM_VOLUME 50 //25%
+#define PWM_PSC 17
 
 //MAP.C
 #define MAP_NULL //make the map null at init

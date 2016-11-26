@@ -143,7 +143,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>/</Name>
+          <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -162,7 +162,7 @@
           <Type>0</Type>
           <LineNumber>141</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134241978</Address>
+          <Address>134242098</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -173,17 +173,38 @@
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>129</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134247552</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>F:\脟氓禄陋\碌莽脡猫\Project_2016\Exec\INF.C</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
       </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>SpeedSet,0x0A</ItemText>
+          <ItemText>EL_INF_MyEstimate,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>TIM8-&gt;PSC,0x0A</ItemText>
+          <ItemText>EL_INF_EmyEstimate,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>EL_INF_EmyInf,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -232,10 +253,10 @@
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>35</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>148</TopLine>
-      <CurrentLine>153</CurrentLine>
+      <CurrentLine>151</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\startup_stm32f10x_hd.s</PathWithFileName>
       <FilenameWithoutPath>startup_stm32f10x_hd.s</FilenameWithoutPath>
@@ -272,10 +293,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>7</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>93</TopLine>
-      <CurrentLine>93</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>401</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\User\Decision.c</PathWithFileName>
       <FilenameWithoutPath>Decision.c</FilenameWithoutPath>
@@ -472,10 +493,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>29</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>163</TopLine>
-      <CurrentLine>172</CurrentLine>
+      <TopLine>168</TopLine>
+      <CurrentLine>166</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Driver\PWM.C</PathWithFileName>
       <FilenameWithoutPath>PWM.C</FilenameWithoutPath>
@@ -538,8 +559,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>84</TopLine>
-      <CurrentLine>85</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Driver\IMU.c</PathWithFileName>
       <FilenameWithoutPath>IMU.c</FilenameWithoutPath>
@@ -576,10 +597,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>19</ColumnNumber>
+      <ColumnNumber>10</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>2</TopLine>
-      <CurrentLine>7</CurrentLine>
+      <CurrentLine>17</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Calc\TONE.C</PathWithFileName>
       <FilenameWithoutPath>TONE.C</FilenameWithoutPath>
@@ -642,8 +663,8 @@
       <Focus>0</Focus>
       <ColumnNumber>37</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>14</TopLine>
-      <CurrentLine>18</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Calc\Angle.c</PathWithFileName>
       <FilenameWithoutPath>Angle.c</FilenameWithoutPath>
@@ -658,8 +679,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>8</TopLine>
-      <CurrentLine>9</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Calc\MAP.C</PathWithFileName>
       <FilenameWithoutPath>MAP.C</FilenameWithoutPath>
@@ -714,8 +735,8 @@
       <Focus>0</Focus>
       <ColumnNumber>14</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>402</TopLine>
-      <CurrentLine>404</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Exec\Musics.c</PathWithFileName>
       <FilenameWithoutPath>Musics.c</FilenameWithoutPath>
@@ -746,8 +767,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>47</TopLine>
-      <CurrentLine>53</CurrentLine>
+      <TopLine>122</TopLine>
+      <CurrentLine>129</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Exec\INF.C</PathWithFileName>
       <FilenameWithoutPath>INF.C</FilenameWithoutPath>
@@ -770,8 +791,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>5</TopLine>
-      <CurrentLine>18</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>78</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\User\AllDefs.h</PathWithFileName>
       <FilenameWithoutPath>AllDefs.h</FilenameWithoutPath>
@@ -786,8 +807,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>10</TopLine>
+      <CurrentLine>23</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\User\MyTypes.h</PathWithFileName>
       <FilenameWithoutPath>MyTypes.h</FilenameWithoutPath>

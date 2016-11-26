@@ -137,8 +137,8 @@ void Decision_MoveControl_Final(void)
 	//3
 	if (ItemInf->Type == ITEM_LIFE)
 	{
-		if (POS_EQUAL(EmyEstimate->TarPos,ItemInf->Pos)
-			&& EmyEstimate->TimeEstimate > 1.5 * Distance(MyInf->Pos,ItemInf->Pos) / MyEstimate->MaxSpeed)
+		if (Distance(EmyEstimate->TarPos,ItemInf->Pos) < ESTIMATE_DIS_SAME
+			&& EmyEstimate->TimeEstimate * 1.5 < 10 * Distance(MyInf->Pos,ItemInf->Pos) / MyEstimate->MaxSpeed)
 			;
 		else
 			tar = ItemInf->Pos;

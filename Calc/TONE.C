@@ -4,7 +4,7 @@
 #include "PWM.h"
 #include <math.h>
 
-#define STOP_FREQ 10000
+#define STOP_FREQ 20000
 
 void CL_TONE_Enable(void)
 {

@@ -1,4 +1,3 @@
-//#include "AllDefs.h"
 #include "AllDefs.h"
 #include "pwm.h"
 
@@ -171,7 +170,13 @@ void DL_PWM_SetFreq(float freq)
 	if (NeedTone)
 		TIM8->PSC=(90000/freq)-1;
 	else
+	{
+#ifdef PWM_PSC
+		TIM8->PSC=PWM_PSC;
+#else
 		TIM8->PSC=(180000/freq)-1;
+#endif
+	}
 #else
 	TIM8->PSC=(180000/freq)-1;
 #endif

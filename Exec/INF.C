@@ -56,7 +56,7 @@ __STATIC_INLINE float Distance(Point_t A, Point_t B)
 	return sqrtf(dx*dx+dy*dy);
 }
 
-Point_t CheckTarget(float Dir_x, float Dir_y, Point_t Pos, uint16_t *dis)
+Point_t CheckTarget(float Dir_x, float Dir_y, Point_t Pos, float *dis)
 {
 	Point_t tar, tryTar;
 	float maxCOS = 0, COS_result;
@@ -80,6 +80,7 @@ Point_t CheckTarget(float Dir_x, float Dir_y, Point_t Pos, uint16_t *dis)
 		float Dx = (float)tar.x - (float)Pos.x;
 		float Dy = (float)tar.y - (float)Pos.y;
 		*dis = sqrtf((Dx)*(Dx) + (Dy)*(Dy));
+		*dis /= maxCOS;
 		return tar;
 	}
 	else
@@ -90,7 +91,7 @@ Point_t CheckTarget(float Dir_x, float Dir_y, Point_t Pos, uint16_t *dis)
 void EL_INF_CalcEstimate(EL_INF_PlayerEstimate_t *result, EL_INF_PlayerTrack_t *track, uint8_t p1, uint8_t p2)
 {
 	float deltaTime = (track[p2].Time - track[p1].Time) / 1000.;
-	uint16_t Dis_Pos_Tar = 0;
+	float Dis_Pos_Tar = 0;
 	
 	//Dir: 4:1
 	result->Dir_x = result->Dir_x * 0.5 + ((float)track[p2].PlayerInf.Pos.x - (float)track[p1].PlayerInf.Pos.x) * 0.5;
