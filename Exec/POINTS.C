@@ -392,7 +392,7 @@ void EL_POINTS_SetMinDistance(uint8_t dis)
 
 void EL_POINTS_Tick(void)
 {
-#ifndef NO_RUN
+#if !defined(NO_RUN) && !defined(JUMP_POINTS)
 	if (EL_POINTS_GameStatus == GAME_WAIT || EL_POINTS_GameStatus == GAME_STOP)
 	{
 		CL_ANGLE_Reset();

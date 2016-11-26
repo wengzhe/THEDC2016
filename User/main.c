@@ -5,6 +5,7 @@
 #include "Decision.h"
 #include "music.h"
 #include "speed.h"
+#include "pwm.h"
 
 //uint32_t T2,T3;
 
@@ -26,7 +27,7 @@ int main()
 	Decision_Init();
 
 	EL_MUSIC_ChangeStatus(Music,7);
-	//EL_MUSIC_SetPause(0);
+	EL_MUSIC_SetPause(0);
 	//EL_MUSIC_ChangeMode(Single);
 	//EL_MUSIC_ChangeMode(Order);
 	//EL_MUSIC_ChangeMode(Once);
@@ -39,7 +40,8 @@ int main()
 			k = !k;
 			GPIO_WriteBit(GPIOD, GPIO_Pin_2, (BitAction)k);
 		}
-		//Decision_MakeDecision();
-		CL_SPEED_SetSpeed(50,50);
+		Decision_MakeDecision();
+		//CL_SPEED_SetSpeed(50,50);
+		//DL_PWM_SetPulse(-200,-200);
 	}
 }

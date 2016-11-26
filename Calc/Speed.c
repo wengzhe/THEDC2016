@@ -74,7 +74,7 @@ uint8_t CL_SPEED_CheckCalibration(void)
 #ifndef SPEED_BYPASS
 	uint8_t i;
 	CL_SPEED_CheckCalibration_Result = 1;
-	if (mabs(Center_Voltage[0][0],Center_Voltage[0][1]) > 15)
+	if (mabs(Center_Voltage[0][0],CENTER_VOLTAGE) > 15 || mabs(CENTER_VOLTAGE,Center_Voltage[0][1]) > 15)
 		return 1;
 	for (i=1; i<4;i++)
 	{
@@ -89,7 +89,6 @@ uint8_t CL_SPEED_CheckCalibration(void)
 	return 0;
 }
 
-#define CENTER_VOLTAGE 1490
 //Try to fix if the Center Voltage is wrong
 //Clear the wrong flag to make sure it works
 void CL_SPEED_ClearCalibration(void)

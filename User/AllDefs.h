@@ -29,12 +29,16 @@
 #define MIN_ANGLE_TURN 20 //if angle < 20, we see it as the same with the front
 
 //Map.c
-//#define IR_NUM 8
-#define IR_NUM 5
+#define IR_NUM 8
+//#define IR_NUM 5
 
 //Speed.c
-#define MAX_SPEED_VOLTAGE_L 8.7 //935 8.2
-#define MAX_SPEED_VOLTAGE_R 8.5 //919 8.0
+#define CENTER_VOLTAGE 1490
+//#define MAX_SPEED_VOLTAGE_L 8.7 //935 8.2
+//#define MAX_SPEED_VOLTAGE_R 8.5 //919 8.0
+//Car2
+#define MAX_SPEED_VOLTAGE_L 9.5 //957 9.5
+#define MAX_SPEED_VOLTAGE_R 8.8 //974 8.8
 //#define SPEED_BYPASS //jump the speed and just set pwm, need to minus the speed to stop exactly
 
 //MOTOR
@@ -66,6 +70,7 @@
 
 //POINTS.C MUSIC.C Speed.c
 //#define GAME_STATUS_START //SetGameStatus to start
+//#define JUMP_POINTS
 
 //IMU.c POINTS.C Speed.c Calc.c
 //#define NO_RUN //Will Not Run, For music@start
