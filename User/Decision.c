@@ -107,6 +107,20 @@ void Decision_MoveControl_Final(void)
 		if (TargetInf->Black == 0)//white
 		{
 			tar = TargetInf->Pos; //4
+			//Addition3
+			{
+				if (ItemInf->Type == ITEM_PLANE && Distance(EmyEstimate->TarPos,TargetInf->Pos) < ESTIMATE_DIS_SAME)
+				{
+					uint16_t HurtLeft = TargetInf->TotalHurtLeft;//the hurt left when I got to Target
+					uint16_t MyTimeToTarget = 10 * Distance(MyInf->Pos,TargetInf->Pos) / MyEstimate->MaxSpeed;
+					if (MyTimeToTarget > EmyEstimate->TimeEstimate)
+						HurtLeft -= EmyEstimate->TimeEstimate*4 + (MyTimeToTarget-EmyEstimate->TimeEstimate)*8;
+					else
+						HurtLeft -= MyTimeToTarget*4;
+					if (HurtLeft < 160)
+						tar = ItemInf->Pos;
+				}
+			}
 		}
 		else//black
 		{

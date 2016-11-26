@@ -143,7 +143,7 @@ void EL_INF_CalcEstimate(EL_INF_PlayerEstimate_t *result, EL_INF_PlayerTrack_t *
 	result->TimeEstimate = Dis_Pos_Tar * 20 / (result->MaxSpeed + result->Speed);
 }
 
-void EL_INF_SetTrack()
+void EL_INF_SetTrack(uint16_t dt)
 {
 	uint8_t p = (p_Track+TRACK_SIZE-5)%TRACK_SIZE;
 	EL_INF_MyTrack[p_Track].Time = EL_INF_EmyTrack[p_Track].Time = EL_INF_Time;
@@ -165,9 +165,9 @@ void EL_INF_SetTrack()
 		}
 	}
 	if (EL_INF_MyEstimate.ControlUAV)
-		EL_INF_MyEstimate.ControlUAV--;
+		EL_INF_MyEstimate.ControlUAV-=dt;
 	if (EL_INF_EmyEstimate.ControlUAV)
-		EL_INF_EmyEstimate.ControlUAV--;
+		EL_INF_EmyEstimate.ControlUAV-=dt;
 	if (EL_INF_MyTrack[p].Time)
 	{
 		//MyEstimateCalc
@@ -258,7 +258,7 @@ void EL_INF_ProcessData(const CL_COM_Data_t *p)
 	
 	if (EL_INF_GameInf.Status == GAME_START) //Track
 	{
-		EL_INF_SetTrack();
+		EL_INF_SetTrack((p->GameTime - EL_INF_GameInf.Time));
 		if (!EL_INF_TargetInf.Exist)
 			EL_INF_TargetInf.TotalHurtLeft = 400;
 		else
