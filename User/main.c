@@ -41,7 +41,7 @@ int main()
 			GPIO_WriteBit(GPIOD, GPIO_Pin_2, (BitAction)k);
 		}
 		Decision_MakeDecision();
-		//CL_SPEED_SetSpeed(50,50);
+		//CL_SPEED_SetSpeed(100,100);
 		//DL_PWM_SetPulse(-200,-200);
 	}
 }

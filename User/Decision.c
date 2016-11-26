@@ -85,38 +85,41 @@ void Decision_MoveControl_Final(void)
 	}
 	
 	//9
-	if (ItemInf->Type)
+	if (ItemInf->Type != ITEM_NULL)
 	{
 		tar = ItemInf->Pos;
 	}
 	
 	//4-8
-	if (TargetInf->Black == 0)//white
+	if (TargetInf->Exist)
 	{
-		tar = TargetInf->Pos; //4
-	}
-	else//black
-	{
-		if (ItemInf->Type == ITEM_PLANE)//5
+		if (TargetInf->Black == 0)//white
 		{
-			tar = ItemInf->Pos;
+			tar = TargetInf->Pos; //4
 		}
-		else if (AirPlaneInf->Control || EmyEstimate->ControlUAV)//7,8
+		else//black
 		{
-			if (AirPlaneInf->Control) //8
+			if (ItemInf->Type == ITEM_PLANE)//5
 			{
-				if (!ItemInf->Type)
-					tar = TargetInf->Pos;
-			}
-			else //7
-			{
-				tar = TargetInf->Pos;
-			}
-		}
-		else if (Distance(TargetInf->Pos,AirPlaneInf->Pos) < 80)//6
-		{
-			if (ItemInf->Type)
 				tar = ItemInf->Pos;
+			}
+			else if (AirPlaneInf->Control || EmyEstimate->ControlUAV)//7,8
+			{
+				if (AirPlaneInf->Control) //8
+				{
+					if (!ItemInf->Type)
+						tar = TargetInf->Pos;
+				}
+				else //7
+				{
+					tar = TargetInf->Pos;
+				}
+			}
+			else if (Distance(TargetInf->Pos,AirPlaneInf->Pos) < 80)//6
+			{
+				if (ItemInf->Type)
+					tar = ItemInf->Pos;
+			}
 		}
 	}
 	//Addition1-2
@@ -134,7 +137,11 @@ void Decision_MoveControl_Final(void)
 	//3
 	if (ItemInf->Type == ITEM_LIFE)
 	{
-		tar = ItemInf->Pos;
+		if (POS_EQUAL(EmyEstimate->TarPos,ItemInf->Pos)
+			&& EmyEstimate->TimeEstimate > 1.5 * Distance(MyInf->Pos,ItemInf->Pos) / MyEstimate->MaxSpeed)
+			;
+		else
+			tar = ItemInf->Pos;
 	}
 
 	//2

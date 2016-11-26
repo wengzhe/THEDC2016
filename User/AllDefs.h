@@ -38,7 +38,7 @@
 //#define MAX_SPEED_VOLTAGE_R 8.5 //919 8.0
 //Car2
 #define MAX_SPEED_VOLTAGE_L 9.5 //957 9.5
-#define MAX_SPEED_VOLTAGE_R 8.8 //974 8.8
+#define MAX_SPEED_VOLTAGE_R 9.5 //974 8.8
 //#define SPEED_BYPASS //jump the speed and just set pwm, need to minus the speed to stop exactly
 
 //MOTOR
