@@ -305,7 +305,7 @@ void EL_POINTS_Run(void)
 				int16_t x = EL_POINTS_MyPos.x + IR_DIS*sinf(Angle);
 				int16_t y = EL_POINTS_MyPos.y + IR_DIS*cosf(Angle);
 			
-				if (pIR->Color[i] == (uint8_t)TargetColor - 1
+				if (pIR->Avaliable[i] && pIR->Color[i] == (uint8_t)TargetColor - 1
 						&& (CHECK_BORDER(x) && CHECK_BORDER(y))
 						&& fabs(MinusDegree180(CL_ANGLE_GetDegreeAbs() + (uint8_t)RunDir * 180,pIR->Angle[i])) < 90)
 				{

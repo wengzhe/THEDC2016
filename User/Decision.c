@@ -74,9 +74,18 @@ void Decision_MoveControl_Final(void)
 		}
 	}
 	
-	//11
+	//12
 	if (TargetInf->Black == 0)
 		tar = AirPlaneInf->Pos;
+
+	//11
+	if (TargetInf->Black == 0 && AirPlaneInf->Control)
+	{
+		if (Distance(MyInf->Pos, AirPlaneInf->Pos) > AIRPLANE_HEAL_RANGE)
+			tar = AirPlaneInf->Pos;
+		else
+			tar = EmyInf->Pos;
+	}
 	
 	//10
 	if(TargetInf->Exist)
@@ -125,7 +134,7 @@ void Decision_MoveControl_Final(void)
 		}
 	}
 	//Addition1-2
-	if (EmyInf->HP < KILL_LIFE_LINE)
+	if (EmyInf->HP <= KILL_LIFE_LINE)
 	{
 		if (TargetInf->Black == 0 && ItemInf->Type == ITEM_CHANGE //4.4
 			&& (AirPlaneInf->Control || Distance(AirPlaneInf->Pos, EmyInf->Pos) < AIRPLANE_ATTACK_RANGE))
@@ -140,7 +149,8 @@ void Decision_MoveControl_Final(void)
 	if (ItemInf->Type == ITEM_LIFE)
 	{
 		if (Distance(EmyEstimate->TarPos,ItemInf->Pos) < ESTIMATE_DIS_SAME
-			&& EmyEstimate->TimeEstimate * 1.5 < 10 * Distance(MyInf->Pos,ItemInf->Pos) / MyEstimate->MaxSpeed)
+			&& EmyEstimate->TimeEstimate * 1.5 < 10 * Distance(MyInf->Pos,ItemInf->Pos) / MyEstimate->MaxSpeed
+			&& EmyInf->HP > KILL_LIFE_LINE)
 			;
 		else
 			tar = ItemInf->Pos;
@@ -349,35 +359,27 @@ void Decision_MoveControl(void)
 
 void Decision_FlightControl(void)
 {
-	Point_t tar, MyNearestTarget = {128,128};
+	Point_t tar;
 	if(AirPlaneInf->Control)
 	{
-		if (ItemInf->Type && ItemInf->Type != ITEM_CHANGE)
-		{
-			if (Distance(ItemInf->Pos, AirPlaneInf->Pos) < Distance(MyNearestTarget, AirPlaneInf->Pos))
-				MyNearestTarget = ItemInf->Pos;
-		}
-		if (TargetInf->Exist)
-		{
-			if (Distance(TargetInf->Pos, AirPlaneInf->Pos) < Distance(MyNearestTarget, AirPlaneInf->Pos))
-				MyNearestTarget = TargetInf->Pos;
-		}
 		if (TargetInf->Black) //attack
 		{
 			tar = EmyEstimate->TarPos;
 			if (Distance(tar, ItemInf->Pos) <= ESTIMATE_DIS_SAME && ItemInf->Type == ITEM_CHANGE)
 			{
-				tar = MyNearestTarget;
+				tar = MyTarget;
 			}
-			else if (Distance(tar, MyTarget) <= ESTIMATE_DIS_SAME)
+			else if (Distance(MyInf->Pos, EmyInf->Pos) > AIRPLANE_ATTACK_RANGE)
 			{
-				//int16_t dx = (int16_t)EmyInf->Pos.x - (int16_t)MyTarget.x;
-				//int16_t dy = (int16_t)EmyInf->Pos.y - (int16_t)MyTarget.y;
+				tar = EmyInf->Pos;
+				if ((Distance(MyInf->Pos, EmyEstimate->TarPos) > AIRPLANE_ATTACK_RANGE))
+					tar = EmyEstimate->TarPos;
+			}
+			else
+			{
 				int16_t dx = (int16_t)EmyInf->Pos.x - (int16_t)MyInf->Pos.x;
 				int16_t dy = (int16_t)EmyInf->Pos.y - (int16_t)MyInf->Pos.y;
 				float scale = (float)(AIRPLANE_ATTACK_RANGE + 10) / sqrtf(dx*dx+dy*dy);
-				//dx = MyTarget.x + dx*scale;
-				//dy = MyTarget.y + dy*scale;
 				dx = MyInf->Pos.x + dx*scale;
 				dy = MyInf->Pos.y + dy*scale;
 				tar.x = dx > 255 ? 255 : dx < 0 ? 0 : dx;
@@ -386,22 +388,22 @@ void Decision_FlightControl(void)
 		}
 		else //heal
 		{
-			tar = MyNearestTarget;
-			if (Distance(tar, EmyEstimate->TarPos) <= ESTIMATE_DIS_SAME)
+			if (Distance(MyInf->Pos, EmyInf->Pos) > AIRPLANE_HEAL_RANGE)
+				tar = MyInf->Pos;
+			else if (Distance(MyInf->Pos, AirPlaneInf->Pos) <= AIRPLANE_HEAL_RANGE)
 			{
 				int16_t dx = (int16_t)MyInf->Pos.x - (int16_t)EmyInf->Pos.x;
 				int16_t dy = (int16_t)MyInf->Pos.y - (int16_t)EmyInf->Pos.y;
 				float scale = (float)(AIRPLANE_HEAL_RANGE - 10) / sqrtf(dx*dx+dy*dy);
-				//dx = MyTarget.x + dx*scale;
-				//dy = MyTarget.y + dy*scale;
 				dx = MyInf->Pos.x + dx*scale;
 				dy = MyInf->Pos.y + dy*scale;
 				tar.x = dx > 255 ? 255 : dx < 0 ? 0 : dx;
 				tar.y = dy > 255 ? 255 : dy < 0 ? 0 : dy;
 			}
+			else
+				tar = MyInf->Pos;
 		}
 		EL_POINTS_SetFlightPos(tar);
-		//EL_POINTS_SetFlightPos(MyInf->Pos);
 	}
 }
 

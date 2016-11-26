@@ -103,6 +103,20 @@ void EL_INF_CalcEstimate(EL_INF_PlayerEstimate_t *result, EL_INF_PlayerTrack_t *
 	{
 		result->LifeChangeSpeed += result->LifeChangeSpeed > 0 ? 1 : -1;
 	}
+	result->HurtSpeedByTarget = result->LifeChangeSpeed;
+	if (track[p2].PlayerInf.OutOfBound)
+		result->HurtSpeedByTarget+=4;
+	result->LifeChangeByPlane = 0;
+	if (EL_INF_TargetInf.Black == 0 && Distance(track[p2].PlayerInf.Pos, EL_INF_AirPlaneInf.Pos) < AIRPLANE_HEAL_RANGE)
+		result->LifeChangeByPlane = 4;
+	if (EL_INF_TargetInf.Black == 1 && Distance(track[p2].PlayerInf.Pos, EL_INF_AirPlaneInf.Pos) < AIRPLANE_ATTACK_RANGE)
+		result->LifeChangeByPlane = -8;
+	result->HurtSpeedByTarget -= result->LifeChangeByPlane;
+	
+	if (result->HurtSpeedByTarget <= -6)
+		result->HurtSpeedByTarget = -8;
+	else
+		result->HurtSpeedByTarget = result->HurtSpeedByTarget >= 0 ? 0 : -2;
 	
 	//Speed: Calc form Dir
 	result->Speed = sqrtf((result->Dir_x)*(result->Dir_x) + (result->Dir_y)*(result->Dir_y)) / deltaTime;
@@ -189,7 +203,6 @@ void EL_INF_ProcessData(const CL_COM_Data_t *p)
 	Pot_Cnt = 0;
 	
 	EL_INF_GameInf.Status = p->GameStatus;
-	EL_INF_GameInf.Time = p->GameTime;
 	EL_INF_GameInf.ID = p->ID;
 	
 	if (EL_INF_ItemInf.Type && !p->ItemType)
@@ -234,6 +247,7 @@ void EL_INF_ProcessData(const CL_COM_Data_t *p)
 	
 	EL_INF_EmyInf.HP = p->EmyHP;
 	EL_INF_EmyInf.Pos = p->EmyPos;
+	EL_INF_EmyInf.OutOfBound = (EL_INF_EmyInf.Pos.x == 0) || (EL_INF_EmyInf.Pos.x == 255) || (EL_INF_EmyInf.Pos.y == 0) || (EL_INF_EmyInf.Pos.y == 255);
 
 	PotentialTarget[Pot_Cnt++] = EL_INF_EmyInf.Pos;
 	
@@ -245,6 +259,13 @@ void EL_INF_ProcessData(const CL_COM_Data_t *p)
 	if (EL_INF_GameInf.Status == GAME_START) //Track
 	{
 		EL_INF_SetTrack();
+		if (!EL_INF_TargetInf.Exist)
+			EL_INF_TargetInf.TotalHurtLeft = 400;
+		else
+		{
+			EL_INF_TargetInf.TotalHurtLeft -= (p->GameTime - EL_INF_GameInf.Time) * EL_INF_EmyEstimate.HurtSpeedByTarget;
+			EL_INF_TargetInf.TotalHurtLeft -= (p->GameTime - EL_INF_GameInf.Time) * (EL_INF_AdditionInf.HugeHurt * 8 + EL_INF_AdditionInf.LittleHurt * 2);
+		}
 	}
 #ifdef INF_STOP_CLEAR_TRACK
 	else if (EL_INF_GameInf.Status != GAME_PAUSE)
@@ -252,6 +273,7 @@ void EL_INF_ProcessData(const CL_COM_Data_t *p)
 		EL_INF_TrackClear();
 	}
 #endif
+	EL_INF_GameInf.Time = p->GameTime;
 }
 
 void EL_INF_Init(void)

@@ -26,9 +26,12 @@ typedef struct
 	uint8_t TimeEstimate; //10/s
 	Point_t TarPos;
 	
-	uint8_t ItemEatenCnt;
 	uint8_t ControlUAV;
 	int8_t LifeChangeSpeed;
+	int8_t LifeChangeByPlane;
+	int8_t HurtSpeedByTarget;
+	
+	uint8_t ItemEatenCnt;
 }EL_INF_PlayerEstimate_t;
 
 #define UAV_CONTROL_TIME 100
@@ -59,6 +62,7 @@ typedef struct
 	Point_t Pos;
 	uint8_t Black;
 	uint8_t Exist;					//-40/Target
+	int16_t TotalHurtLeft;
 	uint8_t BeDamaged;
 }EL_INF_TargetInf_t;
 

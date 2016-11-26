@@ -103,7 +103,7 @@ void CL_MAP_GetPos(const DL_UART_Data_t* DataIN)
 			int16_t y = DataIN->MyPos.y + IR_DIS*cosf(Angle);
 			//x = x > 255 ? 255 : x < 0 ? 0 : x;
 			//y = y > 255 ? 255 : y < 0 ? 0 : y;
-			if (x >= 0 && x <= 255 && y >= 0 && y <= 255)
+			if (CL_MAP_IR.Avaliable[i] && x >= 0 && x <= 255 && y >= 0 && y <= 255)
 				CL_MAP_SetColor(x,y,CL_MAP_IR.Color[i]);
 		}
 	}
@@ -144,7 +144,12 @@ void CL_MAP_Tick(void)
 	uint8_t i, IR_Data=DL_IR_GetStatus();
 	for (i=0; i<IR_NUM; i++)
 	{
+		CL_MAP_Color_t Color = (CL_MAP_Color_t)((IR_Data>>i)&0x01);
 		CL_MAP_IR.Angle[i] = AddDegree180(HeadAngle,AngleIncrement[i]);
-		CL_MAP_IR.Color[i] = (CL_MAP_Color_t)((IR_Data>>i)&0x01);
+		if (Color != CL_MAP_IR.Color[i])
+		{
+			CL_MAP_IR.Color[i]= Color;
+			CL_MAP_IR.Avaliable[i]=1;
+		}
 	}
 }

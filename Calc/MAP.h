@@ -18,6 +18,7 @@ typedef struct
 {
 	float Angle[IR_NUM];
 	CL_MAP_Color_t Color[IR_NUM];
+	uint8_t Avaliable[IR_NUM];
 }CL_MAP_IR_t;
 
 void CL_MAP_Init(void);
