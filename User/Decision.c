@@ -55,7 +55,7 @@ const Point_t StopPoints[9] = {{128,128},{168,128},{128,168},{88,128},{128,88},{
 //Final:We need consider the enemy's move, see "±ÈÈü²ßÂÔ.docx"
 void Decision_MoveControl_Final(void)
 {
-	Point_t tar, MyPos;
+	Point_t tar, MyPos, tarFinal;
 	EL_POINTS_Color_t Color_Set = POINTS_None;
 	uint8_t MinDis = 19, i;
 	float NearestStopPointDis = 500;
@@ -83,6 +83,8 @@ void Decision_MoveControl_Final(void)
 	{
 		tar = TargetInf->Pos;
 	}
+	
+	tarFinal = tar;
 	
 	//9
 	if (ItemInf->Type != ITEM_NULL)
@@ -170,9 +172,15 @@ void Decision_MoveControl_Final(void)
 	{
 		MyDisSetNow = QueueNode.MinDis = MinDis;
 		QueueNode.StopTime = 1;
-		MyTarget = QueueNode.Target = tar;
-		ColorSetNow = Color_Set;
+		MyTarget = QueueNode.Target = tarFinal;
 		EL_POINTS_InsertShadowStack(QueueNode);
+		if (!POS_EQUAL(tar,tarFinal))
+		{
+			QueueNode.StopTime = 0;
+			MyTarget = QueueNode.Target = tar;
+			EL_POINTS_InsertShadowStack(QueueNode);
+		}
+		ColorSetNow = Color_Set;
 		EL_POINTS_SetColor(Color_Set);
 		if (Color_Set)
 		{
