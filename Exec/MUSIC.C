@@ -239,8 +239,8 @@ void EL_MUSIC_Init(void)
 	CL_COM_SetRxFunc(GetGameStatus);
 	GameStatus = CL_COM_GetData()->GameStatus;
 	EL_MUSIC_ChangeStatus(Stop,0);
-	if (GameStatus!=GAME_START)
-		CL_SPEED_SetCalibration_Type(Run);
+	//if (GameStatus!=GAME_START)
+	CL_SPEED_SetCalibration_Type(Run);
 	while(CL_SPEED_SetCalibration_Type(Run1) && GameStatus!=GAME_START);
 	while(CL_SPEED_SetCalibration_Type(Tone) && GameStatus!=GAME_START);
 	if (GameStatus!=GAME_START)
@@ -261,7 +261,8 @@ void EL_MUSIC_Init(void)
 		}
 		if (CL_SPEED_CheckCalibration())
 		{
-			EL_MUSIC_ChangeStatus(Info,0);
+			if (CL_SPEED_CheckCalibration() == 1)
+				EL_MUSIC_ChangeStatus(Info,0);
 			CL_SPEED_ClearCalibration();
 		}
 	}
