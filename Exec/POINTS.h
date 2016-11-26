@@ -57,6 +57,6 @@ void EL_POINTS_SetMinDistance(uint8_t dis);
 void EL_POINTS_DirectTarget(Point_t tar);
 void EL_POINTS_StopTarget(void);
 
-void EL_POINTS_Tick(void);
+void EL_POINTS_Tick(uint32_t time);
 void EL_POINTS_SetFlightPos(const Point_t tar);
 #endif

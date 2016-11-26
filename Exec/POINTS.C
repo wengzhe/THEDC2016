@@ -390,7 +390,7 @@ void EL_POINTS_SetMinDistance(uint8_t dis)
 	TargetMinDis = dis;
 }
 
-void EL_POINTS_Tick(void)
+void EL_POINTS_Tick(uint32_t time)
 {
 #if !defined(NO_RUN) && !defined(JUMP_POINTS)
 	if (EL_POINTS_GameStatus == GAME_WAIT || EL_POINTS_GameStatus == GAME_STOP)
@@ -402,7 +402,8 @@ void EL_POINTS_Tick(void)
 	{
 		//Distance change slow, but angle change fast
 		EL_POINTS_Run();
-		CL_COM_SendPos(FlightPos);
+		//if (time % 50 == 0)
+			CL_COM_SendPos(FlightPos);
 	}
 	else
 	{

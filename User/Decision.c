@@ -51,17 +51,32 @@ uint8_t CheckInfDiff(void)
 		return 0;
 }
 
+const Point_t StopPoints[9] = {{128,128},{168,128},{128,168},{88,128},{128,88},{168,168},{168,88},{88,88},{88,168}};
 //Final:We need consider the enemy's move, see "±ÈÈü²ßÂÔ.docx"
 void Decision_MoveControl_Final(void)
 {
 	Point_t tar, MyPos;
 	EL_POINTS_Color_t Color_Set = POINTS_None;
-	uint8_t MinDis = 19;
+	uint8_t MinDis = 19, i;
+	float NearestStopPointDis = 500;
 	MyPos = MyInf->Pos;
 	
+	//12
+	//tar.x = 128;
+	//tar.y = 128;
+	for (i = 0; i < 9; i++)
+	{
+		if (Distance(AirPlaneInf->Pos, StopPoints[i]) > AIRPLANE_ATTACK_RANGE
+			&& NearestStopPointDis > Distance(MyInf->Pos, StopPoints[i]))
+		{
+			tar = StopPoints[i];
+			NearestStopPointDis = Distance(MyInf->Pos, StopPoints[i]);
+		}
+	}
+	
 	//11
-	tar.x = 128;
-	tar.y = 128;
+	if (TargetInf->Black == 0)
+		tar = AirPlaneInf->Pos;
 	
 	//10
 	if(TargetInf->Exist)
@@ -78,7 +93,7 @@ void Decision_MoveControl_Final(void)
 	//4-8
 	if (TargetInf->Black == 0)//white
 	{
-		tar = TargetInf->Pos;
+		tar = TargetInf->Pos; //4
 	}
 	else//black
 	{
@@ -104,7 +119,18 @@ void Decision_MoveControl_Final(void)
 				tar = ItemInf->Pos;
 		}
 	}
-
+	//Addition1-2
+	if (EmyInf->HP < KILL_LIFE_LINE)
+	{
+		if (TargetInf->Black == 0 && ItemInf->Type == ITEM_CHANGE //4.4
+			&& (AirPlaneInf->Control || Distance(AirPlaneInf->Pos, EmyInf->Pos) < AIRPLANE_ATTACK_RANGE))
+		{
+			tar = ItemInf->Pos;
+		}
+		else if (TargetInf->Exist)
+			tar = TargetInf->Pos;
+	}
+	
 	//3
 	if (ItemInf->Type == ITEM_LIFE)
 	{

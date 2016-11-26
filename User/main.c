@@ -27,7 +27,7 @@ int main()
 	Decision_Init();
 
 	EL_MUSIC_ChangeStatus(Music,7);
-	EL_MUSIC_SetPause(0);
+	//EL_MUSIC_SetPause(0);
 	//EL_MUSIC_ChangeMode(Single);
 	//EL_MUSIC_ChangeMode(Order);
 	//EL_MUSIC_ChangeMode(Once);
