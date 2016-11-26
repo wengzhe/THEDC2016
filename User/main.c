@@ -4,6 +4,7 @@
 #include "sysconfig.h"
 #include "Decision.h"
 #include "music.h"
+#include "speed.h"
 
 //uint32_t T2,T3;
 
@@ -38,6 +39,7 @@ int main()
 			k = !k;
 			GPIO_WriteBit(GPIOD, GPIO_Pin_2, (BitAction)k);
 		}
-		Decision_MakeDecision();
+		//Decision_MakeDecision();
+		CL_SPEED_SetSpeed(50,50);
 	}
 }

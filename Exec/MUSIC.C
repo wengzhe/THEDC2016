@@ -196,7 +196,9 @@ void EL_MUSIC_Tick(uint32_t time)
 	switch(EL_MUSIC_Ctrl.Type)
 	{
 		case Alarm:
+#ifndef BIG_VOICE
 			CL_TONE_Enable();
+#endif
 			EL_MUSIC_Alarm(time);
 			break;
 		case Start:

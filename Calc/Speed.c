@@ -74,7 +74,7 @@ uint8_t CL_SPEED_CheckCalibration(void)
 #ifndef SPEED_BYPASS
 	uint8_t i;
 	CL_SPEED_CheckCalibration_Result = 1;
-	if (mabs(Center_Voltage[0][0],Center_Voltage[0][1]) > 10)
+	if (mabs(Center_Voltage[0][0],Center_Voltage[0][1]) > 15)
 		return 1;
 	for (i=1; i<4;i++)
 	{
