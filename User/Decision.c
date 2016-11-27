@@ -226,7 +226,7 @@ void Decision_MoveControl_Final(void)
 		EL_POINTS_InsertShadowStack(QueueNode);
 		if (!POS_EQUAL(tar,tarFinal))
 		{
-			QueueNode.MinDis = MinDis == 0 ? 1 : MinDis;
+			QueueNode.MinDis = 19;
 			QueueNode.StopTime = 0;
 			MyTarget = QueueNode.Target = tar;
 			EL_POINTS_InsertShadowStack(QueueNode);

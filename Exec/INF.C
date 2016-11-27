@@ -201,6 +201,16 @@ void EL_INF_TrackClear(void)
 	EL_INF_EmyEstimate.AverageSpeedSum = 0;
 }
 
+void EL_INF_TrackPause(void)
+{
+	uint8_t p;
+	for (p = 0; p < TRACK_SIZE; p++)
+	{
+		EL_INF_MyTrack[p].Time = EL_INF_EmyTrack[p].Time = 0;
+	}
+	p_Track = 0;
+}
+
 void EL_INF_ProcessData(const CL_COM_Data_t *p)
 {
 	Pot_Cnt = 0;
@@ -275,6 +285,8 @@ void EL_INF_ProcessData(const CL_COM_Data_t *p)
 	{
 		EL_INF_TrackClear();
 	}
+	else
+		EL_INF_TrackPause();
 #endif
 	EL_INF_GameInf.Time = p->GameTime;
 }
