@@ -150,6 +150,13 @@ void CL_MAP_Tick(void)
 		{
 			CL_MAP_IR.Color[i]= Color;
 			CL_MAP_IR.Avaliable[i]=1;
+			CL_MAP_IR.NoDataCnt[i]=0;
+		}
+		else
+		{
+			CL_MAP_IR.NoDataCnt[i]++;
+			if (CL_MAP_IR.NoDataCnt[i] > IR_NODATA_FAIL_TIME)
+				CL_MAP_IR.Avaliable[i]=0;
 		}
 	}
 }

@@ -91,7 +91,7 @@ Point_t CheckTarget(float Dir_x, float Dir_y, Point_t Pos, float *dis)
 void EL_INF_CalcEstimate(EL_INF_PlayerEstimate_t *result, EL_INF_PlayerTrack_t *track, uint8_t p1, uint8_t p2)
 {
 	float deltaTime = (track[p2].Time - track[p1].Time) / 1000.;
-	float Dis_Pos_Tar = 0;
+	float Dis_Pos_Tar = 0, SpeedToEst = 0;
 	
 	//Dir: 4:1
 	result->Dir_x = result->Dir_x * 0.5 + ((float)track[p2].PlayerInf.Pos.x - (float)track[p1].PlayerInf.Pos.x) * 0.5;
@@ -140,7 +140,10 @@ void EL_INF_CalcEstimate(EL_INF_PlayerEstimate_t *result, EL_INF_PlayerTrack_t *
 	
 	//Target & Time
 	result->TarPos = CheckTarget(result->Dir_x, result->Dir_y, track[p2].PlayerInf.Pos, &Dis_Pos_Tar);
-	result->TimeEstimate = Dis_Pos_Tar * 20 / (result->MaxSpeed + result->Speed);
+	SpeedToEst = result->AverageSpeed * 2 + result->Speed;
+	if (SpeedToEst < result->Speed * 2)
+		SpeedToEst = result->Speed * 2;
+	result->TimeEstimate = Dis_Pos_Tar * 20 / SpeedToEst;
 }
 
 void EL_INF_SetTrack(uint16_t dt)

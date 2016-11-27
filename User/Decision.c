@@ -119,6 +119,8 @@ void Decision_MoveControl_Final(void)
 					dy = AirPlaneInf->Pos.y + dy*scale;
 					tar.x = dx > 255 ? 255 : dx < 0 ? 0 : dx;
 					tar.y = dy > 255 ? 255 : dy < 0 ? 0 : dy;
+					if (Distance(EmyInf->Pos,TargetInf->Pos) > 20)
+						tar = CheckNearestColor(tar,0,10,0); //try to not be damaged
 					tarFinal = tar;
 					MinDis = 0;
 				}
