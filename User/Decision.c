@@ -52,6 +52,7 @@ uint8_t CheckInfDiff(void)
 }
 
 const Point_t StopPoints[9] = {{128,128},{168,128},{128,168},{88,128},{128,88},{168,168},{168,88},{88,88},{88,168}};
+u8 FlightToTarget = 0;
 //Final:We need consider the enemy's move, see "±ÈÈü²ßÂÔ.docx"
 void Decision_MoveControl_Final(void)
 {
@@ -60,6 +61,7 @@ void Decision_MoveControl_Final(void)
 	uint8_t MinDis = 19, i;
 	float NearestStopPointDis = 500;
 	MyPos = MyInf->Pos;
+	FlightToTarget = 0;
 	
 	//12
 	//tar.x = 128;
@@ -123,6 +125,7 @@ void Decision_MoveControl_Final(void)
 						tar = CheckNearestColor(tar,0,10,0); //try to not be damaged
 					tarFinal = tar;
 					MinDis = 0;
+					FlightToTarget = 1;
 				}
 				else
 					tar = TargetInf->Pos;
@@ -406,7 +409,9 @@ void Decision_FlightControl(void)
 		if (TargetInf->Black) //attack
 		{
 			tar = EmyEstimate->TarPos;
-			if (Distance(tar, ItemInf->Pos) <= ESTIMATE_DIS_SAME && ItemInf->Type == ITEM_CHANGE)
+			if (FlightToTarget)
+				tar = TargetInf->Pos;
+			else if (Distance(tar, ItemInf->Pos) <= ESTIMATE_DIS_SAME && ItemInf->Type == ITEM_CHANGE)
 			{
 				tar = MyTarget;
 			}
@@ -429,7 +434,9 @@ void Decision_FlightControl(void)
 		}
 		else //heal
 		{
-			if (Distance(MyInf->Pos, EmyInf->Pos) > AIRPLANE_HEAL_RANGE)
+			if (FlightToTarget)
+				tar = TargetInf->Pos;
+			else if (Distance(MyInf->Pos, EmyInf->Pos) > AIRPLANE_HEAL_RANGE)
 				tar = MyInf->Pos;
 			else if (Distance(MyInf->Pos, AirPlaneInf->Pos) <= AIRPLANE_HEAL_RANGE)
 			{

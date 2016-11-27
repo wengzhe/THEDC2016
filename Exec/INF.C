@@ -140,7 +140,7 @@ void EL_INF_CalcEstimate(EL_INF_PlayerEstimate_t *result, EL_INF_PlayerTrack_t *
 	
 	//Target & Time
 	result->TarPos = CheckTarget(result->Dir_x, result->Dir_y, track[p2].PlayerInf.Pos, &Dis_Pos_Tar);
-	SpeedToEst = result->AverageSpeed * 2 + result->Speed;
+	SpeedToEst = result->AverageSpeed + result->MaxSpeed/2 + result->Speed;
 	if (SpeedToEst < result->Speed * 2)
 		SpeedToEst = result->Speed * 2;
 	result->TimeEstimate = Dis_Pos_Tar * 20 / SpeedToEst;
