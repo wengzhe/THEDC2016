@@ -72,7 +72,7 @@
 //#define PLAYMUSIC_ATSTART //play when start (will not set any target, no run needed)
 //#define FINAL_EASY //use easy logic instead of default final logic
 #define KILL_LIFE_LINE 50 //if enemy's HP is lower than this, try to kill him
-#define P_TIME_TO_FIGHT 1.4f //if my time is less than this, try to fight
+#define P_TIME_TO_FIGHT 1.3f //if my time is less than this, try to fight
 
 //POINTS.C MUSIC.C Speed.c
 //#define GAME_STATUS_START //SetGameStatus to start
