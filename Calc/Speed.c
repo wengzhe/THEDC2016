@@ -162,6 +162,8 @@ void CL_SPEED_CalPWM(void)
 	SpeedDiff[1] = Speed_Set[1] - CL_SPEED_SpeedNow[1];
 	PWM[0] = TargetPWM[0] * pow((double)Speed_Set[0] / CL_SPEED_SpeedNow[0],2) + SpeedDiff[0] / 2;
 	PWM[1] = TargetPWM[1] * pow((double)Speed_Set[1] / CL_SPEED_SpeedNow[1],2) + SpeedDiff[1] / 2;
+	PWM[0] = Speed_Set[0] == 100 ? 200 : Speed_Set[0] == -100 ? -200 : PWM[0];
+	PWM[1] = Speed_Set[1] == 100 ? 200 : Speed_Set[1] == -100 ? -200 : PWM[1];
 	if (abs(PWM[0]) > 200)
 		PWM[0] = PWM[0] > 0 ? 200 : -200;
 	if (abs(PWM[1]) > 200)

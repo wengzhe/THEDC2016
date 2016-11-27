@@ -107,26 +107,48 @@ void Decision_MoveControl_Final(void)
 		if (TargetInf->Black == 0)//white
 		{
 			tar = TargetInf->Pos; //4
-			//Addition3
+			//Addition4
+			if (Distance(AirPlaneInf->Pos,TargetInf->Pos) > AIRPLANE_HEAL_RANGE)
 			{
-				if (ItemInf->Type == ITEM_PLANE && Distance(EmyEstimate->TarPos,TargetInf->Pos) < ESTIMATE_DIS_SAME)
+				if (Distance(AirPlaneInf->Pos,MyInf->Pos) < Distance(MyInf->Pos,TargetInf->Pos) + AIRPLANE_HEAL_RANGE)
 				{
-					uint16_t HurtLeft = TargetInf->TotalHurtLeft;//the hurt left when I got to Target
-					uint16_t MyTimeToTarget = 10 * Distance(MyInf->Pos,TargetInf->Pos) / MyEstimate->MaxSpeed;
-					if (MyTimeToTarget > EmyEstimate->TimeEstimate)
-						HurtLeft -= EmyEstimate->TimeEstimate*4 + (MyTimeToTarget-EmyEstimate->TimeEstimate)*8;
-					else
-						HurtLeft -= MyTimeToTarget*4;
-					if (HurtLeft < 160)
-						tar = ItemInf->Pos;
+					int16_t dx = (int16_t)TargetInf->Pos.x - (int16_t)AirPlaneInf->Pos.x;
+					int16_t dy = (int16_t)TargetInf->Pos.y - (int16_t)AirPlaneInf->Pos.y;
+					float scale = (float)(AIRPLANE_HEAL_RANGE - 10) / sqrtf(dx*dx+dy*dy);
+					dx = AirPlaneInf->Pos.x + dx*scale;
+					dy = AirPlaneInf->Pos.y + dy*scale;
+					tar.x = dx > 255 ? 255 : dx < 0 ? 0 : dx;
+					tar.y = dy > 255 ? 255 : dy < 0 ? 0 : dy;
+					tarFinal = tar;
+					MinDis = 0;
 				}
+				else
+					tar = TargetInf->Pos;
+			}
+			//Addition3
+			if (ItemInf->Type == ITEM_PLANE && Distance(EmyEstimate->TarPos,TargetInf->Pos) < ESTIMATE_DIS_SAME)
+			{
+				uint16_t HurtLeft = TargetInf->TotalHurtLeft;//the hurt left when I got to Target
+				uint16_t MyTimeToTarget = 10 * Distance(MyInf->Pos,TargetInf->Pos) / MyEstimate->MaxSpeed;
+				if (MyTimeToTarget > EmyEstimate->TimeEstimate)
+					HurtLeft -= EmyEstimate->TimeEstimate*4 + (MyTimeToTarget-EmyEstimate->TimeEstimate)*8;
+				else
+					HurtLeft -= MyTimeToTarget*4;
+				if (HurtLeft < 160)
+					tar = ItemInf->Pos;
 			}
 		}
 		else//black
 		{
 			if (ItemInf->Type == ITEM_PLANE)//5
 			{
-				tar = ItemInf->Pos;
+				if (Distance(EmyEstimate->TarPos,ItemInf->Pos) < ESTIMATE_DIS_SAME
+						&& (float)EmyEstimate->TimeEstimate * P_TIME_TO_FIGHT < 10 * Distance(MyInf->Pos,ItemInf->Pos) / (float)MyEstimate->MaxSpeed)//cannot get
+				{
+					tar = TargetInf->Pos;
+				}
+				else
+					tar = ItemInf->Pos;
 			}
 			else if (AirPlaneInf->Control || EmyEstimate->ControlUAV)//7,8
 			{
@@ -148,7 +170,7 @@ void Decision_MoveControl_Final(void)
 		}
 	}
 	//Addition1-2
-	if (EmyInf->HP <= KILL_LIFE_LINE)
+	if (EmyInf->HP <= KILL_LIFE_LINE && EmyInf->HP < MyInf->HP)
 	{
 		if (TargetInf->Black == 0 && ItemInf->Type == ITEM_CHANGE //4.4
 			&& (AirPlaneInf->Control || Distance(AirPlaneInf->Pos, EmyInf->Pos) < AIRPLANE_ATTACK_RANGE))
@@ -163,7 +185,7 @@ void Decision_MoveControl_Final(void)
 	if (ItemInf->Type == ITEM_LIFE)
 	{
 		if (Distance(EmyEstimate->TarPos,ItemInf->Pos) < ESTIMATE_DIS_SAME
-			&& EmyEstimate->TimeEstimate * 1.5 < 10 * Distance(MyInf->Pos,ItemInf->Pos) / MyEstimate->MaxSpeed
+			&& (float)EmyEstimate->TimeEstimate * P_TIME_TO_FIGHT < 10 * Distance(MyInf->Pos,ItemInf->Pos) / (float)MyEstimate->MaxSpeed
 			&& EmyInf->HP > KILL_LIFE_LINE)
 			;
 		else
@@ -195,11 +217,14 @@ void Decision_MoveControl_Final(void)
 	if (!POS_EQUAL(tar, MyTarget) || ColorSetNow != Color_Set || MyDisSetNow != MinDis)
 	{
 		MyDisSetNow = QueueNode.MinDis = MinDis;
+		if (QueueNode.MinDis > 5)
+			QueueNode.MinDis = 5;//Final target need to be near
 		QueueNode.StopTime = 1;
 		MyTarget = QueueNode.Target = tarFinal;
 		EL_POINTS_InsertShadowStack(QueueNode);
 		if (!POS_EQUAL(tar,tarFinal))
 		{
+			QueueNode.MinDis = MinDis;
 			QueueNode.StopTime = 0;
 			MyTarget = QueueNode.Target = tar;
 			EL_POINTS_InsertShadowStack(QueueNode);
@@ -435,7 +460,7 @@ void Decision_Init(void)
 	MyEstimate = EL_INF_GetMyEstimate();
 	EmyEstimate = EL_INF_GetEmyEstimate();
 
-	EL_MUSIC_ChangeStatus(Music,6);
+	EL_MUSIC_ChangeStatus(Music,7);
 	EL_MUSIC_ChangeMode(Random);
 	EL_MUSIC_SetPause(1);
 

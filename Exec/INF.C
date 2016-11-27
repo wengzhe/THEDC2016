@@ -280,6 +280,7 @@ void EL_INF_Init(void)
 {
 	CL_COM_SetRxFunc(EL_INF_ProcessData);
 	EL_INF_GameInf.Map = CL_MAP_GetMap();
+	EL_INF_MyEstimate.MaxSpeed = 80;
 }
 
 EL_INF_PlayerInf_t *EL_INF_GetMyInf(void)

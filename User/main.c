@@ -42,6 +42,6 @@ int main()
 		}
 		Decision_MakeDecision();
 		//CL_SPEED_SetSpeed(100,100);
-		//DL_PWM_SetPulse(-200,-200);
+		//DL_PWM_SetPulse(200,200);
 	}
 }

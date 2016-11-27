@@ -241,17 +241,17 @@ void EL_MUSIC_Init(void)
 	EL_MUSIC_ChangeStatus(Stop,0);
 	//if (GameStatus!=GAME_START)
 	CL_SPEED_SetCalibration_Type(Run);
-	while(CL_SPEED_SetCalibration_Type(Run1) && GameStatus!=GAME_START);
-	while(CL_SPEED_SetCalibration_Type(Tone) && GameStatus!=GAME_START);
-	if (GameStatus!=GAME_START)
-		EL_MUSIC_ChangeStatus(Test,0);
-	while(CL_SPEED_SetCalibration_Type(Run2) && GameStatus!=GAME_START);
+	//while(CL_SPEED_SetCalibration_Type(Run1) && GameStatus!=GAME_START);
+	//while(CL_SPEED_SetCalibration_Type(Tone) && GameStatus!=GAME_START);
+	//if (GameStatus!=GAME_START)
+		//EL_MUSIC_ChangeStatus(Test,0);
+	//while(CL_SPEED_SetCalibration_Type(Run2) && GameStatus!=GAME_START);
 	while(CL_SPEED_SetCalibration_Type(Run) && GameStatus!=GAME_START);
 	while(CL_SPEED_SetCalibration_Type(None));
 	if (CL_SPEED_CheckCalibration())
 	{
 		uint8_t i;
-		for (i=0; i<5 && CL_SPEED_CheckCalibration() && GameStatus!=GAME_START; i++)
+		for (i=0; i<2 && CL_SPEED_CheckCalibration() && GameStatus!=GAME_START; i++)
 		{
 			CL_SPEED_Calibration_t num = (CL_SPEED_Calibration_t)CL_SPEED_CheckCalibration();
 			CL_SPEED_SetCalibration_Type(num);
