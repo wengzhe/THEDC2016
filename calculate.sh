@@ -1,20 +1,68 @@
 ext=(
-'*.c'
-'*.cpp'
-'*.h'
-'*.py'
-'*.sh'
+"'*.c'"
+"'*.cpp'"
+"'*.h'"
+"'*.py'"
+"'*.sh'"
 )
 
-lines=0;
-lines_useful=0;
+exc_file=(
+"'calculate.sh'"
+"'__init__.py'"
+)
+
+exc_fold=(
+"'./STM32*'"
+)
+
+exclude=""
+
+for i in ${!exc_fold[@]}
+do
+    if [ "$exclude" ];then
+        exclude="$exclude -or"
+    fi
+    exclude="$exclude -path ${exc_fold[$i]}"
+done
+
+for i in ${!exc_file[@]}
+do
+    if [ "$exclude" ];then
+        exclude="$exclude -or"
+    fi
+    exclude="$exclude -name ${exc_file[$i]}"
+done
+
+if [ "$exclude" ];then
+    exclude="! \( $exclude \) -and "
+fi
+
+extension=""
 for i in ${!ext[@]}
 do
-    echo "${ext[$i]}"
-    echo `find . -name "${ext[$i]}"`
-    let lines=lines+`find . -name "${ext[$i]}" -exec cat {} \; | wc -l`
-    let lines_useful=lines_useful+`find . -name "${ext[$i]}" -exec awk -F# '$0' {} \; | wc -l`
+    if [ "$extension" ];then
+        extension="$extension -or"
+    fi
+    extension="$extension -name ${ext[$i]}"
 done
+
+if [ "$extension" ];then
+    extension="\( $extension \)"
+fi
+
+args="$exclude$extension"
+
+#echo "find . \( $args \) -print"
+#echo `eval "find . \( $args \) -exec cat {} \; | wc -l"`
+#echo "find . \( $args \) -exec awk -F# '\$0' {} \; | wc -l"
+
+cmd0="find . \( $args \) -print"
+cmd1="find . \( $args \) -exec cat {} \; | wc -l"
+cmd2="find . \( $args \) -exec awk -F# '\$0' {} \; | wc -l"
+
+eval $cmd0
+lines=`eval $cmd1`
+lines_useful=`eval $cmd2`
 echo "总行数$lines"
 echo "非空行$lines_useful"
 
